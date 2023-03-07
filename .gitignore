@@ -4,6 +4,7 @@ node_modules
 frontend/node_modules/
 supportTicketVenv/
 FlashCards_MAD2/
+backend/application/__pycache__/
 
 
 # local env files
