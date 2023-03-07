@@ -1,0 +1,290 @@
+01-Mar-23 20:34:54 - [INFO] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+01-Mar-23 20:34:54 - [INFO] - [33mPress CTRL+C to quit[0m
+01-Mar-23 20:34:54 - [INFO] -  * Restarting with stat
+01-Mar-23 20:34:54 - [WARNING] -  * Debugger is active!
+01-Mar-23 20:34:54 - [INFO] -  * Debugger PIN: 830-215-102
+01-Mar-23 21:04:46 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:04:46] "GET / HTTP/1.1" 200 -
+01-Mar-23 21:04:46 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:04:46] "GET /static/js/home.js HTTP/1.1" 200 -
+01-Mar-23 21:04:49 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:04:49] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+01-Mar-23 21:04:58 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:04:58] "GET / HTTP/1.1" 200 -
+01-Mar-23 21:04:58 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:04:58] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+01-Mar-23 21:04:59 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:04:59] "GET / HTTP/1.1" 200 -
+01-Mar-23 21:04:59 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:04:59] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+01-Mar-23 21:05:00 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:00] "GET / HTTP/1.1" 200 -
+01-Mar-23 21:05:00 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:00] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+01-Mar-23 21:05:01 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:01] "GET / HTTP/1.1" 200 -
+01-Mar-23 21:05:01 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:01] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+01-Mar-23 21:05:03 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:03] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:05:06 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:06] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:05:08 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:08] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:05:11 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:11] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:05:16 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:16] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:05:25 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:25] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:05:29 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:29] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:05:32 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:32] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:05:40 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:40] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:05:43 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:43] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:05:45 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:05:45] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:07:44 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:07:44] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:07:46 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:07:46] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:19:01 - [INFO] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+01-Mar-23 21:19:01 - [INFO] - [33mPress CTRL+C to quit[0m
+01-Mar-23 21:19:01 - [INFO] -  * Restarting with stat
+01-Mar-23 21:19:02 - [WARNING] -  * Debugger is active!
+01-Mar-23 21:19:02 - [INFO] -  * Debugger PIN: 830-215-102
+01-Mar-23 21:19:19 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:19:19] "GET / HTTP/1.1" 200 -
+01-Mar-23 21:19:19 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:19:19] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+01-Mar-23 21:19:25 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:19:25] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+01-Mar-23 21:20:14 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\controllers.py', reloading
+01-Mar-23 21:20:14 - [INFO] -  * Restarting with stat
+01-Mar-23 21:20:15 - [WARNING] -  * Debugger is active!
+01-Mar-23 21:20:15 - [INFO] -  * Debugger PIN: 830-215-102
+01-Mar-23 21:22:58 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\controllers.py', reloading
+01-Mar-23 21:22:58 - [INFO] -  * Restarting with stat
+01-Mar-23 21:22:58 - [INFO] - Inside controller File.
+01-Mar-23 21:22:58 - [INFO] - Controllers loaded.
+01-Mar-23 21:22:58 - [INFO] - Main loaded.
+01-Mar-23 21:22:58 - [WARNING] -  * Debugger is active!
+01-Mar-23 21:22:58 - [INFO] -  * Debugger PIN: 830-215-102
+01-Mar-23 21:23:32 - [INFO] - Inside home fn.
+01-Mar-23 21:23:32 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:23:32] "GET / HTTP/1.1" 200 -
+01-Mar-23 21:23:32 - [INFO] - 127.0.0.1 - - [01/Mar/2023 21:23:32] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+01-Mar-23 22:57:07 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\api.py', reloading
+01-Mar-23 23:50:59 - [WARNING] -  * Debugger is active!
+01-Mar-23 23:50:59 - [INFO] -  * Debugger PIN: 830-215-102
+01-Mar-23 23:51:26 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\controllers.py', reloading
+01-Mar-23 23:51:27 - [WARNING] -  * Debugger is active!
+01-Mar-23 23:51:27 - [INFO] -  * Debugger PIN: 830-215-102
+01-Mar-23 23:51:34 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:51:34] "[33mGET / HTTP/1.1[0m" 404 -
+01-Mar-23 23:51:37 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:51:37] "[33mGET / HTTP/1.1[0m" 404 -
+01-Mar-23 23:51:43 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:51:43] "[33mGET /login HTTP/1.1[0m" 404 -
+01-Mar-23 23:51:51 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:51:51] "[33mGET /auth/login HTTP/1.1[0m" 404 -
+01-Mar-23 23:52:02 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:52:02] "GET /api/v1/auth/login HTTP/1.1" 200 -
+01-Mar-23 23:52:26 - [INFO] - Inside auth home fn.
+01-Mar-23 23:52:26 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:52:26] "[35m[1mGET /api/v1/auth/ HTTP/1.1[0m" 500 -
+01-Mar-23 23:52:27 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:52:27] "GET /api/v1/auth/?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+01-Mar-23 23:52:27 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:52:27] "GET /api/v1/auth/?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+01-Mar-23 23:52:27 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:52:27] "GET /api/v1/auth/?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+01-Mar-23 23:52:27 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:52:27] "[36mGET /api/v1/auth/?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+01-Mar-23 23:56:00 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\controllers.py', reloading
+01-Mar-23 23:56:01 - [WARNING] -  * Debugger is active!
+01-Mar-23 23:56:01 - [INFO] -  * Debugger PIN: 830-215-102
+01-Mar-23 23:56:10 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:56:10] "[33mGET / HTTP/1.1[0m" 404 -
+01-Mar-23 23:57:02 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\app.py', reloading
+01-Mar-23 23:57:03 - [WARNING] -  * Debugger is active!
+01-Mar-23 23:57:03 - [INFO] -  * Debugger PIN: 830-215-102
+01-Mar-23 23:57:07 - [INFO] - Inside controller home fn.
+01-Mar-23 23:57:07 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:57:07] "[35m[1mGET / HTTP/1.1[0m" 500 -
+01-Mar-23 23:57:07 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:57:07] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+01-Mar-23 23:57:07 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:57:07] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+01-Mar-23 23:57:07 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:57:07] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+01-Mar-23 23:57:07 - [INFO] - 127.0.0.1 - - [01/Mar/2023 23:57:07] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+02-Mar-23 00:00:03 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\__init__.py', reloading
+02-Mar-23 00:00:05 - [WARNING] -  * Debugger is active!
+02-Mar-23 00:00:05 - [INFO] -  * Debugger PIN: 830-215-102
+02-Mar-23 00:00:10 - [INFO] - Inside controller home fn.
+02-Mar-23 00:00:10 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:00:10] "[35m[1mGET / HTTP/1.1[0m" 500 -
+02-Mar-23 00:00:10 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:00:10] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+02-Mar-23 00:00:10 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:00:10] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+02-Mar-23 00:00:10 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:00:10] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+02-Mar-23 00:00:10 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:00:10] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+02-Mar-23 00:01:44 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\__init__.py', reloading
+02-Mar-23 00:01:45 - [WARNING] -  * Debugger is active!
+02-Mar-23 00:01:45 - [INFO] -  * Debugger PIN: 830-215-102
+02-Mar-23 00:01:49 - [INFO] - Inside controller home fn.
+02-Mar-23 00:01:49 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:01:49] "GET / HTTP/1.1" 200 -
+02-Mar-23 00:01:49 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:01:49] "GET /static/js/home.js HTTP/1.1" 200 -
+02-Mar-23 00:01:51 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:01:51] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+02-Mar-23 00:01:53 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:01:53] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+02-Mar-23 00:01:54 - [INFO] - Inside controller home fn.
+02-Mar-23 00:01:54 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:01:54] "GET / HTTP/1.1" 200 -
+02-Mar-23 00:01:54 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:01:54] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+02-Mar-23 00:01:56 - [INFO] - Inside controller home fn.
+02-Mar-23 00:01:56 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:01:56] "GET / HTTP/1.1" 200 -
+02-Mar-23 00:01:56 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:01:56] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+02-Mar-23 00:01:57 - [INFO] - Inside controller home fn.
+02-Mar-23 00:01:57 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:01:57] "GET / HTTP/1.1" 200 -
+02-Mar-23 00:01:57 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:01:57] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+02-Mar-23 00:01:58 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:01:58] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+02-Mar-23 00:02:01 - [INFO] - Inside controller home fn.
+02-Mar-23 00:02:01 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:02:01] "GET / HTTP/1.1" 200 -
+02-Mar-23 00:02:01 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:02:01] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+02-Mar-23 00:02:02 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:02:02] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+02-Mar-23 00:04:40 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\auth_bp.py', reloading
+02-Mar-23 00:04:41 - [WARNING] -  * Debugger is active!
+02-Mar-23 00:04:41 - [INFO] -  * Debugger PIN: 830-215-102
+02-Mar-23 00:07:01 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\support_bp.py', reloading
+02-Mar-23 00:07:02 - [WARNING] -  * Debugger is active!
+02-Mar-23 00:07:02 - [INFO] -  * Debugger PIN: 830-215-102
+02-Mar-23 00:07:18 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\__init__.py', reloading
+02-Mar-23 00:07:18 - [WARNING] -  * Debugger is active!
+02-Mar-23 00:07:18 - [INFO] -  * Debugger PIN: 830-215-102
+02-Mar-23 00:07:43 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:07:43] "[33mGET /support HTTP/1.1[0m" 404 -
+02-Mar-23 00:07:50 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:07:50] "[32mGET /api/v1/support HTTP/1.1[0m" 308 -
+02-Mar-23 00:07:50 - [INFO] - 127.0.0.1 - - [02/Mar/2023 00:07:50] "GET /api/v1/support/ HTTP/1.1" 200 -
+03-Mar-23 18:56:58 - [INFO] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+03-Mar-23 18:56:58 - [INFO] - [33mPress CTRL+C to quit[0m
+03-Mar-23 18:56:58 - [INFO] -  * Restarting with stat
+03-Mar-23 18:56:59 - [WARNING] -  * Debugger is active!
+03-Mar-23 18:56:59 - [INFO] -  * Debugger PIN: 830-215-102
+03-Mar-23 18:57:24 - [INFO] - Inside controller home fn.
+03-Mar-23 18:57:24 - [INFO] - 127.0.0.1 - - [03/Mar/2023 18:57:24] "GET / HTTP/1.1" 200 -
+03-Mar-23 18:57:24 - [INFO] - 127.0.0.1 - - [03/Mar/2023 18:57:24] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 18:57:29 - [INFO] - 127.0.0.1 - - [03/Mar/2023 18:57:29] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+03-Mar-23 18:57:30 - [INFO] - Inside controller home fn.
+03-Mar-23 18:57:30 - [INFO] - 127.0.0.1 - - [03/Mar/2023 18:57:30] "GET / HTTP/1.1" 200 -
+03-Mar-23 18:57:31 - [INFO] - 127.0.0.1 - - [03/Mar/2023 18:57:31] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 18:57:34 - [INFO] - 127.0.0.1 - - [03/Mar/2023 18:57:34] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+03-Mar-23 19:40:29 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\__init__.py', reloading
+03-Mar-23 19:40:29 - [INFO] -  * Restarting with stat
+03-Mar-23 19:44:43 - [INFO] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+03-Mar-23 19:44:43 - [INFO] - [33mPress CTRL+C to quit[0m
+03-Mar-23 19:44:43 - [INFO] -  * Restarting with stat
+03-Mar-23 19:44:44 - [WARNING] -  * Debugger is active!
+03-Mar-23 19:44:44 - [INFO] -  * Debugger PIN: 830-215-102
+03-Mar-23 19:45:07 - [INFO] - Inside controller home fn.
+03-Mar-23 19:45:07 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:45:07] "[35m[1mGET / HTTP/1.1[0m" 500 -
+03-Mar-23 19:45:07 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:45:07] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+03-Mar-23 19:45:07 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:45:07] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+03-Mar-23 19:45:07 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:45:07] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+03-Mar-23 19:45:08 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:45:08] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+03-Mar-23 19:46:37 - [INFO] - Inside controller home fn.
+03-Mar-23 19:46:37 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:46:37] "[35m[1mGET / HTTP/1.1[0m" 500 -
+03-Mar-23 19:46:37 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:46:37] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+03-Mar-23 19:46:37 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:46:37] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+03-Mar-23 19:46:37 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:46:37] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+03-Mar-23 19:46:37 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:46:37] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+03-Mar-23 19:48:56 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\__init__.py', reloading
+03-Mar-23 19:48:56 - [INFO] -  * Restarting with stat
+03-Mar-23 19:49:00 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+03-Mar-23 19:49:00 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+03-Mar-23 19:49:00 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+03-Mar-23 19:52:04 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+03-Mar-23 19:52:04 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+03-Mar-23 19:52:04 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+03-Mar-23 19:52:04 - [INFO] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+03-Mar-23 19:52:04 - [INFO] - [33mPress CTRL+C to quit[0m
+03-Mar-23 19:52:04 - [INFO] -  * Restarting with stat
+03-Mar-23 19:52:06 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+03-Mar-23 19:52:06 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+03-Mar-23 19:52:06 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+03-Mar-23 19:52:06 - [WARNING] -  * Debugger is active!
+03-Mar-23 19:52:06 - [INFO] -  * Debugger PIN: 830-215-102
+03-Mar-23 19:52:20 - [INFO] - Inside controller home fn.
+03-Mar-23 19:52:20 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:52:20] "GET / HTTP/1.1" 200 -
+03-Mar-23 19:52:20 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:52:20] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 19:52:22 - [INFO] - Inside controller home fn.
+03-Mar-23 19:52:22 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:52:22] "GET / HTTP/1.1" 200 -
+03-Mar-23 19:52:22 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:52:22] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 19:52:23 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:52:23] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+03-Mar-23 19:52:24 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:52:24] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+03-Mar-23 19:52:27 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:52:27] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+03-Mar-23 19:52:27 - [INFO] - Inside controller home fn.
+03-Mar-23 19:52:27 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:52:27] "GET / HTTP/1.1" 200 -
+03-Mar-23 19:52:27 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:52:27] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 19:56:27 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:56:27] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+03-Mar-23 19:56:28 - [INFO] - 127.0.0.1 - - [03/Mar/2023 19:56:28] "[33mGET /api/deck HTTP/1.1[0m" 404 -
+03-Mar-23 19:58:10 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\views\\support_bp.py', reloading
+03-Mar-23 19:58:10 - [INFO] -  * Restarting with stat
+03-Mar-23 19:58:12 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+03-Mar-23 19:58:12 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+03-Mar-23 19:58:12 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+03-Mar-23 19:58:12 - [WARNING] -  * Debugger is active!
+03-Mar-23 19:58:12 - [INFO] -  * Debugger PIN: 830-215-102
+03-Mar-23 20:14:48 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\views\\auth_bp.py', reloading
+03-Mar-23 20:14:48 - [INFO] -  * Restarting with stat
+03-Mar-23 20:14:50 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+03-Mar-23 20:14:50 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+03-Mar-23 20:14:50 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+03-Mar-23 20:14:50 - [WARNING] -  * Debugger is active!
+03-Mar-23 20:14:50 - [INFO] -  * Debugger PIN: 830-215-102
+03-Mar-23 20:14:57 - [INFO] - Inside controller home fn.
+03-Mar-23 20:14:57 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:14:57] "GET / HTTP/1.1" 200 -
+03-Mar-23 20:14:57 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:14:57] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 20:15:06 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:15:06] "[33mGET /api/v1/auth HTTP/1.1[0m" 404 -
+03-Mar-23 20:15:11 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:15:11] "[31m[1mGET /api/v1/auth/login HTTP/1.1[0m" 405 -
+03-Mar-23 20:15:20 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:15:20] "GET /api/v1/auth/newUsers HTTP/1.1" 200 -
+03-Mar-23 20:20:23 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\views\\auth_utils.py', reloading
+03-Mar-23 20:20:23 - [INFO] -  * Restarting with stat
+03-Mar-23 20:20:24 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+03-Mar-23 20:20:24 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+03-Mar-23 20:20:24 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+03-Mar-23 20:20:24 - [WARNING] -  * Debugger is active!
+03-Mar-23 20:20:24 - [INFO] -  * Debugger PIN: 830-215-102
+03-Mar-23 20:22:20 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\views\\auth_bp.py', reloading
+03-Mar-23 20:22:21 - [INFO] -  * Restarting with stat
+03-Mar-23 20:22:22 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+03-Mar-23 20:22:22 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+03-Mar-23 20:22:22 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+03-Mar-23 20:22:22 - [WARNING] -  * Debugger is active!
+03-Mar-23 20:22:22 - [INFO] -  * Debugger PIN: 830-215-102
+03-Mar-23 20:26:57 - [INFO] - Inside controller home fn.
+03-Mar-23 20:26:57 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:26:57] "GET / HTTP/1.1" 200 -
+03-Mar-23 20:26:57 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:26:57] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 20:27:00 - [INFO] - Inside controller home fn.
+03-Mar-23 20:27:00 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:27:00] "GET / HTTP/1.1" 200 -
+03-Mar-23 20:27:00 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:27:00] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 20:27:16 - [INFO] - Inside controller home fn.
+03-Mar-23 20:27:16 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:27:16] "GET / HTTP/1.1" 200 -
+03-Mar-23 20:27:16 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:27:16] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 20:58:25 - [INFO] - Inside controller home fn.
+03-Mar-23 20:58:25 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:58:25] "GET / HTTP/1.1" 200 -
+03-Mar-23 20:58:26 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:58:26] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 20:58:28 - [INFO] - Inside controller home fn.
+03-Mar-23 20:58:28 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:58:28] "GET / HTTP/1.1" 200 -
+03-Mar-23 20:58:28 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:58:28] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 20:58:29 - [INFO] - Inside controller home fn.
+03-Mar-23 20:58:29 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:58:29] "GET / HTTP/1.1" 200 -
+03-Mar-23 20:58:29 - [INFO] - 127.0.0.1 - - [03/Mar/2023 20:58:29] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 21:07:19 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\config.py', reloading
+03-Mar-23 21:07:19 - [INFO] -  * Restarting with stat
+03-Mar-23 21:07:22 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+03-Mar-23 21:07:22 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+03-Mar-23 21:07:22 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+03-Mar-23 21:07:22 - [WARNING] -  * Debugger is active!
+03-Mar-23 21:07:22 - [INFO] -  * Debugger PIN: 830-215-102
+03-Mar-23 21:12:57 - [INFO] - Inside controller home fn.
+03-Mar-23 21:12:57 - [INFO] - 127.0.0.1 - - [03/Mar/2023 21:12:57] "GET / HTTP/1.1" 200 -
+03-Mar-23 21:12:57 - [INFO] - 127.0.0.1 - - [03/Mar/2023 21:12:57] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+03-Mar-23 21:13:06 - [INFO] - Inside controller home fn.
+03-Mar-23 21:13:06 - [INFO] - 127.0.0.1 - - [03/Mar/2023 21:13:06] "GET / HTTP/1.1" 200 -
+03-Mar-23 21:13:06 - [INFO] - 127.0.0.1 - - [03/Mar/2023 21:13:06] "[36mGET /static/js/home.js HTTP/1.1[0m" 304 -
+06-Mar-23 12:54:14 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+06-Mar-23 12:54:14 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+06-Mar-23 12:54:14 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+06-Mar-23 12:54:16 - [INFO] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+06-Mar-23 12:54:16 - [INFO] - [33mPress CTRL+C to quit[0m
+06-Mar-23 12:54:16 - [INFO] -  * Restarting with stat
+06-Mar-23 12:54:17 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+06-Mar-23 12:54:17 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+06-Mar-23 12:54:17 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+06-Mar-23 12:54:17 - [WARNING] -  * Debugger is active!
+06-Mar-23 12:54:17 - [INFO] -  * Debugger PIN: 830-215-102
+06-Mar-23 12:57:40 - [INFO] - 127.0.0.1 - - [06/Mar/2023 12:57:40] "[31m[1mGET /api/v1/auth/login HTTP/1.1[0m" 405 -
+06-Mar-23 12:58:56 - [INFO] - 127.0.0.1 - - [06/Mar/2023 12:58:56] "[33mGET /api/v1/auth HTTP/1.1[0m" 404 -
+06-Mar-23 12:59:09 - [INFO] - 127.0.0.1 - - [06/Mar/2023 12:59:09] "[31m[1mGET /api/v1/auth/register HTTP/1.1[0m" 405 -
+06-Mar-23 13:06:50 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\views\\auth_bp.py', reloading
+06-Mar-23 13:06:50 - [INFO] -  * Restarting with stat
+06-Mar-23 13:06:51 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+06-Mar-23 13:06:51 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+06-Mar-23 13:06:51 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+06-Mar-23 13:06:52 - [WARNING] -  * Debugger is active!
+06-Mar-23 13:06:52 - [INFO] -  * Debugger PIN: 830-215-102
+06-Mar-23 13:06:53 - [INFO] - 127.0.0.1 - - [06/Mar/2023 13:06:53] "GET /api/v1/auth/register HTTP/1.1" 200 -
+06-Mar-23 13:07:01 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Local_Work\\My_Code\\backend\\application\\views\\auth_bp.py', reloading
+06-Mar-23 13:07:01 - [INFO] -  * Restarting with stat
+06-Mar-23 13:07:02 - [DEBUG] - loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+06-Mar-23 13:07:02 - [DEBUG] - loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+06-Mar-23 13:07:02 - [DEBUG] - loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+06-Mar-23 13:07:02 - [WARNING] -  * Debugger is active!
+06-Mar-23 13:07:02 - [INFO] -  * Debugger PIN: 830-215-102
+06-Mar-23 13:09:16 - [INFO] - Logged in
+06-Mar-23 13:09:16 - [INFO] - 127.0.0.1 - - [06/Mar/2023 13:09:16] "POST /api/v1/auth/login HTTP/1.1" 200 -
+06-Mar-23 13:13:16 - [INFO] - Logged in
+06-Mar-23 13:13:16 - [INFO] - 127.0.0.1 - - [06/Mar/2023 13:13:16] "POST /api/v1/auth/login HTTP/1.1" 200 -
