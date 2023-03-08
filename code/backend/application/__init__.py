@@ -6,7 +6,7 @@
 # --------------------  Imports  --------------------
 
 from flask import Flask
-from application.config import LocalDevelopmentConfig
+from application.config import DevelopmentConfig, TestingConfig
 from application.database import db
 # from flask_bcrypt import Bcrypt
 # import email_validator
@@ -23,10 +23,15 @@ from application.models import Auth
 # bcrypt = Bcrypt()
 login_manager = LoginManager()
 
-def create_app():
+def create_app(env_type='dev'):
     app = Flask(__name__, template_folder="templates")
-    app.config.from_object(LocalDevelopmentConfig)
+    if env_type == 'dev':
+        app.config.from_object(DevelopmentConfig)
+    if env_type == 'test':
+        app.config.from_object(TestingConfig)
     db.init_app(app)
+    
+
     # api = Api(app)
     # bcrypt.init_app(app)
 
@@ -46,6 +51,8 @@ def create_app():
     app.register_blueprint(admin_bp, url_prefix=f'/api/{API_VERSION}/admin')
 
     app.app_context().push()
+    db.create_all()
+    db.session.commit()
     return app
 
 # --------------------  END  --------------------

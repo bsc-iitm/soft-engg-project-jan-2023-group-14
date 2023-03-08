@@ -5,22 +5,39 @@
 
 # --------------------  Imports  --------------------
 
+from application.globals import BACKEND_ROOT_PATH
+import os
+
 # --------------------  Code  --------------------
 
 class Config():
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = None
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    # WTF_CSRF_ENABLED = False
-    # SECURITY_TOKEN_AUTHENTICATION_HEADER = "Authentication-Token"
     
 
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///databases/supportTicketDB_Prod.sqlite3?charset=utf8'
+    SECRET_KEY = 'secretKey'
+    DEBUG = False
 
-class LocalDevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///databases/supportTicketDB.sqlite3?charset=utf8'
+
+class TestingConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///databases/supportTicketDB_Test.sqlite3?charset=utf8'
     SECRET_KEY = 'secretKey'
     DEBUG = True
-    
+
+class DevelopmentConfig(Config):
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///databases/supportTicketDB_Dev.sqlite3?charset=utf8'
+    # r'sqlite:///C:\absolute\path\to\foo.db'
+    db_path = os.path.join(BACKEND_ROOT_PATH, "databases", "supportTicketDB_Dev.sqlite3")
+
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + db_path + '?charset=utf8'
+    print(f'BACKEND_ROOT_PATH : {BACKEND_ROOT_PATH}')
+    print(f'SQLALCHEMY_DATABASE_URI : {SQLALCHEMY_DATABASE_URI}')
+    SECRET_KEY = 'secretKey'
+    DEBUG = True
+    # # SECURITY_TOKEN_AUTHENTICATION_HEADER = "Authentication-Token"
     # SECURITY_FRESHNESS_GRACE_PERIOD = timedelta(hours=1)
     # SECURITY_PASSWORD_HASH = "bcrypt"
     # SECURITY_PASSWORD_SALT = "really super secret"

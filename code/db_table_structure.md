@@ -9,42 +9,12 @@
 | is_logged | Bool | Not Null | Default: False |
 | token_created_on | Int | Nullable | Timestamp in int format |
 | token_expiry_on | Int | Nullable | Timestamp in int format |
-
-
-# Student Table
-
-| Name | Type | Constraints | Remark |
-| :-----: | :-----: | :-------: | :-----: |
-| user_id | String | Primary Key, Foreign Key | Unique and can't be changed |
+| email | String | Not Null, Unique | Editable with verification |
+| password | String | Not Null | Editable |
 | first_name | String | Not Null | Editable |
 | last_name | String | Not Null | Editable |
-| email | String | Not Null, Unique | Editable with verification |
 | profile_photo_loc | String | Nullable | Location of profile photo |
-| password | String | Not Null | Editable |
 
-
-# Support Table
-
-| Name | Type | Constraints | Remark |
-| :-----: | :-----: | :-------: | :-----: |
-| user_id | String | Primary Key, Foreign Key | Unique and can't be changed |
-| first_name | String | Not Null | Editable |
-| last_name | String | Not Null | Editable |
-| email | String | Not Null, Unique | Editable with verification |
-| profile_photo_loc | String | Nullable | Location of profile photo |
-| password | String | Not Null | Editable |
-
-
-# Admin Table
-
-| Name | Type | Constraints | Remark |
-| :-----: | :-----: | :-------: | :-----: |
-| user_id | String | Primary Key, Foreign Key | Unique and can't be changed |
-| first_name | String | Not Null | Editable |
-| last_name | String | Not Null | Editable |
-| email | String | Not Null, Unique | Editable with verification |
-| profile_photo_loc | String | Nullable | Location of profile photo |
-| password | String | Not Null | Editable |
 
 
 # Ticket Table

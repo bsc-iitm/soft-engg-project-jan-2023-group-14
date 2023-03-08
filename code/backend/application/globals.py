@@ -15,5 +15,6 @@ PORT = 5000
 DEBUG = True
 BASE = f'http://{HOST}:{PORT}'
 API_VERSION = 'v1'
+TOKEN_VALIDITY = 300 # seconds
 
 # --------------------  END  --------------------

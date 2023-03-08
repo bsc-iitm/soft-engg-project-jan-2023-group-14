@@ -69,22 +69,17 @@ info:
         <td>Nullable</td>
         <td>Timestamp in int format</td>
       </tr>
-      </tbody>
-    </table>
-    <h3> [2] Student Table Schema </h3>
-    <table>
-      <thead>
-        <th>Column Name</th>
-        <th>Column Type</th>
-        <th>Constraints</th>
-        <th>Remarks</th>
-      </thead>
-      <tbody>
       <tr>
-        <td>user_id</td>
+        <td>email</td>
         <td>String</td>
-        <td>Primary Key, Foreign Key</td>
-        <td>Unique and can't be changed</td>
+        <td>Not Null, Unique</td>
+        <td>Editable with verification</td>
+      </tr>
+      <tr>
+        <td>password</td>
+        <td>String</td>
+        <td>Not Null</td>
+        <td>Editable</td>
       </tr>
       <tr>
         <td>first_name</td>
@@ -99,120 +94,14 @@ info:
         <td>Editable</td>
       </tr>
       <tr>
-        <td>email</td>
-        <td>String</td>
-        <td>Not Null, Unique</td>
-        <td>Editable with verification</td>
-      </tr>
-      <tr>
         <td>profile_photo_loc</td>
         <td>String</td>
         <td>Nullable</td>
         <td>Location of profile photo</td>
       </tr>
-      <tr>
-        <td>password</td>
-        <td>String</td>
-        <td>Not Null</td>
-        <td>Editable</td>
-      </tr>
       </tbody>
     </table>
-    <h3> [3] Support Table Schema </h3>
-    <table>
-      <thead>
-        <th>Column Name</th>
-        <th>Column Type</th>
-        <th>Constraints</th>
-        <th>Remarks</th>
-      </thead>
-      <tbody>
-      <tr>
-        <td>user_id</td>
-        <td>String</td>
-        <td>Primary Key, Foreign Key</td>
-        <td>Unique and can't be changed</td>
-      </tr>
-      <tr>
-        <td>first_name</td>
-        <td>String</td>
-        <td>Not Null</td>
-        <td>Editable</td>
-      </tr>
-      <tr>
-        <td>last_name</td>
-        <td>String</td>
-        <td>Not Null</td>
-        <td>Editable</td>
-      </tr>
-      <tr>
-        <td>email</td>
-        <td>String</td>
-        <td>Not Null, Unique</td>
-        <td>Editable with verification</td>
-      </tr>
-      <tr>
-        <td>profile_photo_loc</td>
-        <td>String</td>
-        <td>Nullable</td>
-        <td>Location of profile photo</td>
-      </tr>
-      <tr>
-        <td>password</td>
-        <td>String</td>
-        <td>Not Null</td>
-        <td>Editable</td>
-      </tr>
-      </tbody>
-    </table>
-    <h3> [4] Admin Table Schema </h3>
-    <table>
-      <thead>
-        <th>Column Name</th>
-        <th>Column Type</th>
-        <th>Constraints</th>
-        <th>Remarks</th>
-      </thead>
-      <tbody>
-      <tr>
-        <td>user_id</td>
-        <td>String</td>
-        <td>Primary Key, Foreign Key</td>
-        <td>Unique and can't be changed</td>
-      </tr>
-      <tr>
-        <td>first_name</td>
-        <td>String</td>
-        <td>Not Null</td>
-        <td>Editable</td>
-      </tr>
-      <tr>
-        <td>last_name</td>
-        <td>String</td>
-        <td>Not Null</td>
-        <td>Editable</td>
-      </tr>
-      <tr>
-        <td>email</td>
-        <td>String</td>
-        <td>Not Null, Unique</td>
-        <td>Editable with verification</td>
-      </tr>
-      <tr>
-        <td>profile_photo_loc</td>
-        <td>String</td>
-        <td>Nullable</td>
-        <td>Location of profile photo</td>
-      </tr>
-      <tr>
-        <td>password</td>
-        <td>String</td>
-        <td>Not Null</td>
-        <td>Editable</td>
-      </tr>
-      </tbody>
-    </table>
-    <h3> [5] Ticket Table Schema </h3>
+    <h3> [2] Ticket Table Schema </h3>
     <table>
       <thead>
         <th>Column Name</th>
@@ -307,7 +196,7 @@ info:
       </tr>
       </tbody>
     </table>
-    <h3> [6] TicketAttachment Table Schema </h3>
+    <h3> [3] TicketAttachment Table Schema </h3>
     <table>
       <thead>
         <th>Column Name</th>
@@ -336,7 +225,7 @@ info:
       </tr>
       </tbody>
     </table>
-    <h3> [7] TicketVote Table Schema </h3>
+    <h3> [4] TicketVote Table Schema </h3>
     <table>
       <thead>
         <th>Column Name</th>
@@ -359,7 +248,7 @@ info:
       </tr>
       </tbody>
     </table>
-    <h3> [8] FAQ Table Schema </h3>
+    <h3> [5] FAQ Table Schema </h3>
     <table>
       <thead>
         <th>Column Name</th>
@@ -412,7 +301,7 @@ info:
       </tr>
       </tbody>
     </table>
-    <h3> [9] FAQAttachment Table Schema </h3>
+    <h3> [6] FAQAttachment Table Schema </h3>
     <table>
       <thead>
         <th>Column Name</th>
@@ -1312,71 +1201,18 @@ components:
         token_expiry_on:
           type: integer
           format: int64
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        profile_photo_loc:
+          type: string
       xml:
         name: Auth
-    Student:
-      required:
-      - email
-      - first_name
-      - password
-      type: object
-      properties:
-        user_id:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-        profile_photo_loc:
-          type: string
-      xml:
-        name: Student
-    Support:
-      required:
-      - email
-      - first_name
-      - password
-      type: object
-      properties:
-        user_id:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-        profile_photo_loc:
-          type: string
-      xml:
-        name: Support
-    Admin:
-      required:
-      - email
-      - first_name
-      - password
-      type: object
-      properties:
-        user_id:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-        profile_photo_loc:
-          type: string
-      xml:
-        name: Admin
     Ticket:
       required:
       - created_by
@@ -1820,9 +1656,9 @@ components:
       properties:
         user_id:
           type: string
-        token:
+        web_token:
           type: string
-        expiry_on:
+        token_expiry_on:
           type: integer
     inline_response_200_1_message:
       type: object
