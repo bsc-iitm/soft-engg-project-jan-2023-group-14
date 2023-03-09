@@ -1,5 +1,5 @@
 ### Personal work directory 
-#### Group 14 - Tushar Supe
+#### Group 14 - Vaidehi
 
 code dir : code files
 
