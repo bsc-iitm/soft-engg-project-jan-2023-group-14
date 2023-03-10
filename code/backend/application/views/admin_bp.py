@@ -9,6 +9,7 @@
 from flask import Blueprint
 from flask_restful import Api, Resource, url_for
 
+
 # --------------------  Code  --------------------
 
 admin_bp = Blueprint('admin_bp', __name__)

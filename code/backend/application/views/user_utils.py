@@ -1,7 +1,7 @@
 # Online Support Ticket Application
 # Tushar Supe : 21f1003637
 # Vaidehi Agarwal: 21f1003880
-# File Info: This file contains auth related methods.
+# File Info: This file contains user class (common).
 
 # --------------------  Imports  --------------------
 
@@ -13,20 +13,12 @@ from flask import current_app as app
 from datetime import datetime, timedelta
 import time
 import jwt
-from application.globals import TOKEN_VALIDITY
-from application.database import db
-from application.models import Auth
+import hashlib
 
 # --------------------  Code  --------------------
 
 
-class AuthUtils:
-    def __init__(self, user_id=None):
-        self.user_id = user_id
-        self.user = None
-
-    def __repr__(self) -> str:
-        return f"Auth_Utils object for user: {self.user_id}"
+class UserUtils:
 
     def is_blank(self, string):
         # for "", "  ", None : True else False
@@ -126,43 +118,24 @@ class AuthUtils:
             algorithm="HS256",
         )
         return web_token
-
-    def update_auth_table(self, user=None, details: dict = {}, user_id=None):
+    
+    def generate_user_id(self, email: str) -> str:
         """
         Usage
         -----
-        Update auth table while logging in and creating new account
+        Generate user id from email and hashing with md5
 
         Parameters
         ----------
-        details : dict with user details
-        user : user object before update
-        user_id : user id while creating new account
+        email : email id of user
 
         Returns
         -------
-        updated user object
+        user_id
 
         """
-        if details["operation"] == "login":
-            user.web_token = details["web_token"]
-            user.is_logged = True
-            user.token_created_on = time.time()
-            user.token_expiry_on = details["token_expiry_on"]
-
-        if details["operation"] == "register":
-            user = Auth(
-                user_id=user_id,
-                email=details["email"],
-                password=details["password"],
-                role=details["role"],
-                first_name=details["first_name"],
-                last_name=details["last_name"],
-            )
-            db.session.add(user)
-
-        db.session.commit()
-        return user
-
+        # use email to generate unique id
+        user_id = hashlib.md5(email.encode()).hexdigest()
+        return user_id
 
 # --------------------  END  --------------------
