@@ -5,6 +5,7 @@ code/frontend/node_modules/
 code/supportTicketVenv/
 code/FlashCards_MAD2/
 code/backend/application/__pycache__/
+code/backend/application/views/__pycache__/
 
 
 # local env files
@@ -26,3 +27,4 @@ pnpm-debug.log*
 *.sln
 *.sw?
 *.bak
+*.log

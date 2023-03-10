@@ -4728,3 +4728,103 @@ WHERE auth.user_id = ?
 10-Mar-23 19:07:52 - [INFO] - 127.0.0.1 - - [10/Mar/2023 19:07:52] "[35m[1mGET /api/v1/ticket/all-tickets?query=&sortby=a&sortdir=asc&status=all&priority=all HTTP/1.1[0m" 500 -
 10-Mar-23 19:08:43 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Tushar_Work\\code\\backend\\application\\views\\ticket_bp.py', reloading
 10-Mar-23 19:08:43 - [INFO] -  * Restarting with stat
+10-Mar-23 19:08:44 - [INFO] - BEGIN (implicit)
+10-Mar-23 19:08:44 - [INFO] - PRAGMA main.table_info("auth")
+10-Mar-23 19:08:44 - [INFO] - [raw sql] ()
+10-Mar-23 19:08:44 - [INFO] - PRAGMA main.table_info("ticket")
+10-Mar-23 19:08:44 - [INFO] - [raw sql] ()
+10-Mar-23 19:08:44 - [INFO] - PRAGMA main.table_info("ticketattachment")
+10-Mar-23 19:08:44 - [INFO] - [raw sql] ()
+10-Mar-23 19:08:44 - [INFO] - PRAGMA main.table_info("ticketvote")
+10-Mar-23 19:08:44 - [INFO] - [raw sql] ()
+10-Mar-23 19:08:44 - [INFO] - PRAGMA main.table_info("faq")
+10-Mar-23 19:08:44 - [INFO] - [raw sql] ()
+10-Mar-23 19:08:44 - [INFO] - PRAGMA main.table_info("faqattachment")
+10-Mar-23 19:08:44 - [INFO] - [raw sql] ()
+10-Mar-23 19:08:44 - [INFO] - COMMIT
+10-Mar-23 19:08:44 - [WARNING] -  * Debugger is active!
+10-Mar-23 19:08:44 - [INFO] -  * Debugger PIN: 160-542-957
+10-Mar-23 19:08:46 - [INFO] - BEGIN (implicit)
+10-Mar-23 19:08:46 - [INFO] - SELECT auth.user_id AS auth_user_id, auth.role AS auth_role, auth.email AS auth_email, auth.password AS auth_password, auth.web_token AS auth_web_token, auth.is_verified AS auth_is_verified, auth.is_logged AS auth_is_logged, auth.token_created_on AS auth_token_created_on, auth.token_expiry_on AS auth_token_expiry_on, auth.first_name AS auth_first_name, auth.last_name AS auth_last_name, auth.profile_photo_loc AS auth_profile_photo_loc 
+FROM auth 
+WHERE auth.user_id = ?
+ LIMIT ? OFFSET ?
+10-Mar-23 19:08:46 - [INFO] - [generated in 0.00292s] ('dae1c7e4cda8ec1799d967af1567496d', 1, 0)
+10-Mar-23 19:08:46 - [INFO] - SELECT auth.user_id AS auth_user_id, auth.role AS auth_role, auth.email AS auth_email, auth.password AS auth_password, auth.web_token AS auth_web_token, auth.is_verified AS auth_is_verified, auth.is_logged AS auth_is_logged, auth.token_created_on AS auth_token_created_on, auth.token_expiry_on AS auth_token_expiry_on, auth.first_name AS auth_first_name, auth.last_name AS auth_last_name, auth.profile_photo_loc AS auth_profile_photo_loc 
+FROM auth 
+WHERE auth.user_id = ?
+ LIMIT ? OFFSET ?
+10-Mar-23 19:08:47 - [INFO] - [cached since 0.009267s ago] ('dae1c7e4cda8ec1799d967af1567496d', 1, 0)
+10-Mar-23 19:08:47 - [DEBUG] - All Tickets : args : {'query': [''], 'sortby': ['a'], 'sortdir': ['asc'], 'status': ['all'], 'priority': ['all']}
+10-Mar-23 19:08:47 - [INFO] - SELECT auth.user_id AS auth_user_id, auth.role AS auth_role, auth.email AS auth_email, auth.password AS auth_password, auth.web_token AS auth_web_token, auth.is_verified AS auth_is_verified, auth.is_logged AS auth_is_logged, auth.token_created_on AS auth_token_created_on, auth.token_expiry_on AS auth_token_expiry_on, auth.first_name AS auth_first_name, auth.last_name AS auth_last_name, auth.profile_photo_loc AS auth_profile_photo_loc 
+FROM auth 
+WHERE auth.user_id = ?
+ LIMIT ? OFFSET ?
+10-Mar-23 19:08:47 - [INFO] - [cached since 0.01596s ago] ('dae1c7e4cda8ec1799d967af1567496d', 1, 0)
+10-Mar-23 19:08:47 - [INFO] - SELECT ticketvote.ticket_id AS ticketvote_ticket_id, ticketvote.user_id AS ticketvote_user_id 
+FROM ticketvote 
+WHERE ticketvote.user_id = ?
+10-Mar-23 19:08:47 - [INFO] - [generated in 0.00135s] ('dae1c7e4cda8ec1799d967af1567496d',)
+10-Mar-23 19:08:47 - [INFO] - SELECT ticket.ticket_id AS ticket_ticket_id, ticket.title AS ticket_title, ticket.description AS ticket_description, ticket.solution AS ticket_solution, ticket.priority AS ticket_priority, ticket.tag_1 AS ticket_tag_1, ticket.tag_2 AS ticket_tag_2, ticket.tag_3 AS ticket_tag_3, ticket.status AS ticket_status, ticket.votes AS ticket_votes, ticket.created_by AS ticket_created_by, ticket.created_on AS ticket_created_on, ticket.resolved_by AS ticket_resolved_by, ticket.resolved_on AS ticket_resolved_on 
+FROM ticket 
+WHERE ticket.created_by = ?
+10-Mar-23 19:08:47 - [INFO] - [generated in 0.00236s] ('dae1c7e4cda8ec1799d967af1567496d',)
+10-Mar-23 19:08:47 - [INFO] - 200 - Custom success 200 response sent
+10-Mar-23 19:08:47 - [INFO] - ROLLBACK
+10-Mar-23 19:08:47 - [INFO] - 127.0.0.1 - - [10/Mar/2023 19:08:47] "GET /api/v1/ticket/all-tickets?query=&sortby=a&sortdir=asc&status=all&priority=all HTTP/1.1" 200 -
+10-Mar-23 19:08:53 - [INFO] - BEGIN (implicit)
+10-Mar-23 19:08:53 - [INFO] - SELECT auth.user_id AS auth_user_id, auth.role AS auth_role, auth.email AS auth_email, auth.password AS auth_password, auth.web_token AS auth_web_token, auth.is_verified AS auth_is_verified, auth.is_logged AS auth_is_logged, auth.token_created_on AS auth_token_created_on, auth.token_expiry_on AS auth_token_expiry_on, auth.first_name AS auth_first_name, auth.last_name AS auth_last_name, auth.profile_photo_loc AS auth_profile_photo_loc 
+FROM auth 
+WHERE auth.user_id = ?
+ LIMIT ? OFFSET ?
+10-Mar-23 19:08:53 - [INFO] - [cached since 6.036s ago] ('dae1c7e4cda8ec1799d967af1567496d', 1, 0)
+10-Mar-23 19:08:53 - [INFO] - SELECT auth.user_id AS auth_user_id, auth.role AS auth_role, auth.email AS auth_email, auth.password AS auth_password, auth.web_token AS auth_web_token, auth.is_verified AS auth_is_verified, auth.is_logged AS auth_is_logged, auth.token_created_on AS auth_token_created_on, auth.token_expiry_on AS auth_token_expiry_on, auth.first_name AS auth_first_name, auth.last_name AS auth_last_name, auth.profile_photo_loc AS auth_profile_photo_loc 
+FROM auth 
+WHERE auth.user_id = ?
+ LIMIT ? OFFSET ?
+10-Mar-23 19:08:53 - [INFO] - [cached since 6.043s ago] ('dae1c7e4cda8ec1799d967af1567496d', 1, 0)
+10-Mar-23 19:08:53 - [DEBUG] - All Tickets : args : {'sortby': ['a'], 'sortdir': ['asc'], 'status': ['all'], 'priority': ['all']}
+10-Mar-23 19:08:53 - [INFO] - SELECT auth.user_id AS auth_user_id, auth.role AS auth_role, auth.email AS auth_email, auth.password AS auth_password, auth.web_token AS auth_web_token, auth.is_verified AS auth_is_verified, auth.is_logged AS auth_is_logged, auth.token_created_on AS auth_token_created_on, auth.token_expiry_on AS auth_token_expiry_on, auth.first_name AS auth_first_name, auth.last_name AS auth_last_name, auth.profile_photo_loc AS auth_profile_photo_loc 
+FROM auth 
+WHERE auth.user_id = ?
+ LIMIT ? OFFSET ?
+10-Mar-23 19:08:53 - [INFO] - [cached since 6.048s ago] ('dae1c7e4cda8ec1799d967af1567496d', 1, 0)
+10-Mar-23 19:08:53 - [INFO] - SELECT ticketvote.ticket_id AS ticketvote_ticket_id, ticketvote.user_id AS ticketvote_user_id 
+FROM ticketvote 
+WHERE ticketvote.user_id = ?
+10-Mar-23 19:08:53 - [INFO] - [cached since 6.032s ago] ('dae1c7e4cda8ec1799d967af1567496d',)
+10-Mar-23 19:08:53 - [INFO] - SELECT ticket.ticket_id AS ticket_ticket_id, ticket.title AS ticket_title, ticket.description AS ticket_description, ticket.solution AS ticket_solution, ticket.priority AS ticket_priority, ticket.tag_1 AS ticket_tag_1, ticket.tag_2 AS ticket_tag_2, ticket.tag_3 AS ticket_tag_3, ticket.status AS ticket_status, ticket.votes AS ticket_votes, ticket.created_by AS ticket_created_by, ticket.created_on AS ticket_created_on, ticket.resolved_by AS ticket_resolved_by, ticket.resolved_on AS ticket_resolved_on 
+FROM ticket 
+WHERE ticket.created_by = ?
+10-Mar-23 19:08:53 - [INFO] - [cached since 6.03s ago] ('dae1c7e4cda8ec1799d967af1567496d',)
+10-Mar-23 19:08:53 - [INFO] - 200 - Custom success 200 response sent
+10-Mar-23 19:08:53 - [INFO] - ROLLBACK
+10-Mar-23 19:08:53 - [INFO] - 127.0.0.1 - - [10/Mar/2023 19:08:53] "GET /api/v1/ticket/all-tickets?sortby=a&sortdir=asc&status=all&priority=all HTTP/1.1" 200 -
+10-Mar-23 19:08:59 - [INFO] - BEGIN (implicit)
+10-Mar-23 19:08:59 - [INFO] - SELECT auth.user_id AS auth_user_id, auth.role AS auth_role, auth.email AS auth_email, auth.password AS auth_password, auth.web_token AS auth_web_token, auth.is_verified AS auth_is_verified, auth.is_logged AS auth_is_logged, auth.token_created_on AS auth_token_created_on, auth.token_expiry_on AS auth_token_expiry_on, auth.first_name AS auth_first_name, auth.last_name AS auth_last_name, auth.profile_photo_loc AS auth_profile_photo_loc 
+FROM auth 
+WHERE auth.user_id = ?
+ LIMIT ? OFFSET ?
+10-Mar-23 19:08:59 - [INFO] - [cached since 12.3s ago] ('dae1c7e4cda8ec1799d967af1567496d', 1, 0)
+10-Mar-23 19:08:59 - [INFO] - SELECT auth.user_id AS auth_user_id, auth.role AS auth_role, auth.email AS auth_email, auth.password AS auth_password, auth.web_token AS auth_web_token, auth.is_verified AS auth_is_verified, auth.is_logged AS auth_is_logged, auth.token_created_on AS auth_token_created_on, auth.token_expiry_on AS auth_token_expiry_on, auth.first_name AS auth_first_name, auth.last_name AS auth_last_name, auth.profile_photo_loc AS auth_profile_photo_loc 
+FROM auth 
+WHERE auth.user_id = ?
+ LIMIT ? OFFSET ?
+10-Mar-23 19:08:59 - [INFO] - [cached since 12.3s ago] ('dae1c7e4cda8ec1799d967af1567496d', 1, 0)
+10-Mar-23 19:08:59 - [DEBUG] - All Tickets : args : {'sortby': ['a'], 'sortdir': ['asc']}
+10-Mar-23 19:08:59 - [INFO] - SELECT auth.user_id AS auth_user_id, auth.role AS auth_role, auth.email AS auth_email, auth.password AS auth_password, auth.web_token AS auth_web_token, auth.is_verified AS auth_is_verified, auth.is_logged AS auth_is_logged, auth.token_created_on AS auth_token_created_on, auth.token_expiry_on AS auth_token_expiry_on, auth.first_name AS auth_first_name, auth.last_name AS auth_last_name, auth.profile_photo_loc AS auth_profile_photo_loc 
+FROM auth 
+WHERE auth.user_id = ?
+ LIMIT ? OFFSET ?
+10-Mar-23 19:08:59 - [INFO] - [cached since 12.31s ago] ('dae1c7e4cda8ec1799d967af1567496d', 1, 0)
+10-Mar-23 19:08:59 - [INFO] - SELECT ticketvote.ticket_id AS ticketvote_ticket_id, ticketvote.user_id AS ticketvote_user_id 
+FROM ticketvote 
+WHERE ticketvote.user_id = ?
+10-Mar-23 19:08:59 - [INFO] - [cached since 12.3s ago] ('dae1c7e4cda8ec1799d967af1567496d',)
+10-Mar-23 19:08:59 - [INFO] - SELECT ticket.ticket_id AS ticket_ticket_id, ticket.title AS ticket_title, ticket.description AS ticket_description, ticket.solution AS ticket_solution, ticket.priority AS ticket_priority, ticket.tag_1 AS ticket_tag_1, ticket.tag_2 AS ticket_tag_2, ticket.tag_3 AS ticket_tag_3, ticket.status AS ticket_status, ticket.votes AS ticket_votes, ticket.created_by AS ticket_created_by, ticket.created_on AS ticket_created_on, ticket.resolved_by AS ticket_resolved_by, ticket.resolved_on AS ticket_resolved_on 
+FROM ticket 
+WHERE ticket.created_by = ?
+10-Mar-23 19:08:59 - [INFO] - [cached since 12.3s ago] ('dae1c7e4cda8ec1799d967af1567496d',)
+10-Mar-23 19:08:59 - [INFO] - 200 - Custom success 200 response sent
+10-Mar-23 19:08:59 - [INFO] - ROLLBACK
+10-Mar-23 19:08:59 - [INFO] - 127.0.0.1 - - [10/Mar/2023 19:08:59] "GET /api/v1/ticket/all-tickets?sortby=a&sortdir=asc HTTP/1.1" 200 -
