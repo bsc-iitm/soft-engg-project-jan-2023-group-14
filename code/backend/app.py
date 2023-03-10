@@ -12,12 +12,10 @@ from application.globals import HOST, PORT, DEBUG
 
 app = create_app()
 
-from application.controllers import * 
+from application.controllers import *
 
 # --------------------  Main  --------------------
-if __name__ == '__main__':
-    app.run(host=HOST, 
-            port=PORT, 
-            debug=DEBUG)
+if __name__ == "__main__":
+    app.run(host=HOST, port=PORT, debug=DEBUG)
 
 # --------------------  End  --------------------

@@ -4828,3 +4828,129 @@ WHERE ticket.created_by = ?
 10-Mar-23 19:08:59 - [INFO] - 200 - Custom success 200 response sent
 10-Mar-23 19:08:59 - [INFO] - ROLLBACK
 10-Mar-23 19:08:59 - [INFO] - 127.0.0.1 - - [10/Mar/2023 19:08:59] "GET /api/v1/ticket/all-tickets?sortby=a&sortdir=asc HTTP/1.1" 200 -
+10-Mar-23 22:21:33 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Tushar_Work\\code\\backend\\application\\common_utils.py', reloading
+10-Mar-23 22:21:34 - [INFO] -  * Restarting with stat
+10-Mar-23 22:21:35 - [INFO] - BEGIN (implicit)
+10-Mar-23 22:21:35 - [INFO] - PRAGMA main.table_info("auth")
+10-Mar-23 22:21:35 - [INFO] - [raw sql] ()
+10-Mar-23 22:21:35 - [INFO] - PRAGMA main.table_info("ticket")
+10-Mar-23 22:21:35 - [INFO] - [raw sql] ()
+10-Mar-23 22:21:35 - [INFO] - PRAGMA main.table_info("ticketattachment")
+10-Mar-23 22:21:35 - [INFO] - [raw sql] ()
+10-Mar-23 22:21:35 - [INFO] - PRAGMA main.table_info("ticketvote")
+10-Mar-23 22:21:35 - [INFO] - [raw sql] ()
+10-Mar-23 22:21:35 - [INFO] - PRAGMA main.table_info("faq")
+10-Mar-23 22:21:35 - [INFO] - [raw sql] ()
+10-Mar-23 22:21:35 - [INFO] - PRAGMA main.table_info("faqattachment")
+10-Mar-23 22:21:35 - [INFO] - [raw sql] ()
+10-Mar-23 22:21:35 - [INFO] - COMMIT
+10-Mar-23 22:21:35 - [WARNING] -  * Debugger is active!
+10-Mar-23 22:21:35 - [INFO] -  * Debugger PIN: 160-542-957
+10-Mar-23 22:22:05 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Tushar_Work\\code\\backend\\application\\views\\user_utils.py', reloading
+10-Mar-23 22:22:05 - [INFO] -  * Restarting with stat
+10-Mar-23 22:22:05 - [INFO] - BEGIN (implicit)
+10-Mar-23 22:22:05 - [INFO] - PRAGMA main.table_info("auth")
+10-Mar-23 22:22:05 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:05 - [INFO] - PRAGMA main.table_info("ticket")
+10-Mar-23 22:22:05 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:05 - [INFO] - PRAGMA main.table_info("ticketattachment")
+10-Mar-23 22:22:05 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:05 - [INFO] - PRAGMA main.table_info("ticketvote")
+10-Mar-23 22:22:05 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:05 - [INFO] - PRAGMA main.table_info("faq")
+10-Mar-23 22:22:05 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:05 - [INFO] - PRAGMA main.table_info("faqattachment")
+10-Mar-23 22:22:05 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:05 - [INFO] - COMMIT
+10-Mar-23 22:22:05 - [WARNING] -  * Debugger is active!
+10-Mar-23 22:22:05 - [INFO] -  * Debugger PIN: 160-542-957
+10-Mar-23 22:22:31 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Tushar_Work\\code\\backend\\application\\models.py', reloading
+10-Mar-23 22:22:31 - [INFO] -  * Restarting with stat
+10-Mar-23 22:22:32 - [INFO] - BEGIN (implicit)
+10-Mar-23 22:22:32 - [INFO] - PRAGMA main.table_info("auth")
+10-Mar-23 22:22:32 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:32 - [INFO] - PRAGMA main.table_info("ticket")
+10-Mar-23 22:22:32 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:32 - [INFO] - PRAGMA main.table_info("ticketattachment")
+10-Mar-23 22:22:32 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:32 - [INFO] - PRAGMA main.table_info("ticketvote")
+10-Mar-23 22:22:32 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:32 - [INFO] - PRAGMA main.table_info("faq")
+10-Mar-23 22:22:32 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:32 - [INFO] - PRAGMA main.table_info("faqattachment")
+10-Mar-23 22:22:32 - [INFO] - [raw sql] ()
+10-Mar-23 22:22:32 - [INFO] - COMMIT
+10-Mar-23 22:22:32 - [WARNING] -  * Debugger is active!
+10-Mar-23 22:22:32 - [INFO] -  * Debugger PIN: 160-542-957
+10-Mar-23 22:22:59 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Tushar_Work\\code\\backend\\application\\views\\admin_bp.py', reloading
+10-Mar-23 22:22:59 - [INFO] -  * Restarting with stat
+10-Mar-23 22:23:00 - [INFO] - BEGIN (implicit)
+10-Mar-23 22:23:00 - [INFO] - PRAGMA main.table_info("auth")
+10-Mar-23 22:23:00 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:00 - [INFO] - PRAGMA main.table_info("ticket")
+10-Mar-23 22:23:00 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:00 - [INFO] - PRAGMA main.table_info("ticketattachment")
+10-Mar-23 22:23:00 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:00 - [INFO] - PRAGMA main.table_info("ticketvote")
+10-Mar-23 22:23:00 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:00 - [INFO] - PRAGMA main.table_info("faq")
+10-Mar-23 22:23:00 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:00 - [INFO] - PRAGMA main.table_info("faqattachment")
+10-Mar-23 22:23:00 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:00 - [INFO] - COMMIT
+10-Mar-23 22:23:00 - [WARNING] -  * Debugger is active!
+10-Mar-23 22:23:00 - [INFO] -  * Debugger PIN: 160-542-957
+10-Mar-23 22:23:23 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Tushar_Work\\code\\backend\\application\\views\\auth_bp.py', reloading
+10-Mar-23 22:23:23 - [INFO] -  * Restarting with stat
+10-Mar-23 22:23:24 - [INFO] - BEGIN (implicit)
+10-Mar-23 22:23:24 - [INFO] - PRAGMA main.table_info("auth")
+10-Mar-23 22:23:24 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:24 - [INFO] - PRAGMA main.table_info("ticket")
+10-Mar-23 22:23:24 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:24 - [INFO] - PRAGMA main.table_info("ticketattachment")
+10-Mar-23 22:23:24 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:24 - [INFO] - PRAGMA main.table_info("ticketvote")
+10-Mar-23 22:23:24 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:24 - [INFO] - PRAGMA main.table_info("faq")
+10-Mar-23 22:23:24 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:24 - [INFO] - PRAGMA main.table_info("faqattachment")
+10-Mar-23 22:23:24 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:24 - [INFO] - COMMIT
+10-Mar-23 22:23:24 - [WARNING] -  * Debugger is active!
+10-Mar-23 22:23:24 - [INFO] -  * Debugger PIN: 160-542-957
+10-Mar-23 22:23:35 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Tushar_Work\\code\\backend\\application\\views\\ticket_bp.py', reloading
+10-Mar-23 22:23:35 - [INFO] -  * Restarting with stat
+10-Mar-23 22:23:36 - [INFO] - BEGIN (implicit)
+10-Mar-23 22:23:36 - [INFO] - PRAGMA main.table_info("auth")
+10-Mar-23 22:23:36 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:36 - [INFO] - PRAGMA main.table_info("ticket")
+10-Mar-23 22:23:36 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:36 - [INFO] - PRAGMA main.table_info("ticketattachment")
+10-Mar-23 22:23:36 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:36 - [INFO] - PRAGMA main.table_info("ticketvote")
+10-Mar-23 22:23:36 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:36 - [INFO] - PRAGMA main.table_info("faq")
+10-Mar-23 22:23:36 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:36 - [INFO] - PRAGMA main.table_info("faqattachment")
+10-Mar-23 22:23:36 - [INFO] - [raw sql] ()
+10-Mar-23 22:23:36 - [INFO] - COMMIT
+10-Mar-23 22:23:36 - [WARNING] -  * Debugger is active!
+10-Mar-23 22:23:36 - [INFO] -  * Debugger PIN: 160-542-957
+10-Mar-23 22:24:13 - [INFO] -  * Detected change in 'd:\\IITM_exam\\IITM_Term_7\\SE_Project\\Tushar_Work\\code\\backend\\app.py', reloading
+10-Mar-23 22:24:13 - [INFO] -  * Restarting with stat
+10-Mar-23 22:24:14 - [INFO] - BEGIN (implicit)
+10-Mar-23 22:24:14 - [INFO] - PRAGMA main.table_info("auth")
+10-Mar-23 22:24:14 - [INFO] - [raw sql] ()
+10-Mar-23 22:24:14 - [INFO] - PRAGMA main.table_info("ticket")
+10-Mar-23 22:24:14 - [INFO] - [raw sql] ()
+10-Mar-23 22:24:14 - [INFO] - PRAGMA main.table_info("ticketattachment")
+10-Mar-23 22:24:14 - [INFO] - [raw sql] ()
+10-Mar-23 22:24:14 - [INFO] - PRAGMA main.table_info("ticketvote")
+10-Mar-23 22:24:14 - [INFO] - [raw sql] ()
+10-Mar-23 22:24:14 - [INFO] - PRAGMA main.table_info("faq")
+10-Mar-23 22:24:14 - [INFO] - [raw sql] ()
+10-Mar-23 22:24:14 - [INFO] - PRAGMA main.table_info("faqattachment")
+10-Mar-23 22:24:14 - [INFO] - [raw sql] ()
+10-Mar-23 22:24:14 - [INFO] - COMMIT
+10-Mar-23 22:24:14 - [WARNING] -  * Debugger is active!
+10-Mar-23 22:24:14 - [INFO] -  * Debugger PIN: 160-542-957
