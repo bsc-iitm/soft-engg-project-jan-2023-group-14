@@ -18,15 +18,15 @@ http://127.0.0.1:5000
 
 
 # Ticket
-/api/v1/ticket/{ticket_id}
+/api/v1/ticket/{ticket_id}/{user_id}
 - get: get a single ticket with all its metadata
 - put: update a single ticket for user and support solution
 - delete: delete a single ticket
 
-/api/v1/ticket
+/api/v1/ticket/{user_id}
 - post: create a new ticket
 
-/api/v1/all-tickets
+/api/v1/ticket/all-tickets
 - get: get tickets from db (depends on query)
 - How it works:
 ```
