@@ -10,17 +10,15 @@ from flask import current_app as app
 from flask_restful import Api, Resource
 from application.logger import logger
 from application.responses import *
-from datetime import datetime, timedelta
 from application.models import Auth
 from application.globals import TOKEN_VALIDITY
 from application.database import db
 import time
 from application.common_utils import admin_required, token_required
-import re
-import jwt
 from application.views.user_utils import UserUtils
 
 # --------------------  Code  --------------------
+
 
 class AuthUtils(UserUtils):
     def __init__(self, user_id=None):
@@ -76,7 +74,7 @@ class AuthUtils(UserUtils):
 
 auth_bp = Blueprint("auth_bp", __name__)
 auth_api = Api(auth_bp)
-auth_utils = AuthUtils() 
+auth_utils = AuthUtils()
 
 
 class Login(Resource):
@@ -178,7 +176,7 @@ class Register(Resource):
         User web token
 
         """
-        
+
         details = {
             "first_name": "",
             "last_name": "",

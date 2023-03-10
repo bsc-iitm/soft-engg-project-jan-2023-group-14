@@ -5,13 +5,8 @@
 
 # --------------------  Imports  --------------------
 
-# from flask import Blueprint
-# from flask_restful import Api, Resource
-# from application.logger import logger
 import re
 from flask import current_app as app
-from datetime import datetime, timedelta
-import time
 import jwt
 import hashlib
 
@@ -19,7 +14,6 @@ import hashlib
 
 
 class UserUtils:
-
     def is_blank(self, string):
         # for "", "  ", None : True else False
         return not (bool(string and not string.isspace()))
@@ -118,7 +112,7 @@ class UserUtils:
             algorithm="HS256",
         )
         return web_token
-    
+
     def generate_user_id(self, email: str) -> str:
         """
         Usage
@@ -137,5 +131,6 @@ class UserUtils:
         # use email to generate unique id
         user_id = hashlib.md5(email.encode()).hexdigest()
         return user_id
+
 
 # --------------------  END  --------------------
