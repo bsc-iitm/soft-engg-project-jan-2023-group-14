@@ -5,11 +5,19 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import 'bootstrap/dist/css/bootstrap.css';
+import FlashMessage from '@smartweb/vue-flash-message'; // https://smwbtech.github.io/vue-flash-message/
+
+Vue.use(FlashMessage, {
+  name: "flashMessage",
+  tag: "FlashMessage",
+  time: 4000,
+  strategy: "multiple"
+}); // success, error, warning, info
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-Vue.config.productionTip = false;
-Vue.prototype.$BASEURL = (Vue.config.productionTip) ? 'https://hostname' : 'http://127.0.0.1:5000';
+// Vue.config.productionTip = false;
+// Vue.prototype.$BASEURL = (Vue.config.productionTip) ? 'https://hostname' : 'http://127.0.0.1:5000';
 
 const options = {
   isEnabled: true,
@@ -23,6 +31,7 @@ const options = {
 
 Vue.use(VueLogger, options); // logLevels:['debug', 'info', 'warn', 'error', 'fatal']
 Vue.use(BootstrapVue);
+
 
 new Vue({
   router,
