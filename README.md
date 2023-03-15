@@ -1,7 +1,4 @@
 ### Personal work directory 
-#### Group 14 - Tushar Supe
+#### Group 14 - Common
 
-code dir : code files
-
-documents dir: all supporting documents
 
