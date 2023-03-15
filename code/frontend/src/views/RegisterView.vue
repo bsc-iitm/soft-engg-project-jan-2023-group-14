@@ -1,7 +1,6 @@
 <template>
-  <div style="margin-top: 3%; margin-left: 3%; text-align: left">
-    <h1 style="text-align: center">Welcome to Online Support Ticket System</h1>
-    <div class="register-form">
+  <div class="register-form">
+    <div  style="margin: 3%; padding: 3%; width: 50%">
       <h3 style="text-align: left">Register</h3>
       <br />
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
@@ -85,16 +84,20 @@
         <b-button style="margin: 10px" type="reset" variant="danger">Reset</b-button>
       </b-form>
       <br />
-      <b-link href="/login">Already registered? Please login here.</b-link>
+      <p>Already registered? Please <b-link href="/login">Login here</b-link> </p>
+       <p>Go to <b-link href="/home">Home Page</b-link> </p>
+      
 
-      <b-card class="mt-3" header="Form Data : Temporary">
+      <!-- <b-card class="mt-3" header="Form Data : Temporary">
         <pre class="m-0">{{ form }}</pre>
-      </b-card>
+      </b-card> -->
     </div>
   </div>
 </template>
 
 <script>
+import * as common from "../assets/common.js";
+
 export default {
   name: "RegisterView",
   components: {},
@@ -119,11 +122,40 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.form));
+      alert('You are creating a new account. Click "Ok" to proceed?');
+      this.$log.info("Submitting registration form");
+      
+      fetch(common.AUTH_API_REGISTER, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.form),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.$log.debug(`Success : ${data}`);
+          if (data.category == "success") {
+            this.flashMessage.success({
+              message: data.message,
+            });
+            this.$router.push("/login");
+          }
+          if (data.category == "error") {
+            this.flashMessage.error({
+              message: data.message,
+            });
+          }
+        })
+        .catch((error) => {
+          this.$log.debug(`Error : ${error}`);
+          this.flashMessage.error({
+            message: "Internal Server Error",
+          });
+        });
     },
     onReset(event) {
       event.preventDefault();
-      // Reset our form values
       this.form.first_name = "";
       this.form.last_name = "";
       this.form.email = "";
@@ -141,7 +173,7 @@ export default {
       return this.form.first_name.length > 2 ? true : false;
     },
     check_password() {
-      console.log('inside check password');
+      console.log("inside check password");
       let password = this.form.password;
       if (password.length < 4 || password.length > 9) {
         return false;
@@ -165,8 +197,8 @@ export default {
 </script>
 
 <style>
-.register-form {
+/* .register-form {
   width: 50%;
   margin: 5%;
-}
+} */
 </style>

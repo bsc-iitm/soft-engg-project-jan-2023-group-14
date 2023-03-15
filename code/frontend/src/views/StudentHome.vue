@@ -1,105 +1,100 @@
 <template>
-    <div>
-      <b-navbar toggleable="lg" type="light" variant="light">
-        <b-navbar-brand href="#">OSTS</b-navbar-brand>
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-        <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav>
-            <div class="buttons" v-for="b in buttons" :key="b.id">
-              <b-button
-                variant="primary"
-                :to="{ path: b.link }"
-                @click="change_button_state(b.id)"
-                :style="{
-                  boxShadow: b.active ? '5px 5px 15px 5px #a3a3a3' : 'none',
-                  backgroundColor: b.active ? 'blue' : '#f8f9fa',
-                  color: b.active ? 'white' : 'black',
-                  borderColor: b.active ? '#007bff' : '#f8f9fa',
-                  fontSize: b.active ? '18px' : '16px',
-                }"
-                >{{ b.title }}</b-button
-              >
-            </div>
-          </b-navbar-nav>
+  <div>
+    <StudentNavbar :id_="1"></StudentNavbar>
 
-          <!-- Right aligned nav items -->
-          <b-navbar-nav class="ml-auto">
-            <b-button id="profile_pic" :style="{backgroundImage: 'url(' + profile_pic_url + ')'}"></b-button>
-          </b-navbar-nav>
-        </b-collapse>
-      </b-navbar>
-    </div>
+    <b-container fluid="xl">
+      <b-row class="text-start">
+        <b-col cols="12" sm="7" md="8">
+          <h2 style="text-align: center">My Unresolved Tickets</h2>
+          <div style="height: 550px; overflow: auto; padding: 10px">
+            <div v-for="ticket in ticket_card_details" :key="ticket.ticket_id">
+              <TicketCard
+                :ticket_id="ticket.ticket_id"
+                :created_on="ticket.created_on"
+                :title="ticket.title"
+                :description="ticket.description"
+                :votes="ticket.votes"
+              ></TicketCard>
+            </div>
+          </div>
+        </b-col>
+        <b-col cols="12" sm="5" md="4" style="border: 1px solid red">
+          <h2 style="text-align: center">My Activity</h2>
+        </b-col>
+      </b-row>
+    </b-container>
+
+    <br />
+  </div>
 </template>
 
 <script>
+import StudentNavbar from "../components/StudentNavbar.vue";
+
+import * as common from "../assets/common.js";
+import TicketCard from "../components/TicketCard.vue";
+
 export default {
-  name: 'StudentHome',
-  components: {},
+  name: "StudentHome",
+  components: { StudentNavbar, TicketCard },
   data() {
     return {
-      profile_pic_url: "https://blog.hubspot.com/hs-fs/hubfs/Google%20Drive%20Integration/Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg?width=650&name=Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg",
-      buttons: [
-        { id: 1, title: "Home", link: "/", active: true },
-        { id: 2, title: "Create Ticket", link: "/", active: false },
-        { id: 3, title: "My Tickets", link: "/", active: false },
-        { id: 4, title: "FAQs", link: "/", active: false },
-        { id: 5, title: "Logout", link: "/student_home", active: false },
+      ticket_card_details: [
+        {
+          ticket_id: "1 Lorem Ipsum is simply dummy",
+          created_on: 1669734650,
+          title: "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          description:
+            "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          votes: 5,
+        },
+        {
+          ticket_id: "2 Lorem Ipsum is simply dummy",
+          created_on: 1669734650,
+          title: "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          description:
+            "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          votes: 5,
+        },
+        {
+          ticket_id: "3 Lorem Ipsum is simply dummy",
+          created_on: 1669734650,
+          title: "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          description:
+            "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          votes: 5,
+        },
+        {
+          ticket_id: "4 Lorem Ipsum is simply dummy",
+          created_on: 1669734650,
+          title: "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          description:
+            "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          votes: 5,
+        },
+        {
+          ticket_id: "5 Lorem Ipsum is simply dummy",
+          created_on: 1669734650,
+          title: "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          description:
+            "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          votes: 5,
+        },
+        {
+          ticket_id: "6 Lorem Ipsum is simply dummy",
+          created_on: 1669734650,
+          title: "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          description:
+            "Lorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummyLorem Ipsum is simply dummy Lorem Ipsum is simply dummy",
+          votes: 5,
+        },
       ],
     };
   },
   mounted() {},
-  methods: {
-    change_button_state(id_) {
-      for (let b of this.buttons) {
-        if (b.id == id_) {
-          b.active = true;
-        } else {
-          b.active = false;
-        }
-      }
-    },
-  },
+  methods: {},
   computed: {},
 };
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #4dd325;
-}
-
-nav a.router-link-exact-active {
-  color: #441ada;
-}
-
-.buttons {
-  margin: 15px;
-  justify-content: space-between;
-}
-
-#profile_pic {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-router-link {
-  box-shadow: 5px 10px 8px 10px #888888;
-  background-color: aqua;
-}
-</style>
+<style></style>

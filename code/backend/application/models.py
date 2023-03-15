@@ -24,16 +24,16 @@ class Auth(db.Model):
     )  # time is stored as a timestamp
     token_expiry_on = db.Column(db.Integer, nullable=True)
     first_name = db.Column(db.String, nullable=False)
-    last_name = db.Column(db.String, nullable=False)
+    last_name = db.Column(db.String, nullable=True)
     profile_photo_loc = db.Column(db.String, default="", nullable=True)
 
-    def __init__(self, user_id, role, email, password, first_name, last_name):
-        self.user_id = user_id
-        self.role = role
-        self.email = email
-        self.password = password  # hash password before entering
-        self.first_name = first_name
-        self.last_name = last_name
+    # def __init__(self, user_id, role, email, password, first_name):
+    #     self.user_id = user_id
+    #     self.role = role
+    #     self.email = email
+    #     self.password = password  # hash password before entering
+    #     self.first_name = first_name
+        
 
     def __repr__(self):
         return f"Auth object for: {self.user_id} | {self.role} | {self.first_name} {self.last_name}"

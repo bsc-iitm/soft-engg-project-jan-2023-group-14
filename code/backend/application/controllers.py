@@ -13,10 +13,10 @@ from application.logger import logger
 
 # --------------------  Code  --------------------
 
-@app.route('/', methods=['GET'])
-@app.route('/home', methods=['GET'])
-def home():
-    logger.info('Inside controller home fn.')
-    return render_template('home.html') # entry point of user view
+# @app.route('/', methods=['GET'])
+# @app.route('/home', methods=['GET'])
+# def home():
+#     logger.info('Inside controller home fn.')
+#     return render_template('home.html') # entry point of user view
 
 # --------------------  END  --------------------

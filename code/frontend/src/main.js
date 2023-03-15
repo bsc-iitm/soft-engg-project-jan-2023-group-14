@@ -1,4 +1,6 @@
-import BootstrapVue from 'bootstrap-vue';
+import { BootstrapVue, BootstrapVueIcons, FormFilePlugin } from 'bootstrap-vue';
+
+
 import VueLogger from 'vuejs-logger';
 import Vue from 'vue';
 import App from './App.vue';
@@ -6,13 +8,6 @@ import router from './router';
 import store from './store';
 import 'bootstrap/dist/css/bootstrap.css';
 import FlashMessage from '@smartweb/vue-flash-message'; // https://smwbtech.github.io/vue-flash-message/
-
-Vue.use(FlashMessage, {
-  name: "flashMessage",
-  tag: "FlashMessage",
-  time: 4000,
-  strategy: "multiple"
-}); // success, error, warning, info
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -31,6 +26,15 @@ const options = {
 
 Vue.use(VueLogger, options); // logLevels:['debug', 'info', 'warn', 'error', 'fatal']
 Vue.use(BootstrapVue);
+Vue.use(BootstrapVueIcons);
+Vue.use(FormFilePlugin)
+
+Vue.use(FlashMessage, {
+  name: "flashMessage",
+  tag: "FlashMessage",
+  time: 4000,
+  strategy: "multiple"
+}); // success, error, warning, info
 
 
 new Vue({
@@ -38,6 +42,7 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount('#app');
+
 
 store.subscribe((mutation, state) => {
   // cache store data

@@ -1,0 +1,199 @@
+<template>
+  <div
+    class="ticket-form"
+    style="margin-top: 5px; margin-left: 5px; margin-right: 5px; text-align: left;"
+  >
+    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+      <b-form-group
+        ><b-form-input
+          id="input-title"
+          v-model="form.title"
+          type="text"
+          placeholder="Enter title"
+          :state="check_title"
+          aria-describedby="input-live-feedback-title"
+          required
+        ></b-form-input>
+        <b-form-invalid-feedback id="input-live-feedback-title">
+          Title should be atleast 20 characters long.
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group
+        ><b-form-textarea
+          id="input-description"
+          v-model="form.description"
+          type="text"
+          placeholder="Enter description (Optional)"
+          rows="3"
+          max-rows="6"
+        ></b-form-textarea
+      ></b-form-group>
+
+      <Tagging @tags_changed="onTagsChanged"></Tagging>
+
+      <b-form-group label="Select priority:" v-slot="{ ariaDescribedby }">
+        <b-form-radio-group
+          id="radio-group-priority"
+          v-model="form.priority"
+          :options="priority_options"
+          :aria-describedby="ariaDescribedby"
+          name="radio-group-priority"
+        ></b-form-radio-group>
+      </b-form-group>
+
+      <!-- <b-form-file
+        v-model="form.attachments"
+        ref="file-input"
+        :state="Boolean(form.attachments)"
+        placeholder="Choose a file or drop it here..."
+        drop-placeholder="Drop file here..."
+        accept=".jpg, .png, .gif"
+        @change="uploadFile"
+        multiple
+      ></b-form-file>
+      <p style="font-size: 12px">Only <code>.jpg, .png, .gif</code> formats are allowed</p>
+      <div class="mt-2">
+        Selected files:
+        <span v-for="file in form.attachments" :key="file.name">{{ file ? file.name : "" }}</span>
+      </div> -->
+
+      <!-- <input
+        type="file"
+        accept="image/*"
+        @change="uploadFile($event.target.files)"
+        multiple="multiple"
+      /> -->
+
+      <FileUpload @file_uploading="onFileUpload"></FileUpload>
+
+      <br />
+
+      <br />
+      <b-button style="margin: 10px" type="submit" variant="primary">Submit</b-button>
+      <b-button style="margin: 10px" type="reset" variant="danger">Reset</b-button>
+    </b-form>
+    <br />
+
+    <!-- <b-card class="mt-3" header="Form Data : Temporary">
+      <pre class="m-0">{{ form }}</pre>
+    </b-card> -->
+  </div>
+</template>
+
+<script>
+import * as common from "../assets/common.js";
+import FileUpload from "./FileUpload.vue";
+import Tagging from "./Tagging.vue";
+
+export default {
+  name: "TicketForm",
+  components: { Tagging, FileUpload },
+  data() {
+    return {
+      priority_options: [
+        { text: "Low", value: "low" },
+        { text: "Medium", value: "medium" },
+        { text: "High", value: "high" },
+      ],
+      form: {
+        title: "",
+        description: "",
+        priority: "low",
+        tags: [],
+        tag_1: "",
+        tag_2: "",
+        tag_3: "",
+        attachments: [],
+      },
+      show: true,
+    };
+  },
+  methods: {
+    onFileUpload(value){
+      this.form.attachments.splice(0, this.form.attachments.length, ...value);
+      for (let i = 0; i < this.form.attachments.length; i++) {
+        console.log(i, this.form.attachments[i].attachment_loc.slice(0, 50));
+      }
+    },
+    onSubmit(event) {
+      if (event && event.preventDefault) { event.preventDefault(); }
+
+      if (this.form.tags.length == 0) {
+        alert("Choose atleast 1 tag");
+      } else {
+        alert('You are creating a new ticket. Click "Ok" to proceed?');
+        this.$log.info("Submitting ticket form");
+
+       
+
+        for (let i in this.form.tags) {
+          if (this.form.tags[i]) {
+            this.form[`tag_${parseInt(i) + 1}`] = this.form.tags[i];
+          }
+        }
+        // console.log(JSON.stringify(this.form));
+
+        // console.log(this.$refs);
+
+
+        fetch(common.TICKET_API + `/${this.$store.getters.get_user_id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            web_token: this.$store.getters.get_web_token,
+            user_id: this.$store.getters.get_user_id,
+          },
+          body: JSON.stringify(this.form),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.$log.debug(`Success : ${data}`);
+            if (data.category == "success") {
+              this.flashMessage.success({
+                message: data.message,
+              });
+              this.onReset();
+            }
+            if (data.category == "error") {
+              this.flashMessage.error({
+                message: data.message,
+              });
+            }
+          })
+          .catch((error) => {
+            this.$log.debug(`Error : ${error}`);
+            this.flashMessage.error({
+              message: "Internal Server Error",
+            });
+          });
+      }
+    },
+    onReset(event) {
+      if (event && event.preventDefault) { event.preventDefault(); }
+
+      // event.preventDefault();
+      this.form.title = "";
+      this.form.description = "";
+      this.form.attachments = [];
+      this.form.tags = [];
+      // this.$refs["file-input"].reset();
+      // Trick to reset/clear native browser form validation state
+      this.show = false;
+      this.$nextTick(() => {
+        this.show = true;
+      });
+    },
+    onTagsChanged(value) {
+      this.form.tags = value;
+    },
+  },
+  computed: {
+    check_title() {
+      return this.form.title.length > 20 ? true : false;
+    },
+  },
+};
+</script>
+
+<style></style>
