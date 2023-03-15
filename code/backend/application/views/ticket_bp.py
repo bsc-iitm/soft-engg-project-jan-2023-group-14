@@ -13,11 +13,19 @@ from application.logger import logger
 from application.common_utils import (
     token_required,
     users_required,
+    convert_base64_to_img,
+    convert_img_to_base64,
+    is_img_path_valid,
+    is_base64,
+    get_encoded_file_details,
 )
 from application.views.user_utils import UserUtils
 from application.responses import *
 from application.models import *
 from copy import deepcopy
+from flask_cors import cross_origin
+from application.globals import *
+import base64
 
 # --------------------  Code  --------------------
 
@@ -32,7 +40,7 @@ class TicketUtils(UserUtils):
             del ticket_dict["_sa_instance_state"]
         attachments = self.get_ticket_attachments(ticket_id=ticket.ticket_id)
         ticket_dict["attachments"] = attachments
-        print(f"\n\n{ticket_dict}\n\n")
+        # print(f"\n\n{ticket_dict}\n\n")
         return ticket_dict
 
     def get_ticket_attachments(self, ticket_id):
@@ -52,6 +60,70 @@ class TicketUtils(UserUtils):
         string = f"{user_id}_{title}_{ts}"
         ticket_id = hashlib.md5(string.encode()).hexdigest()
         return ticket_id
+
+    def save_ticket_attachments(
+        self, attachments: list, ticket_id: str, user_id: str, operation: str
+    ):
+        # get list of files from db for the ticket and user
+        # if file already exists then add number extension
+        # file name is not saved , only number extension required
+        # currently there is no option to delete attachment
+        # file name: {ticket_id}_{user_id}_{number-extension-if-needed}_.{file_format}
+        # operation : create_ticket , update_ticket only student can do | resolve_ticket only support can do.
+
+        total_attachments = len(attachments)
+        num_successful_attachments = 0
+
+        if total_attachments == 0:
+            return (False, "Attachments are empty.")
+
+        files = [
+            file
+            for file in os.listdir(TICKET_ATTACHMENTS_PATH)
+            if file.startswith(f"{ticket_id}_{user_id}")
+        ]
+        number_extension = len(files)  # starting point
+
+        for attach in attachments:
+            # attach will be of format {attachment_loc:'', user_id:''}
+            # attachment_loc will contain base64 version of image while data transfer is occuring between backend and frontend
+            # attachment_loc will contain image path when data is retried from db by backend
+            # attachment_loc will contain base64 image when creating new attachment
+
+            if (user_id == attach["user_id"]) and (
+                attach["attachment_loc"]
+            ):  # redundant check
+                if is_base64(attach["attachment_loc"].split(",")[1]):
+                    file_type, file_format, encoded_data = get_encoded_file_details(
+                        attach["attachment_loc"]
+                    )
+                    if (file_type == "image") and (
+                        file_format in ACCEPTED_IMAGE_EXTENSIONS
+                    ):
+                        file_name = (
+                            f"{ticket_id}_{user_id}_{number_extension}.{file_format}"
+                        )
+                        file_path = os.path.join(TICKET_ATTACHMENTS_PATH, file_name)
+                        if convert_base64_to_img(file_path, encoded_data):
+                            # successfully image saved and now add entry to database
+                            try:
+                                # while creating a ticket a student can upload multiple attachments
+                                # verify whether each attachment is unique
+                                attach["ticket_id"] = ticket_id
+                                attach["attachment_loc"] = file_path
+                                ticket_attach = TicketAttachment(**attach)
+                                db.session.add(ticket_attach)
+                                db.session.commit()
+                                num_successful_attachments += 1
+                                number_extension += 1
+                            except Exception as e:
+                                logger.error(
+                                    f"TicketAPI->post : Error occured while creating a Ticket Attachment : {e}"
+                                )
+        return (
+            True,
+            f"Total {num_successful_attachments} / {total_attachments} attchements are valid and added successfully.",
+        )
 
 
 ticket_bp = Blueprint("ticket_bp", __name__)
@@ -168,29 +240,6 @@ class TicketAPI(Resource):
             ticket = Ticket(**details)
 
             try:
-                # TODO : How to save attachments is not implemented
-                # while creating a ticket a student can upload multiple attachments
-                # verify whether each attachment is unique
-                _attach = []
-                for attach in attachments:
-                    if attach["attachment_loc"] in _attach:
-                        continue
-                    else:
-                        _attach.append(attach["attachment_loc"])
-                        attach["ticket_id"] = ticket_id
-                        ticket_attach = TicketAttachment(**attach)
-                        db.session.add(ticket_attach)
-                db.session.commit()
-            except Exception as e:
-                logger.error(
-                    f"TicketAPI->post : Error occured while creating a Ticket Attachment : {e}"
-                )
-                # TODO: db rollback not added yet
-                raise InternalServerError(
-                    status_msg="Error occured while creating a Ticket Attachment"
-                )
-
-            try:
                 db.session.add(ticket)
                 db.session.commit()
             except Exception as e:
@@ -203,7 +252,35 @@ class TicketAPI(Resource):
                 )
             else:
                 logger.info("Ticket created successfully.")
-                raise Success_200(status_msg="Ticket created successfully.")
+
+                # add attachments now
+                status, message = ticket_utils.save_ticket_attachments(
+                    attachments, ticket_id, user_id, operation="create_ticket"
+                )
+                raise Success_200(status_msg=f"Ticket created successfully. {message}")
+
+            # try:
+            #     # TODO : How to save attachments is not implemented
+            #     # while creating a ticket a student can upload multiple attachments
+            #     # verify whether each attachment is unique
+            #     _attach = []
+            #     for attach in attachments:
+            #         if attach["attachment_loc"] in _attach:
+            #             continue
+            #         else:
+            #             _attach.append(attach["attachment_loc"])
+            #             attach["ticket_id"] = ticket_id
+            #             ticket_attach = TicketAttachment(**attach)
+            #             db.session.add(ticket_attach)
+            #     db.session.commit()
+            # except Exception as e:
+            #     logger.error(
+            #         f"TicketAPI->post : Error occured while creating a Ticket Attachment : {e}"
+            #     )
+            #     # TODO: db rollback not added yet
+            #     raise InternalServerError(
+            #         status_msg="Error occured while creating a Ticket Attachment"
+            #     )
 
     @token_required
     @users_required(users=["student", "support"])
@@ -423,20 +500,14 @@ class AllTicketsAPI(Resource):
         """
         Usage
         -----
-        Get all tickets.
-        Url will contain a query and based on user role and query, tickets will
-        be retrieved -> filtered -> sorted -> then returned
+        Get all tickets based on query and user role.
+        Sorting and filtering will be applied as per query.
 
         Student needs all tickets while searching and needs all their tickets (created and upvoted)
         Support needs pending tickets while resolving and needs all their resolved tickets
         Admin needs resolved tickets while creating FAQ
 
-        - How it works:
-
-        >>> params = {"query":"query", "filter":["tag_1", "tag_2"], "sortby":["a", "b"], "sortdir":["asc", "desc"], "status":"all", "priority":"all"}
-        >>> resp = requests.get(url, params=params)
-        >>> resp.url
-        'https://BASE/api/v1/all-tickets?query=query&filter=tag_1&filter=tag_2&sortby=a&sortby=b&sortdir=asc&sortdir=desc&ticket_type=all....'
+        query sample: query=rgg&filter_priority=medium%2Clow&filter_status=pending&sortby=resolved_on&sortdir=
 
         Ticket status will be:
         - all : get all tickets from db (for student while searching)
@@ -448,7 +519,6 @@ class AllTicketsAPI(Resource):
 
         If query is empty then get all tickets (created/upvoted by student or resolved by  support) where role will be checked from user_id
 
-
         Parameters
         ----------
         query
@@ -457,33 +527,30 @@ class AllTicketsAPI(Resource):
         -------
         List of tickets
         """
-        # TODO : This API endpoint is working but not efficient. Can be updated later.
 
-        def convert_arg_to_string(arg: str):
-            # for internal use only, where arg is supposted to be a string
-            # but is converted to list due to 'flat=False'
-            arg = args.get(arg, [])
-            if arg == []:
-                return ""
+        def convert_arg_to_list(arg: str):
+            # for internal use only
+            arg = args.get(arg, "")
+            if arg == "":
+                return []
             else:
-                return arg[0]
+                return arg.split(",")
 
         # get query arguments
         try:
-            args = request.args.to_dict(
-                flat=False
-            )  # flat true returns only first items
+            args = request.args.to_dict(flat=True)
             print(f"All Tickets : args : {args}")
             logger.debug(f"All Tickets : args : {args}")
 
-            query = convert_arg_to_string("query")
-            status = convert_arg_to_string("status")
-            priority = convert_arg_to_string("priority")
-            filter = args.get("filter", [])
-            sortby = args.get("sortby", [])
-            sortdir = args.get("sortdir", [])
+            query = args.get("query", "")
+            status = convert_arg_to_list("filter_status")
+            priority = convert_arg_to_list("filter_priority")
+            tags = convert_arg_to_list("filter_tags")
+            sortby = args.get("sortby", "")
+            sortdir = args.get("sortdir", "")
 
             user_id = request.headers.get("user_id", "")
+            print(f'User id: {user_id}')
 
         except Exception as e:
             logger.error(f"AllTickets->get : Error occured while resolving query : {e}")
@@ -512,6 +579,8 @@ class AllTicketsAPI(Resource):
                 tick = ticket_utils.convert_ticket_to_dict(ticket)
                 all_tickets.append(tick)
 
+            print(f'Student search query - All tickets found : {len(all_tickets)}')
+
             # match tickets with query
             all_tickets_1 = []
             for ticket in all_tickets:
@@ -525,31 +594,62 @@ class AllTicketsAPI(Resource):
 
             all_tickets = deepcopy(all_tickets_1)
 
-            # filter by tags only (if present)
+            print(f'Student search query - query tickets found : {len(all_tickets)}')
+
+            # filter by tags (if present)
             all_tickets_1 = []
-            if filter:
+            if tags:
                 for ticket in all_tickets:
-                    tags = [ticket["tag_1"], ticket["tag_2"], ticket["tag_3"]]
-                    if set(tags).intersection(set(filter)):
+                    ticket_tags = [ticket["tag_1"], ticket["tag_2"], ticket["tag_3"]]
+                    if set(ticket_tags).intersection(set(tags)):
                         all_tickets_1.append(ticket)
 
-            all_tickets = deepcopy(all_tickets_1)
+                all_tickets = deepcopy(all_tickets_1)
+
+            print(f'Student search query - tags tickets found : {len(all_tickets)}')
+
+            # filter by status (if present)
+            all_tickets_1 = []
+            if status:
+                for ticket in all_tickets:
+                    if ticket["status"] in status:
+                        all_tickets_1.append(ticket)
+
+                all_tickets = deepcopy(all_tickets_1)
+
+            print(f'Student search query - status tickets found : {len(all_tickets)}')
+
+            # filter by priority (if present)
+            all_tickets_1 = []
+            if priority:
+                for ticket in all_tickets:
+                    if ticket["priority"] in priority:
+                        all_tickets_1.append(ticket)
+
+                all_tickets = deepcopy(all_tickets_1)
+
+            print(f'Student search query - priority tickets found : {len(all_tickets)}')
 
             # sort (if present)
-            # TODO : Currently sorting is done by only one element. Multisort is disabled
-            if (
-                (len(sortby) >= 1)
-                and (len(sortdir) >= 1)
-                and (len(sortby) == len(sortdir))
-            ):
+            if sortby:
                 # sortby should be 'created_on', 'resolved_on', 'votes'
                 if sortby not in ["created_on", "resolved_on", "votes"]:
                     sortby = "created_on"
                 # sortdir should be 'asc' or 'desc'
                 sortdir = True if sortdir == "desc" else False
-                all_tickets = sorted(
-                    all_tickets, key=lambda d: d[sortby], reverse=sortdir
-                )
+
+                is_sorting_valid = False
+                for ticket in all_tickets:
+                    if ticket["status"] == sortby: 
+                        is_sorting_valid = True
+                        break
+                
+                if is_sorting_valid:
+                    all_tickets = sorted(
+                        all_tickets, key=lambda d: d[sortby], reverse=sortdir
+                    )
+
+            print(f'Student search query - final sortby tickets found : {len(all_tickets)}')
 
             return success_200_custom(data=all_tickets)
 
@@ -583,7 +683,7 @@ class AllTicketsAPI(Resource):
                 # get all pending tickets
                 # status, priority, sort, filter will be as per filter options received
 
-                if status == "resolved":
+                if "resolved" in status:
                     # get all tickets resolved by the support staff
                     user_tickets = Ticket.query.filter_by(
                         resolved_by=user.user_id
@@ -592,7 +692,7 @@ class AllTicketsAPI(Resource):
                         tick = ticket_utils.convert_ticket_to_dict(ticket)
                         all_tickets.append(tick)
 
-                if status == "pending":
+                if "pending" in status:
                     # get all pending tickets
                     user_tickets = Ticket.query.filter_by(status="pending").all()
                     for ticket in user_tickets:
@@ -609,51 +709,62 @@ class AllTicketsAPI(Resource):
                     tick = ticket_utils.convert_ticket_to_dict(ticket)
                     all_tickets.append(tick)
 
-            # check priority (if present)
-            # priority : ['all', 'low', 'medium', 'high']
+            
+            # filter by tags (if present)
             all_tickets_1 = []
-            if priority and priority in ["low", "medium", "high"]:
+            if tags:
                 for ticket in all_tickets:
-                    if ticket["priority"] == priority:
+                    ticket_tags = [ticket["tag_1"], ticket["tag_2"], ticket["tag_3"]]
+                    if set(ticket_tags).intersection(set(tags)):
                         all_tickets_1.append(ticket)
 
-            all_tickets = deepcopy(all_tickets_1)
+                all_tickets = deepcopy(all_tickets_1)
 
-            # check status (if present)
-            # status : ['all', 'pending', 'resolved']
+            print(f'All tickets - tags tickets found : {len(all_tickets)}')
+
+            # filter by status (if present)
             all_tickets_1 = []
-            if status and status in ["pending", "resolved"] and (role == "student"):
+            if status:
                 for ticket in all_tickets:
-                    if ticket["status"] == status:
+                    if ticket["status"] in status:
                         all_tickets_1.append(ticket)
 
-            all_tickets = deepcopy(all_tickets_1)
+                all_tickets = deepcopy(all_tickets_1)
 
-            # filter by tags only (if present)
+            print(f'All tickets  - status tickets found : {len(all_tickets)}')
+
+            # filter by priority (if present)
             all_tickets_1 = []
-            if filter:
+            if priority:
                 for ticket in all_tickets:
-                    tags = [ticket["tag_1"], ticket["tag_2"], ticket["tag_3"]]
-                    if set(tags).intersection(set(filter)):
+                    if ticket["priority"] in priority:
                         all_tickets_1.append(ticket)
 
-            all_tickets = deepcopy(all_tickets_1)
+                all_tickets = deepcopy(all_tickets_1)
 
+            print(f'All tickets  - priority tickets found : {len(all_tickets)}')
+
+            
             # sort (if present)
-            # TODO : Currently sorting is done by only one element. Multisort is disabled
-            if (
-                (len(sortby) >= 1)
-                and (len(sortdir) >= 1)
-                and (len(sortby) == len(sortdir))
-            ):
+            if sortby:
                 # sortby should be 'created_on', 'resolved_on', 'votes'
                 if sortby not in ["created_on", "resolved_on", "votes"]:
                     sortby = "created_on"
                 # sortdir should be 'asc' or 'desc'
                 sortdir = True if sortdir == "desc" else False
-                all_tickets = sorted(
-                    all_tickets, key=lambda d: d[sortby], reverse=sortdir
-                )
+                
+                is_sorting_valid = False
+                for ticket in all_tickets:
+                    if ticket["status"] == sortby: 
+                        is_sorting_valid = True
+                        break
+                
+                if is_sorting_valid:
+                    all_tickets = sorted(
+                        all_tickets, key=lambda d: d[sortby], reverse=sortdir
+                    )
+
+            print(f'All tickets - final sortby tickets found : {len(all_tickets)}')
 
             return success_200_custom(data=all_tickets)
 
@@ -666,3 +777,244 @@ ticket_api.add_resource(
 ticket_api.add_resource(AllTicketsAPI, "/all-tickets")
 
 # --------------------  END  --------------------
+
+# class AllTicketsAPI(Resource):
+#     @token_required
+#     @users_required(users=["student", "support", "admin"])
+#     def get(self):
+#         """
+#         Usage
+#         -----
+#         Get all tickets.
+#         Url will contain a query and based on user role and query, tickets will
+#         be retrieved -> filtered -> sorted -> then returned
+
+#         Student needs all tickets while searching and needs all their tickets (created and upvoted)
+#         Support needs pending tickets while resolving and needs all their resolved tickets
+#         Admin needs resolved tickets while creating FAQ
+
+#         - How it works:
+
+#         >>> params = {"query":"query", "filter":["tag_1", "tag_2"], "sortby":["a", "b"], "sortdir":["asc", "desc"], "status":"all", "priority":"all"}
+#         >>> resp = requests.get(url, params=params)
+#         >>> resp.url
+#         'https://BASE/api/v1/all-tickets?query=query&filter=tag_1&filter=tag_2&sortby=a&sortby=b&sortdir=asc&sortdir=desc&ticket_type=all....'
+
+#         Ticket status will be:
+#         - all : get all tickets from db (for student while searching)
+#         - pending: get all pending tickets from db (for support home page)
+#         - resolved: get all resolved tickets from db (for admin create faq page)
+
+#         Priority:
+#         all, low, medium, high
+
+#         If query is empty then get all tickets (created/upvoted by student or resolved by  support) where role will be checked from user_id
+
+
+#         Parameters
+#         ----------
+#         query
+
+#         Returns
+#         -------
+#         List of tickets
+#         """
+#         # TODO : This API endpoint is working but not efficient. Can be updated later.
+
+#         def convert_arg_to_string(arg: str):
+#             # for internal use only, where arg is supposted to be a string
+#             # but is converted to list due to 'flat=False'
+#             arg = args.get(arg, [])
+#             if arg == []:
+#                 return ""
+#             else:
+#                 return arg[0]
+
+#         # get query arguments
+#         try:
+#             args = request.args.to_dict(
+#                 flat=False
+#             )  # flat true returns only first items
+#             print(f"All Tickets : args : {args}")
+#             logger.debug(f"All Tickets : args : {args}")
+
+#             query = convert_arg_to_string("query")
+#             status = convert_arg_to_string("status")
+#             priority = convert_arg_to_string("priority")
+#             filter = args.get("filter", [])
+#             sortby = args.get("sortby", [])
+#             sortdir = args.get("sortdir", [])
+
+#             user_id = request.headers.get("user_id", "")
+
+#         except Exception as e:
+#             logger.error(f"AllTickets->get : Error occured while resolving query : {e}")
+#             raise InternalServerError
+
+#         user = Auth.query.filter_by(
+#             user_id=user_id
+#         ).first()  # user already exists as user_required verified it
+
+#         # TODO: Search and Filter/Sort is not efficient. Update it if required
+
+#         if query:
+#             # user is student and is searching tickets while creating a new ticket.
+
+#             all_tickets = []
+
+#             # verify is user is student
+#             if user.role != "student":
+#                 raise PermissionDenied(
+#                     status_msg="Only student can search tickets using query."
+#                 )
+
+#             # get all tickets
+#             tickets = Ticket.query.all()
+#             for ticket in tickets:
+#                 tick = ticket_utils.convert_ticket_to_dict(ticket)
+#                 all_tickets.append(tick)
+
+#             # match tickets with query
+#             all_tickets_1 = []
+#             for ticket in all_tickets:
+#                 search_in = (
+#                     f"{ticket['title']} {ticket['description']} {ticket['solution']}"
+#                 )
+#                 for q in query.split(" "):
+#                     if q.lower() in search_in.lower():
+#                         all_tickets_1.append(ticket)
+#                         break
+
+#             all_tickets = deepcopy(all_tickets_1)
+
+#             # filter by tags only (if present)
+#             all_tickets_1 = []
+#             if filter:
+#                 for ticket in all_tickets:
+#                     tags = [ticket["tag_1"], ticket["tag_2"], ticket["tag_3"]]
+#                     if set(tags).intersection(set(filter)):
+#                         all_tickets_1.append(ticket)
+
+#             all_tickets = deepcopy(all_tickets_1)
+
+#             # sort (if present)
+#             # TODO : Currently sorting is done by only one element. Multisort is disabled
+#             if (
+#                 (len(sortby) >= 1)
+#                 and (len(sortdir) >= 1)
+#                 and (len(sortby) == len(sortdir))
+#             ):
+#                 # sortby should be 'created_on', 'resolved_on', 'votes'
+#                 if sortby not in ["created_on", "resolved_on", "votes"]:
+#                     sortby = "created_on"
+#                 # sortdir should be 'asc' or 'desc'
+#                 sortdir = True if sortdir == "desc" else False
+#                 all_tickets = sorted(
+#                     all_tickets, key=lambda d: d[sortby], reverse=sortdir
+#                 )
+
+#             return success_200_custom(data=all_tickets)
+
+#         else:
+#             # query is not present so for the user_id provided, get all tickets
+
+#             all_tickets = []
+
+#             # verify user role
+#             role = user.role
+
+#             if role == "student":
+#                 # student : all tickets created or upvoted by him/her
+#                 # status, priority, sort, filter will be as per filter options received
+#                 upvoted_ticket_ids = TicketVote.query.filter_by(
+#                     user_id=user.user_id
+#                 ).all()
+#                 upvoted_ticket_ids = [elem.ticket_id for elem in upvoted_ticket_ids]
+#                 user_tickets = Ticket.query.filter_by(created_by=user.user_id).all()
+#                 for ticket in user_tickets:
+#                     tick = ticket_utils.convert_ticket_to_dict(ticket)
+#                     all_tickets.append(tick)
+#                 for ticket_id in upvoted_ticket_ids:
+#                     ticket = Ticket.query.filter_by(ticket_id=ticket_id).first()
+#                     tick = ticket_utils.convert_ticket_to_dict(ticket)
+#                     all_tickets.append(tick)
+#                 # upvoted ticket can be checked by comparing created_by with user_id
+
+#             if role == "support":
+#                 # support : all tickets resolvedby him/her
+#                 # get all pending tickets
+#                 # status, priority, sort, filter will be as per filter options received
+
+#                 if status == "resolved":
+#                     # get all tickets resolved by the support staff
+#                     user_tickets = Ticket.query.filter_by(
+#                         resolved_by=user.user_id
+#                     ).all()
+#                     for ticket in user_tickets:
+#                         tick = ticket_utils.convert_ticket_to_dict(ticket)
+#                         all_tickets.append(tick)
+
+#                 if status == "pending":
+#                     # get all pending tickets
+#                     user_tickets = Ticket.query.filter_by(status="pending").all()
+#                     for ticket in user_tickets:
+#                         tick = ticket_utils.convert_ticket_to_dict(ticket)
+#                         all_tickets.append(tick)
+
+#             if role == "admin":
+#                 # admin : all tickets resolved
+#                 # status, priority, sort, filter will be as per filter options received
+
+#                 # get all tickets resolved globally (for creating faq)
+#                 user_tickets = Ticket.query.filter_by(status="resolved").all()
+#                 for ticket in user_tickets:
+#                     tick = ticket_utils.convert_ticket_to_dict(ticket)
+#                     all_tickets.append(tick)
+
+#             # check priority (if present)
+#             # priority : ['all', 'low', 'medium', 'high']
+#             all_tickets_1 = []
+#             if priority and priority in ["low", "medium", "high"]:
+#                 for ticket in all_tickets:
+#                     if ticket["priority"] == priority:
+#                         all_tickets_1.append(ticket)
+
+#             all_tickets = deepcopy(all_tickets_1)
+
+#             # check status (if present)
+#             # status : ['all', 'pending', 'resolved']
+#             all_tickets_1 = []
+#             if status and status in ["pending", "resolved"] and (role == "student"):
+#                 for ticket in all_tickets:
+#                     if ticket["status"] == status:
+#                         all_tickets_1.append(ticket)
+
+#             all_tickets = deepcopy(all_tickets_1)
+
+#             # filter by tags only (if present)
+#             all_tickets_1 = []
+#             if filter:
+#                 for ticket in all_tickets:
+#                     tags = [ticket["tag_1"], ticket["tag_2"], ticket["tag_3"]]
+#                     if set(tags).intersection(set(filter)):
+#                         all_tickets_1.append(ticket)
+
+#             all_tickets = deepcopy(all_tickets_1)
+
+#             # sort (if present)
+#             # TODO : Currently sorting is done by only one element. Multisort is disabled
+#             if (
+#                 (len(sortby) >= 1)
+#                 and (len(sortdir) >= 1)
+#                 and (len(sortby) == len(sortdir))
+#             ):
+#                 # sortby should be 'created_on', 'resolved_on', 'votes'
+#                 if sortby not in ["created_on", "resolved_on", "votes"]:
+#                     sortby = "created_on"
+#                 # sortdir should be 'asc' or 'desc'
+#                 sortdir = True if sortdir == "desc" else False
+#                 all_tickets = sorted(
+#                     all_tickets, key=lambda d: d[sortby], reverse=sortdir
+#                 )
+
+#             return success_200_custom(data=all_tickets)

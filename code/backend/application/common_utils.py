@@ -10,6 +10,8 @@ from flask import request
 from application.responses import *
 from application.logger import logger
 from application.models import Auth
+from application.globals import *
+import base64
 
 # --------------------  Code  --------------------
 
@@ -100,6 +102,68 @@ def users_required(users):
         return decorated
 
     return decorator
+
+
+def is_img_path_valid(img_path:str)->str:
+    if os.path.isfile(img_path):
+        if img_path.endswith(tuple(ACCEPTED_IMAGE_EXTENSIONS)):
+            return True
+        else:
+            logger.info('File extension is not valid')
+    else:
+        logger.info('File path is not valid')
+    return False
+
+def convert_img_to_base64(img_path:str)->str:
+    try:
+        with open(img_path, "rb") as img:
+            img_base64 = base64.b64encode(img.read())
+        return img_base64
+    except Exception as e:
+        resp = f'Unknown error occured while converting image to base64: {e}'
+        logger.error(resp)
+        print(resp)
+        return ""
+    
+def convert_base64_to_img(img_path:str, img_base64:str)->bool:
+    try:
+        with open(img_path, "wb") as img:
+            img.write(base64.b64decode(img_base64))
+        return True
+    except Exception as e:
+        resp = f'Unknown error occured while converting base64 to image: {e}'
+        logger.error(resp)
+        print(resp)
+        return False
+    
+def is_base64(string:str)->bool:
+    # check if string is base 64 encoded
+    try: 
+        decoded_string = base64.b64decode(string)
+        encoded_string = base64.b64encode(decoded_string)
+        # encoded_string is in bytes format
+        encoded_string = str(encoded_string, 'UTF-8')
+        if encoded_string == string:
+            return True
+        else: 
+            print(string[:50], encoded_string[:50])
+            print('String is not base64 encoded')
+            return False
+    except Exception as e:
+        logger.error('Error occured while checking string encode format: {e}')
+        return False
+    
+
+def get_encoded_file_details(file_base64:str):
+    # file type is whether its image or else
+    # file format is like jpeg, jpg, png
+    # encoded data is file encoding in base64
+    # sample: "data:image/jpeg;base64,/9....."
+
+    encoding_metadata, encoded_data = file_base64.split(',')[0:2]
+    encoding_metadata = encoding_metadata.split(';')[0].split(':')[1]
+    file_type, file_format = encoding_metadata.split('/')[:2]
+    return file_type, file_format, encoded_data
 
 
 # --------------------  END  --------------------

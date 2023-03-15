@@ -141,6 +141,7 @@ class Login(Resource):
                                 "user_id": user_id,
                                 "web_token": web_token,
                                 "token_expiry_on": token_expiry_on,
+                                "role": user.role,
                             }
                         )
 
@@ -170,6 +171,7 @@ class Register(Resource):
         form data sent with request
         data format {'first_name':'', 'last_name':'', 'email':'',
                     'password':'', 'retype_password':'', 'role':''}
+        'last_name' is optional
 
         Returns
         -------
@@ -189,18 +191,19 @@ class Register(Resource):
         # get form data
         try:
             form = request.get_json()
-            for key in details:
-                value = form.get(key, "")
-                details[key] = value
-                if auth_utils.is_blank(value):
-                    raise BadRequest(status_msg=f"{key} is empty or invalid")
-            details["operation"] = "register"
         except Exception as e:
             logger.error(
                 f"Register->post : Error occured while getting form data : {e}"
             )
             raise InternalServerError
         else:
+            for key in details:
+                value = form.get(key, "")
+                details[key] = value
+                if auth_utils.is_blank(value) and key != 'last_name':
+                    raise BadRequest(status_msg=f"{key} is empty or invalid")
+            details["operation"] = "register"
+
             # verify registration form data
             if auth_utils.verify_register_form(details):
                 # check if user exists

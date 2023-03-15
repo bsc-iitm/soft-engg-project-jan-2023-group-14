@@ -19,8 +19,12 @@ class UserUtils:
         return not (bool(string and not string.isspace()))
 
     def is_email_valid(self, email):
-        regex = "^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$"
-        return re.search(regex, email)
+        is_valid = False
+        # regex = "^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$"
+        # is_valid = re.search(regex, email)
+        if '@' in email:
+            is_valid = True
+        return is_valid
 
     def is_password_valid(self, password):
         valid = list("abcdefghijklmnopqrstuvwxyz0123456789")
@@ -68,6 +72,7 @@ class UserUtils:
         return boolean status
 
         """
+        print(details)
         # verify email
         if not self.is_email_valid(details["email"]):
             return False

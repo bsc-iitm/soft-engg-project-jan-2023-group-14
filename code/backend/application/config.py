@@ -30,7 +30,7 @@ class TestingConfig(Config):
 class DevelopmentConfig(Config):
     db_path = os.path.join(BACKEND_ROOT_PATH, "databases", "supportTicketDB_Dev.sqlite3")
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + db_path + '?charset=utf8'
-    SQLALCHEMY_ECHO = True # for sqlalchemy debug queries
+    # SQLALCHEMY_ECHO = True # for sqlalchemy debug queries
     SECRET_KEY = 'secretKey'
     DEBUG = True
 

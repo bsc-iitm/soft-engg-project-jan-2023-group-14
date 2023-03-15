@@ -1,6 +1,6 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div >
+    <h1>This is an Support page</h1>
 
     <b-card
       title="Card Title"
@@ -23,18 +23,11 @@
 
 <script>
 export default {
+  name: "SupportView",
   components: {},
   data() {
     return {
-      formData: {
-        market: "",
-      },
-      formInput: {
-        marketOptions: [
-          { text: "BSE", value: "BSE" },
-          { text: "NSE", value: "NSE" },
-        ],
-      },
+      
     };
   },
   mounted() {},
@@ -44,21 +37,5 @@ export default {
 </script>
 
 <style scoped>
-#bs_container {
-  max-width: 95%;
-}
 
-.filter-col {
-  background-color: #f5f3f3;
-  border-radius: 15px;
-  padding-bottom: 10px;
-  padding-left: 5px;
-  padding-right: 5px;
-  background-clip: content-box;
-  height: 100px;
-}
-
-#market {
-  padding-bottom: 10px;
-}
 </style>
