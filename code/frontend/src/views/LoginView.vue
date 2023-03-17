@@ -6,7 +6,7 @@
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
         <b-form-group
           ><b-form-input
-            id="input-email"
+            id="input-email-login"
             v-model="form.email"
             type="email"
             placeholder="Enter email"
@@ -16,7 +16,7 @@
 
         <b-form-group
           ><b-form-input
-            id="input-password"
+            id="input-password-login"
             v-model="form.password"
             placeholder="Enter password"
             type="password"
@@ -28,16 +28,15 @@
         <b-button style="margin: 10px" type="reset" variant="danger">Reset</b-button>
       </b-form>
       <br />
-      
-       <p>New user? Please <b-link href="/register">Register here</b-link> </p>
-       <p>Go to <b-link href="/home">Home Page</b-link> </p>
+
+      <p>New user? Please <b-link href="/register">Register here</b-link></p>
+      <p>Go to <b-link href="/home">Home Page</b-link></p>
     </div>
   </div>
 </template>
 
 <script>
 import * as common from "../assets/common.js";
-// import TicketCard from "../components/TicketCard.vue";
 
 export default {
   name: "LoginView",
@@ -96,7 +95,6 @@ export default {
       event.preventDefault();
       this.form.email = "";
       this.form.password = "";
-      // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
         this.show = true;
@@ -107,6 +105,7 @@ export default {
 </script>
 
 <style>
+/* Extra styling is under process. Rest is functioning. */
 /* .login-div {
    margin-top: 5%; 
   margin-left: 10%; 
@@ -117,7 +116,6 @@ export default {
   background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
 
 } */
-
 /*
 .login-form {
    box-shadow: 2px 4px 5px 5px #dbdada; 

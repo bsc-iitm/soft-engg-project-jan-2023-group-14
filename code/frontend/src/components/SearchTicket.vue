@@ -76,7 +76,7 @@
     <!-- show results here -->
 
     <h3 style="text-align: center">Results</h3>
-    <div style="height: 500px; overflow: auto; padding: 3px">
+    <div style="height: 500px; overflow: auto; padding: 10px">
       <div v-for="ticket in ticket_card_details" :key="ticket.ticket_id">
         <TicketCard
           :ticket_id="ticket.ticket_id"
@@ -198,7 +198,7 @@ export default {
       console.log("params: ", params);
 
       // console.log(JSON.stringify(this.form));
-      fetch(common.TICKET_API_ALLTICKETS  + "?" + params, {
+      fetch(this.search_url  + "?" + params, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

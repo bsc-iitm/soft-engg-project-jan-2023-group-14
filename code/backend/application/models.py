@@ -20,7 +20,7 @@ class Auth(db.Model):
     is_verified = db.Column(db.Boolean, default=False, nullable=False)
     is_logged = db.Column(db.Boolean, default=False, nullable=False)
     token_created_on = db.Column(
-        db.Integer, nullable=True
+        db.Integer, nullable=True, default=0
     )  # time is stored as a timestamp
     token_expiry_on = db.Column(db.Integer, nullable=True)
     first_name = db.Column(db.String, nullable=False)
@@ -56,9 +56,9 @@ class Ticket(db.Model):
         db.Integer, nullable=False, default=0
     )  # creater can't vote, 1 vote/student
     created_by = db.Column(db.String, nullable=False)
-    created_on = db.Column(db.Integer, nullable=False)  # time is stored as a timestamp
+    created_on = db.Column(db.Integer, nullable=False, default=0)  # time is stored as a timestamp
     resolved_by = db.Column(db.String, nullable=True)
-    resolved_on = db.Column(db.Integer, nullable=True)  # time is stored as a timestamp
+    resolved_on = db.Column(db.Integer, nullable=True, default=0)  # time is stored as a timestamp
 
     def __repr__(self):
         return f"Ticket object for: {self.ticket_id} | {self.title}"

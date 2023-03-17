@@ -8,6 +8,7 @@
 
 from flask import Blueprint
 from flask_restful import Api, Resource, url_for
+from application.responses import *
 
 # --------------------  Code  --------------------
 
@@ -20,7 +21,7 @@ def index():
 
 class StudentAPI(Resource):
     def get(self):
-        return {'task': 'Say "Hello, World!" on Student API'}
+        raise Success_200
 
 student_api.add_resource(StudentAPI, '/') # path is /api/v1/student
 

@@ -4,16 +4,17 @@ import LoginView from '../views/LoginView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import store from '../store';
 import * as common from "../assets/common.js";
-// import TicketForm from '../components/TicketForm.vue';
-// import SearchTicket from '../components/SearchTicket.vue';
 import StudentHome from '../views/StudentHome.vue';
 import StudentCreateTicket from '../views/StudentCreateTicket.vue';
 import StudentMyTickets from '../views/StudentMyTickets.vue';
 import CommonFAQs from '../views/CommonFAQs.vue';
-// import StudentView from '../views/StudentView.vue';
-// import SupportView from '../views/SupportView.vue';
-// import AdminView from '../views/AdminView.vue';
+import SupportHome from '../views/SupportHome.vue';
+import SupportMyTickets from '../views/SupportMyTickets.vue';
+import AdminHome from '../views/AdminHome.vue';
+import AdminCreateFAQ from '../views/AdminCreateFAQ.vue';
+import AdminValidateUsers from '../views/AdminValidateUsers.vue';
 import AppHomeView from '../views/AppHomeView.vue';
+import UserProfile from '../views/UserProfile.vue';
 
 Vue.use(VueRouter);
 
@@ -28,7 +29,6 @@ const routes = [
     path: '/login',
     name: 'LoginView',
     component: LoginView,
-    // alias: '/',
   },
   {
     path: '/register',
@@ -54,6 +54,36 @@ const routes = [
     path: '/common-faqs',
     name: 'CommonFAQs',
     component: CommonFAQs,
+  },
+  {
+    path: '/user-profile',
+    name: 'UserProfile',
+    component: UserProfile,
+  },
+  {
+    path: '/support-home',
+    name: 'SupportHome',
+    component: SupportHome,
+  },
+  {
+    path: '/support-my-tickets',
+    name: 'SupportMyTickets',
+    component: SupportMyTickets,
+  },
+  {
+    path: '/admin-home',
+    name: 'AdminHome',
+    component: AdminHome,
+  },
+  {
+    path: '/admin-validate-users',
+    name: 'AdminValidateUsers',
+    component: AdminValidateUsers,
+  },
+  {
+    path: '/admin-create-faq',
+    name: 'AdminCreateFAQ',
+    component: AdminCreateFAQ,
   },
   {
     path: '*',
@@ -85,15 +115,25 @@ router.beforeEach((to, from, next) => {
   if (authRequired && logged_status) {
     const role = store.state.user.role;
 
-    let accesing = "";
-    if (common.STUDENT_ROUTES.includes(to.path)) { accesing = "student" }
-    if (common.SUPPORT_ROUTES.includes(to.path)) { accesing = "support" }
-    if (common.ADMIN_ROUTES.includes(to.path)) { accesing = "admin" }
-    console.log('Checking role: ', role, to.path, accesing);
-    if (role != accesing) {
+    // let accesing = "";
+    if (((role === 'student') && (common.STUDENT_ROUTES.includes(to.path)))
+      || ((role === 'support') && (common.SUPPORT_ROUTES.includes(to.path)))
+      || ((role === 'admin') && (common.ADMIN_ROUTES.includes(to.path)))) {
+      return next();
+    }
+    else {
       alert("You don't have access to this page.");
       return next(`/${role}-home`);
+
     }
+    // if (common.SUPPORT_ROUTES.includes(to.path)) { accesing = "support" }
+    // if (common.ADMIN_ROUTES.includes(to.path)) { accesing = "admin" }
+    // console.log('Checking role: ', role, to.path, accesing);
+    // console.log('student routes: ', common.STUDENT_ROUTES, to.path);
+    // if (role != accesing) {
+    //   alert("You don't have access to this page.");
+    //   return next(`/${role}-home`);
+    // }
   }
   next();
 })

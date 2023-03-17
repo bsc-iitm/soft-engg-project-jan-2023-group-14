@@ -23,14 +23,36 @@ const TICKET_API = `${BASEURL}${TICKET_API_PREFIX}`;
 const TICKET_API_ALLTICKETS = `${BASEURL}${TICKET_API_PREFIX}/all-tickets`
 
 
-const STUDENT_ROUTES = ['/student', '/student-home', "/student-create-ticket", "/student-my-tickets", "/common-faqs"]
-const SUPPORT_ROUTES = ['/support', '/support-home']
-const ADMIN_ROUTES = ['/admin', '/admin-home']
+const STUDENT_ROUTES = ['/student', '/student-home', "/student-create-ticket", "/student-my-tickets", "/common-faqs", "/user-profile"]
+const SUPPORT_ROUTES = ['/support', '/support-home', "/support-my-tickets", "/common-faqs", "/user-profile"]
+const ADMIN_ROUTES = ['/admin', '/admin-home', "/admin-create-faq", "/admin-validate-users", "/common-faqs", "/user-profile"]
 
+const STUDENT_NAV_BUTTONS = [
+  { id: 1, title: "Home", link: "/student-home", active: false },
+  { id: 2, title: "Create Ticket", link: "/student-create-ticket", active: false },
+  { id: 3, title: "My Tickets", link: "/student-my-tickets", active: false },
+  { id: 4, title: "FAQs", link: "/common-faqs", active: false },
+  { id: 5, title: "Logout", link: "#", active: false },
+]
+
+const SUPPORT_NAV_BUTTONS = [
+  { id: 1, title: "Home", link: "/support-home", active: false },
+  { id: 2, title: "My Tickets", link: "/support-my-tickets", active: false },
+  { id: 3, title: "FAQs", link: "/common-faqs", active: false },
+  { id: 4, title: "Logout", link: "#", active: false },
+]
+
+const ADMIN_NAV_BUTTONS = [
+  { id: 1, title: "Home", link: "/admin-home", active: false },
+  { id: 2, title: "Validate Users", link: "/admin-validate-users", active: false },
+  { id: 3, title: "Create FAQ", link: "/admin-create-faq", active: false },
+  { id: 4, title: "FAQs", link: "/common-faqs", active: false },
+  { id: 5, title: "Logout", link: "#", active: false },
+]
 
 export {
   AUTH_API_LOGIN,
-  AUTH_API_REGISTER, 
+  AUTH_API_REGISTER,
   AUTH_API_NEWUSERS,
   STUDENT_API_PREFIX,
   SUPPORT_API_PREFIX,
@@ -43,7 +65,10 @@ export {
   ADMIN_API,
   FAQ_API,
   TICKET_API,
-  STUDENT_ROUTES, 
-  SUPPORT_ROUTES, 
+  STUDENT_ROUTES,
+  SUPPORT_ROUTES,
   ADMIN_ROUTES,
+  STUDENT_NAV_BUTTONS,
+  SUPPORT_NAV_BUTTONS,
+  ADMIN_NAV_BUTTONS
 };

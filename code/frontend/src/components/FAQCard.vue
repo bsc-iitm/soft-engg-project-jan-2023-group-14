@@ -2,19 +2,20 @@
   <div>
     <b-container class="faq-card-container">
       <b-row class="row" @click="questionClicked">
-        <b-col class="col" cols="1" lg="1" sm="1" 
-          >
-          <b-button variant="info" 
-              
-                ><b-icon icon="question-octagon" font-scale="1.5"></b-icon
-        ></b-button>
-              </b-col>
+        <b-col class="col" cols="1" lg="1" sm="1">
+          <b-button variant="info">
+            <b-icon icon="question-octagon" font-scale="1.5"></b-icon>
+          </b-button>
+        </b-col>
         <b-col class="col" cols="11" lg="11" sm="11">{{ question }}</b-col>
       </b-row>
 
       <b-row class="row" v-show="show_answer" @click="questionClicked">
-        <b-col class="col" cols="1" lg="1" sm="1"
-          ><b><i>Solution:</i></b></b-col>
+        <b-col class="col" cols="1" lg="1" sm="1">
+          <b>
+            <i>Solution:</i>
+          </b>
+        </b-col>
         <b-col class="col" cols="11" lg="11" sm="11">{{ answer }}</b-col>
       </b-row>
     </b-container>
@@ -33,10 +34,10 @@ export default {
   },
   mounted() {},
   methods: {
-    questionClicked (){
+    questionClicked() {
       this.show_answer = !this.show_answer;
-      console.log('button clicked: ', this.show_answer);
-    }
+      console.log("button clicked: ", this.show_answer);
+    },
   },
   computed: {},
 };
