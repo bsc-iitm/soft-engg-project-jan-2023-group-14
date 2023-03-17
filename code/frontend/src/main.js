@@ -1,4 +1,4 @@
-import { BootstrapVue, BootstrapVueIcons, FormFilePlugin } from 'bootstrap-vue';
+import { BootstrapVue, BootstrapVueIcons, FormFilePlugin, ImagePlugin } from 'bootstrap-vue';
 
 
 import VueLogger from 'vuejs-logger';
@@ -27,7 +27,8 @@ const options = {
 Vue.use(VueLogger, options); // logLevels:['debug', 'info', 'warn', 'error', 'fatal']
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
-Vue.use(FormFilePlugin)
+Vue.use(FormFilePlugin);
+Vue.use(ImagePlugin);
 
 Vue.use(FlashMessage, {
   name: "flashMessage",

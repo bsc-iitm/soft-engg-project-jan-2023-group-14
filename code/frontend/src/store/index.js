@@ -11,7 +11,7 @@ export default new Vuex.Store({
       first_name: "",
       last_name: "",
       email: "",
-      profile_pic: "",
+      profile_photo_loc: "",
     },
     web_token: "",
     token_expiry_on: 0,
@@ -26,6 +26,9 @@ export default new Vuex.Store({
     },
     get_user_role: function (state) {
       return state.user.role
+    },
+    get_user_profile_pic: function (state) {
+      return state.user.profile_photo_loc
     },
     get_web_token: function (state) {
       return state.web_token
@@ -49,18 +52,27 @@ export default new Vuex.Store({
         );
       }
     },
+
     SET_STATE_AFTER_LOGIN(state, payload){
+      state.user.first_name = payload.first_name ;
+      state.user.last_name = payload.last_name ;
+      state.user.email = payload.email ;
       state.user.user_id = payload.user_id;
       state.user.role = payload.role;
       state.web_token = payload.web_token;
       state.token_expiry_on = payload.token_expiry_on;
+      state.user.profile_photo_loc = payload.profile_photo_loc;
       state.logged_status = true;
     },
     SET_STATE_AFTER_LOGOUT(state, payload){
+      state.user.first_name = "" ;
+      state.user.last_name = "" ;
+      state.user.email = "" ;
       state.user.user_id = "";
       state.user.role = "";
       state.web_token = "";
       state.token_expiry_on = 0;
+      state.user.profile_photo_loc = "";
       state.logged_status = false;
     }
   },

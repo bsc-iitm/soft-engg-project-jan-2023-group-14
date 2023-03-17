@@ -125,6 +125,137 @@ class TicketUtils(UserUtils):
             f"Total {num_successful_attachments} / {total_attachments} attchements are valid and added successfully.",
         )
 
+    def tickets_filter_by_query(self, all_tickets, query=""):
+        # match tickets with query
+        filtered_tickets = []
+        if query:
+            for ticket in all_tickets:
+                search_in = (
+                    f"{ticket['title']} {ticket['description']} {ticket['solution']}"
+                )
+                for q in query.split(" "):
+                    if q.lower() in search_in.lower():
+                        filtered_tickets.append(ticket)
+                        break
+            logger.debug(
+                f"Length after tickets_filter_by_query : {len(filtered_tickets)}"
+            )
+            return filtered_tickets
+        else:
+            filtered_tickets = deepcopy(all_tickets)
+            logger.debug(
+                f"Length after tickets_filter_by_query : {len(filtered_tickets)}"
+            )
+            return filtered_tickets
+
+    def tickets_filter_by_tags(self, all_tickets, tags=[]):
+        # filter by tags (if present)
+        filtered_tickets = []
+        if tags:
+            for ticket in all_tickets:
+                ticket_tags = [ticket["tag_1"], ticket["tag_2"], ticket["tag_3"]]
+                if set(ticket_tags).intersection(set(tags)):
+                    filtered_tickets.append(ticket)
+            logger.debug(
+                f"Length after tickets_filter_by_tags : {len(filtered_tickets)}"
+            )
+            return filtered_tickets
+        else:
+            filtered_tickets = deepcopy(all_tickets)
+            logger.debug(
+                f"Length after tickets_filter_by_tags : {len(filtered_tickets)}"
+            )
+            return filtered_tickets
+
+    def tickets_filter_by_status(self, all_tickets, status=[]):
+        # filter by status (if present)
+        filtered_tickets = []
+        if status:
+            for ticket in all_tickets:
+                if ticket["status"] in status:
+                    filtered_tickets.append(ticket)
+            logger.debug(
+                f"Length after tickets_filter_by_status : {len(filtered_tickets)}"
+            )
+            return filtered_tickets
+        else:
+            filtered_tickets = deepcopy(all_tickets)
+            logger.debug(
+                f"Length after tickets_filter_by_status : {len(filtered_tickets)}"
+            )
+            return filtered_tickets
+
+    def tickets_filter_by_priority(self, all_tickets, priority=[]):
+        # filter by priority (if present)
+        filtered_tickets = []
+        if priority:
+            for ticket in all_tickets:
+                if ticket["priority"] in priority:
+                    filtered_tickets.append(ticket)
+            logger.debug(
+                f"Length after tickets_filter_by_priority : {len(filtered_tickets)}"
+            )
+            return filtered_tickets
+        else:
+            filtered_tickets = deepcopy(all_tickets)
+            logger.debug(
+                f"Length after tickets_filter_by_priority : {len(filtered_tickets)}"
+            )
+            return filtered_tickets
+
+    def tickets_sort(self, all_tickets, sortby="", sortdir=""):
+        # sort (if present)
+        if sortby:
+            # sortby should be 'created_on', 'resolved_on', 'votes'
+            if sortby not in ["created_on", "resolved_on", "votes"]:
+                sortby = "created_on"
+        else:
+            return all_tickets
+        if sortdir:
+            # sortdir should be 'asc' or 'desc'
+            sortdir = True if sortdir == "desc" else False
+        else:
+            sortdir = True
+        all_tickets = sorted(all_tickets, key=lambda d: d[sortby], reverse=sortdir)
+        return all_tickets
+
+    def tickets_filter_sort(self, all_tickets, args):
+        # match tickets with query
+        all_tickets = self.tickets_filter_by_query(all_tickets, args["query"])
+
+        # filter by tags (if present)
+        all_tickets = self.tickets_filter_by_tags(all_tickets, args["tags"])
+
+        # filter by status (if present)
+        all_tickets = self.tickets_filter_by_status(all_tickets, args["status"])
+
+        # filter by priority (if present)
+        all_tickets = self.tickets_filter_by_priority(all_tickets, args["priority"])
+
+        # sort (if present)
+        all_tickets = self.tickets_sort(all_tickets, args["sortby"], args["sortdir"])
+
+        return all_tickets
+
+    def get_args_from_query(self, args):
+        def convert_arg_to_list(arg: str):
+            # for internal use only
+            arg = args.get(arg, "")
+            if arg == "":
+                return []
+            else:
+                return arg.split(",")
+
+        _args = {}
+        _args["query"] = args.get("query", "")
+        _args["sortby"] = args.get("sortby", "")
+        _args["sortdir"] = args.get("sortdir", "")
+        _args["status"] = convert_arg_to_list("filter_status")
+        _args["priority"] = convert_arg_to_list("filter_priority")
+        _args["tags"] = convert_arg_to_list("filter_tags")
+
+        return _args
+
 
 ticket_bp = Blueprint("ticket_bp", __name__)
 ticket_api = Api(ticket_bp)
@@ -502,22 +633,9 @@ class AllTicketsAPI(Resource):
         -----
         Get all tickets based on query and user role.
         Sorting and filtering will be applied as per query.
-
         Student needs all tickets while searching and needs all their tickets (created and upvoted)
         Support needs pending tickets while resolving and needs all their resolved tickets
         Admin needs resolved tickets while creating FAQ
-
-        query sample: query=rgg&filter_priority=medium%2Clow&filter_status=pending&sortby=resolved_on&sortdir=
-
-        Ticket status will be:
-        - all : get all tickets from db (for student while searching)
-        - pending: get all pending tickets from db (for support home page)
-        - resolved: get all resolved tickets from db (for admin create faq page)
-
-        Priority:
-        all, low, medium, high
-
-        If query is empty then get all tickets (created/upvoted by student or resolved by  support) where role will be checked from user_id
 
         Parameters
         ----------
@@ -528,245 +646,110 @@ class AllTicketsAPI(Resource):
         List of tickets
         """
 
-        def convert_arg_to_list(arg: str):
-            # for internal use only
-            arg = args.get(arg, "")
-            if arg == "":
-                return []
-            else:
-                return arg.split(",")
-
+        # user is student and is searching tickets while creating a new ticket.
         # get query arguments
         try:
             args = request.args.to_dict(flat=True)
-            print(f"All Tickets : args : {args}")
             logger.debug(f"All Tickets : args : {args}")
-
-            query = args.get("query", "")
-            status = convert_arg_to_list("filter_status")
-            priority = convert_arg_to_list("filter_priority")
-            tags = convert_arg_to_list("filter_tags")
-            sortby = args.get("sortby", "")
-            sortdir = args.get("sortdir", "")
-
+            args = ticket_utils.get_args_from_query(args)
             user_id = request.headers.get("user_id", "")
-            print(f'User id: {user_id}')
-
         except Exception as e:
             logger.error(f"AllTickets->get : Error occured while resolving query : {e}")
             raise InternalServerError
-
         user = Auth.query.filter_by(
             user_id=user_id
         ).first()  # user already exists as user_required verified it
 
-        # TODO: Search and Filter/Sort is not efficient. Update it if required
+        # verify is user is student
+        if user.role != "student":
+            raise PermissionDenied(
+                status_msg="Only student can search all tickets using query."
+            )
 
-        if query:
-            # user is student and is searching tickets while creating a new ticket.
+        all_tickets = []
 
-            all_tickets = []
+        # get all tickets
+        tickets = Ticket.query.all()
+        for ticket in tickets:
+            tick = ticket_utils.convert_ticket_to_dict(ticket)
+            all_tickets.append(tick)
 
-            # verify is user is student
-            if user.role != "student":
-                raise PermissionDenied(
-                    status_msg="Only student can search tickets using query."
-                )
+        logger.debug(f"All tickets found : {len(all_tickets)}")
 
-            # get all tickets
-            tickets = Ticket.query.all()
-            for ticket in tickets:
+        all_tickets = ticket_utils.tickets_filter_sort(all_tickets, args)
+
+        return success_200_custom(data=all_tickets)
+
+
+class AllTicketsUserAPI(Resource):
+    @token_required
+    @users_required(users=["student", "support", "admin"])
+    def get(self, user_id=""):
+        # tickets retrieved based on user role.
+
+        if ticket_utils.is_blank(user_id):
+            raise BadRequest(status_msg="User id is missing.")
+
+        # get query arguments
+        try:
+            args = request.args.to_dict(flat=True)
+            logger.debug(f"All Tickets : args : {args}")
+            args = ticket_utils.get_args_from_query(args)
+        except Exception as e:
+            logger.error(f"AllTickets->get : Error occured while resolving query : {e}")
+            raise InternalServerError
+        user = Auth.query.filter_by(
+            user_id=user_id
+        ).first()  # user already exists as user_required verified it
+
+        all_tickets = []
+
+        # verify user role
+        role = user.role
+
+        if role == "student":
+            # student : all tickets created or upvoted by him/her
+            # status, priority, sort, filter will be as per filter options received
+            # upvoted ticket can be checked by comparing created_by with user_id
+            upvoted_ticket_ids = TicketVote.query.filter_by(user_id=user.user_id).all()
+            upvoted_ticket_ids = [elem.ticket_id for elem in upvoted_ticket_ids]
+            user_tickets = Ticket.query.filter_by(created_by=user.user_id).all()
+            for ticket in user_tickets:
+                tick = ticket_utils.convert_ticket_to_dict(ticket)
+                all_tickets.append(tick)
+            for ticket_id in upvoted_ticket_ids:
+                ticket = Ticket.query.filter_by(ticket_id=ticket_id).first()
                 tick = ticket_utils.convert_ticket_to_dict(ticket)
                 all_tickets.append(tick)
 
-            print(f'Student search query - All tickets found : {len(all_tickets)}')
+        if role == "support":
+            # support : all tickets resolvedby him/her
+            # get all pending tickets
+            # status, priority, sort, filter will be as per filter options received
 
-            # match tickets with query
-            all_tickets_1 = []
-            for ticket in all_tickets:
-                search_in = (
-                    f"{ticket['title']} {ticket['description']} {ticket['solution']}"
-                )
-                for q in query.split(" "):
-                    if q.lower() in search_in.lower():
-                        all_tickets_1.append(ticket)
-                        break
-
-            all_tickets = deepcopy(all_tickets_1)
-
-            print(f'Student search query - query tickets found : {len(all_tickets)}')
-
-            # filter by tags (if present)
-            all_tickets_1 = []
-            if tags:
-                for ticket in all_tickets:
-                    ticket_tags = [ticket["tag_1"], ticket["tag_2"], ticket["tag_3"]]
-                    if set(ticket_tags).intersection(set(tags)):
-                        all_tickets_1.append(ticket)
-
-                all_tickets = deepcopy(all_tickets_1)
-
-            print(f'Student search query - tags tickets found : {len(all_tickets)}')
-
-            # filter by status (if present)
-            all_tickets_1 = []
-            if status:
-                for ticket in all_tickets:
-                    if ticket["status"] in status:
-                        all_tickets_1.append(ticket)
-
-                all_tickets = deepcopy(all_tickets_1)
-
-            print(f'Student search query - status tickets found : {len(all_tickets)}')
-
-            # filter by priority (if present)
-            all_tickets_1 = []
-            if priority:
-                for ticket in all_tickets:
-                    if ticket["priority"] in priority:
-                        all_tickets_1.append(ticket)
-
-                all_tickets = deepcopy(all_tickets_1)
-
-            print(f'Student search query - priority tickets found : {len(all_tickets)}')
-
-            # sort (if present)
-            if sortby:
-                # sortby should be 'created_on', 'resolved_on', 'votes'
-                if sortby not in ["created_on", "resolved_on", "votes"]:
-                    sortby = "created_on"
-                # sortdir should be 'asc' or 'desc'
-                sortdir = True if sortdir == "desc" else False
-
-                is_sorting_valid = False
-                for ticket in all_tickets:
-                    if ticket["status"] == sortby: 
-                        is_sorting_valid = True
-                        break
-                
-                if is_sorting_valid:
-                    all_tickets = sorted(
-                        all_tickets, key=lambda d: d[sortby], reverse=sortdir
-                    )
-
-            print(f'Student search query - final sortby tickets found : {len(all_tickets)}')
-
-            return success_200_custom(data=all_tickets)
-
-        else:
-            # query is not present so for the user_id provided, get all tickets
-
-            all_tickets = []
-
-            # verify user role
-            role = user.role
-
-            if role == "student":
-                # student : all tickets created or upvoted by him/her
-                # status, priority, sort, filter will be as per filter options received
-                upvoted_ticket_ids = TicketVote.query.filter_by(
-                    user_id=user.user_id
-                ).all()
-                upvoted_ticket_ids = [elem.ticket_id for elem in upvoted_ticket_ids]
-                user_tickets = Ticket.query.filter_by(created_by=user.user_id).all()
-                for ticket in user_tickets:
-                    tick = ticket_utils.convert_ticket_to_dict(ticket)
-                    all_tickets.append(tick)
-                for ticket_id in upvoted_ticket_ids:
-                    ticket = Ticket.query.filter_by(ticket_id=ticket_id).first()
-                    tick = ticket_utils.convert_ticket_to_dict(ticket)
-                    all_tickets.append(tick)
-                # upvoted ticket can be checked by comparing created_by with user_id
-
-            if role == "support":
-                # support : all tickets resolvedby him/her
+            if "resolved" in args["status"]:
+                # get all tickets resolved by the support staff
+                user_tickets = Ticket.query.filter_by(resolved_by=user.user_id).all()
+            if "pending" in args["status"]:
                 # get all pending tickets
-                # status, priority, sort, filter will be as per filter options received
+                user_tickets = Ticket.query.filter_by(status="pending").all()
+            for ticket in user_tickets:
+                tick = ticket_utils.convert_ticket_to_dict(ticket)
+                all_tickets.append(tick)
 
-                if "resolved" in status:
-                    # get all tickets resolved by the support staff
-                    user_tickets = Ticket.query.filter_by(
-                        resolved_by=user.user_id
-                    ).all()
-                    for ticket in user_tickets:
-                        tick = ticket_utils.convert_ticket_to_dict(ticket)
-                        all_tickets.append(tick)
+        if role == "admin":
+            # admin : get all tickets resolved globally (for creating faq)
+            # status, priority, sort, filter will be as per filter options received
+            user_tickets = Ticket.query.filter_by(status="resolved").all()
+            for ticket in user_tickets:
+                tick = ticket_utils.convert_ticket_to_dict(ticket)
+                all_tickets.append(tick)
 
-                if "pending" in status:
-                    # get all pending tickets
-                    user_tickets = Ticket.query.filter_by(status="pending").all()
-                    for ticket in user_tickets:
-                        tick = ticket_utils.convert_ticket_to_dict(ticket)
-                        all_tickets.append(tick)
+        logger.debug(f"All tickets found : {len(all_tickets)}")
 
-            if role == "admin":
-                # admin : all tickets resolved
-                # status, priority, sort, filter will be as per filter options received
+        all_tickets = ticket_utils.tickets_filter_sort(all_tickets, args)
 
-                # get all tickets resolved globally (for creating faq)
-                user_tickets = Ticket.query.filter_by(status="resolved").all()
-                for ticket in user_tickets:
-                    tick = ticket_utils.convert_ticket_to_dict(ticket)
-                    all_tickets.append(tick)
-
-            
-            # filter by tags (if present)
-            all_tickets_1 = []
-            if tags:
-                for ticket in all_tickets:
-                    ticket_tags = [ticket["tag_1"], ticket["tag_2"], ticket["tag_3"]]
-                    if set(ticket_tags).intersection(set(tags)):
-                        all_tickets_1.append(ticket)
-
-                all_tickets = deepcopy(all_tickets_1)
-
-            print(f'All tickets - tags tickets found : {len(all_tickets)}')
-
-            # filter by status (if present)
-            all_tickets_1 = []
-            if status:
-                for ticket in all_tickets:
-                    if ticket["status"] in status:
-                        all_tickets_1.append(ticket)
-
-                all_tickets = deepcopy(all_tickets_1)
-
-            print(f'All tickets  - status tickets found : {len(all_tickets)}')
-
-            # filter by priority (if present)
-            all_tickets_1 = []
-            if priority:
-                for ticket in all_tickets:
-                    if ticket["priority"] in priority:
-                        all_tickets_1.append(ticket)
-
-                all_tickets = deepcopy(all_tickets_1)
-
-            print(f'All tickets  - priority tickets found : {len(all_tickets)}')
-
-            
-            # sort (if present)
-            if sortby:
-                # sortby should be 'created_on', 'resolved_on', 'votes'
-                if sortby not in ["created_on", "resolved_on", "votes"]:
-                    sortby = "created_on"
-                # sortdir should be 'asc' or 'desc'
-                sortdir = True if sortdir == "desc" else False
-                
-                is_sorting_valid = False
-                for ticket in all_tickets:
-                    if ticket["status"] == sortby: 
-                        is_sorting_valid = True
-                        break
-                
-                if is_sorting_valid:
-                    all_tickets = sorted(
-                        all_tickets, key=lambda d: d[sortby], reverse=sortdir
-                    )
-
-            print(f'All tickets - final sortby tickets found : {len(all_tickets)}')
-
-            return success_200_custom(data=all_tickets)
+        return success_200_custom(data=all_tickets)
 
 
 ticket_api.add_resource(
@@ -775,9 +758,10 @@ ticket_api.add_resource(
     "/<string:user_id>",
 )  # path is /api/v1/ticket
 ticket_api.add_resource(AllTicketsAPI, "/all-tickets")
+ticket_api.add_resource(AllTicketsUserAPI, "/all-tickets/<string:user_id>")
 
 # --------------------  END  --------------------
-
+# This is for backup only. It will be removed after unit testing.
 # class AllTicketsAPI(Resource):
 #     @token_required
 #     @users_required(users=["student", "support", "admin"])

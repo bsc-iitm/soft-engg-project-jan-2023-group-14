@@ -1,11 +1,11 @@
 <template>
   <div>
-    <StudentNavbar :id_="1"></StudentNavbar>
+    <UserNavbar :id_="1"></UserNavbar>
 
     <b-container fluid="xl">
       <b-row class="text-start">
         <b-col cols="12" sm="7" md="8">
-          <h2 style="text-align: center">My Unresolved Tickets</h2>
+          <h3 style="text-align: center">My Unresolved Tickets</h3>
           <div style="height: 550px; overflow: auto; padding: 10px">
             <div v-for="ticket in ticket_card_details" :key="ticket.ticket_id">
               <TicketCard
@@ -19,7 +19,7 @@
           </div>
         </b-col>
         <b-col cols="12" sm="5" md="4" style="border: 1px solid red">
-          <h2 style="text-align: center">My Activity</h2>
+          <h3 style="text-align: center">My Activity</h3>
         </b-col>
       </b-row>
     </b-container>
@@ -29,14 +29,14 @@
 </template>
 
 <script>
-import StudentNavbar from "../components/StudentNavbar.vue";
+import UserNavbar from "../components/UserNavbar.vue";
 
 import * as common from "../assets/common.js";
 import TicketCard from "../components/TicketCard.vue";
 
 export default {
   name: "StudentHome",
-  components: { StudentNavbar, TicketCard },
+  components: { UserNavbar, TicketCard },
   data() {
     return {
       ticket_card_details: [

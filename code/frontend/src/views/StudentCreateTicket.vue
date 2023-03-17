@@ -1,47 +1,39 @@
 <template>
-    <div>
-      <StudentNavbar :id_="2"></StudentNavbar>
+  <div>
+    <UserNavbar :id_="2"></UserNavbar>
 
-      <b-container fluid="xl">
+    <b-container fluid="xl">
       <b-row class="text-start">
         <b-col cols="12" sm="6" md="5" style="border-right: dashed black">
-          <h2 style="text-align: center">Create Ticket</h2>
+          <h3 style="text-align: center">Create Ticket</h3>
           <TicketForm></TicketForm>
         </b-col>
-        <b-col cols="12" sm="6" md="7" >
-          <h2 style="text-align: center">Search Tickets</h2>
+        <b-col cols="12" sm="6" md="7">
+          <h3 style="text-align: center">Search Tickets</h3>
           <SearchTicket></SearchTicket>
         </b-col>
       </b-row>
     </b-container>
 
     <br />
-      
-    </div>
+  </div>
 </template>
 
 <script>
-import StudentNavbar from '../components/StudentNavbar.vue';
-import TicketForm from '../components/TicketForm.vue';
-import SearchTicket from '../components/SearchTicket.vue';
-
+import UserNavbar from "../components/UserNavbar.vue";
+import TicketForm from "../components/TicketForm.vue";
+import SearchTicket from "../components/SearchTicket.vue";
 
 export default {
-  name: 'StudentCreateTicket',
-  components: {StudentNavbar, TicketForm, SearchTicket},
+  name: "StudentCreateTicket",
+  components: { UserNavbar, TicketForm, SearchTicket },
   data() {
-    return {
-    };
+    return {};
   },
   mounted() {},
-  methods: {
-    
-  },
+  methods: {},
   computed: {},
 };
 </script>
 
-<style>
-
-
-</style>
+<style></style>

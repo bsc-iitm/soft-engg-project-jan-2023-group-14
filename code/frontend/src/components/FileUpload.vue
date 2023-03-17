@@ -2,7 +2,7 @@
   <div class="container">
     <div>
       <label
-        >Upload files
+        >{{ attach_label }}
         <input type="file" @change="handleFileUpload($event)" multiple />
       </label>
       <br />
@@ -23,6 +23,7 @@ export default {
   data() {
     return {
       attachments: [],
+      attach_label:this.$route.path==='/user-profile'? "Upload photo" : "Upload files",
       user_id: this.$store.getters.get_user_id,
     };
   },
@@ -40,6 +41,7 @@ export default {
     handleFileUpload: async function (event) {
       const files = event.target.files;
       console.log("files length: ", files.length);
+      this.attachments = [];
       for (let i = 0; i < files.length; i++) {
         try {
           const result = await this.fileToBase64(files[i]);

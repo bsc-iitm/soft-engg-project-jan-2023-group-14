@@ -142,6 +142,10 @@ class Login(Resource):
                                 "web_token": web_token,
                                 "token_expiry_on": token_expiry_on,
                                 "role": user.role,
+                                "first_name": user.first_name,
+                                "last_name": user.last_name,
+                                "email": user.email,
+                                "profile_photo_loc": user.profile_photo_loc,
                             }
                         )
 

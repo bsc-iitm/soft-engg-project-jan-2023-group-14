@@ -1,7 +1,7 @@
 <template>
     <div>
       <UserNavbar :id_="4"></UserNavbar>
-      <h1>This is support home page</h1>
+      <h1>This is support my tickets page</h1>
       
     </div>
 </template>
@@ -11,7 +11,7 @@ import UserNavbar from '../components/UserNavbar.vue';
 
 
 export default {
-  name: 'SupportHome',
+  name: 'SupportMyTickets',
   components: {UserNavbar},
   data() {
     return {

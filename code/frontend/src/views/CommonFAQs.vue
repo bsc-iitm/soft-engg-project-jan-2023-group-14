@@ -1,15 +1,12 @@
 <template>
   <div>
-    <StudentNavbar :id_="id_" v-show="student_nav"></StudentNavbar>
-    <!-- <SupportNavbar :id_="id_" v-show="student_nav"></SupportNavbar>
-    <AdminNavbar :id_="id_" v-show="student_nav"></AdminNavbar> -->
-    
+    <UserNavbar :id_="id_"></UserNavbar>
 
     <b-container fluid="xl">
       <b-row class="text-start">
         <b-col cols="12" sm="12" md="12">
           <h3 style="text-align: center">Frequently Asked Questions</h3>
-          <div style="height: 550px; overflow: auto; padding: 10px;">
+          <div style="height: 550px; overflow: auto; padding: 10px">
             <div v-for="faq in faq_card_details" :key="faq.faq_id">
               <FAQCard :faq_id="faq.faq_id" :question="faq.question" :answer="faq.answer"></FAQCard>
             </div>
@@ -22,20 +19,14 @@
 
 <script>
 import FAQCard from "../components/FAQCard.vue";
-import StudentNavbar from "../components/StudentNavbar.vue";
-// import SupportNavbar from '../components/SupportNavbar.vue';
-// import AdminNavbar from '../components/AdminNavbar.vue';
-// SupportNavbar, AdminNavbar
+import UserNavbar from "../components/UserNavbar.vue";
 
 export default {
   name: "CommonFAQs",
-  components: { StudentNavbar, FAQCard },
+  components: { UserNavbar, FAQCard },
   data() {
     return {
       id_: "",
-      student_nav: false,
-      support_nav: false,
-      admin_nav: false,
       faq_card_details: [
         {
           faq_id: 1,
@@ -64,21 +55,12 @@ export default {
     let user_role = this.$store.getters.get_user_role;
     if (user_role == "student") {
       this.id_ = 4;
-      this.student_nav = true;
-      this.support_nav = false;
-      this.admin_nav = false;
     }
     if (user_role == "support") {
       this.id_ = 4; // need to be updated
-      this.student_nav = false;
-      this.support_nav = true;
-      this.admin_nav = false;
     }
     if (user_role == "admin") {
       this.id_ = 4; // need to be updated
-      this.student_nav = false;
-      this.support_nav = false;
-      this.admin_nav = true;
     }
   },
   mounted() {},

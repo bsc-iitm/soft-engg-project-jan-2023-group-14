@@ -1,18 +1,26 @@
 <template>
     <div>
-      <StudentNavbar :id_="3"></StudentNavbar>
-      <h1>This is student my tickets page</h1>
+      <UserNavbar :id_="3"></UserNavbar>
+      
+      <b-container fluid="xl">
+      <b-row class="text-start">
+        <b-col cols="12" sm="12" md="12">
+          <SearchTicket></SearchTicket>
+        </b-col>
+      </b-row>
+    </b-container>
       
     </div>
 </template>
 
 <script>
-import StudentNavbar from '../components/StudentNavbar.vue';
+import UserNavbar from '../components/UserNavbar.vue';
+import SearchTicket from "../components/SearchTicket.vue";
 
 
 export default {
   name: 'StudentMyTickets',
-  components: {StudentNavbar},
+  components: {UserNavbar, SearchTicket},
   data() {
     return {
     };

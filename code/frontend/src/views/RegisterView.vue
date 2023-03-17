@@ -1,12 +1,12 @@
 <template>
   <div class="register-form">
-    <div  style="margin: 3%; padding: 3%; width: 50%">
+    <div style="margin: 3%; padding: 3%; width: 50%">
       <h3 style="text-align: left">Register</h3>
       <br />
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
         <b-form-group
           ><b-form-input
-            id="input-first-name"
+            id="input-first-name-register"
             v-model="form.first_name"
             type="text"
             placeholder="Enter first name"
@@ -21,7 +21,7 @@
 
         <b-form-group
           ><b-form-input
-            id="input-last-name"
+            id="input-last-name-register"
             v-model="form.last_name"
             type="text"
             placeholder="Enter last name (Optional)"
@@ -30,7 +30,7 @@
 
         <b-form-group label="Select role:" v-slot="{ ariaDescribedby }">
           <b-form-radio-group
-            id="radio-group-role"
+            id="radio-group-role-register"
             v-model="form.role"
             :options="role_options"
             :aria-describedby="ariaDescribedby"
@@ -40,7 +40,7 @@
 
         <b-form-group
           ><b-form-input
-            id="input-email"
+            id="input-email-register"
             v-model="form.email"
             type="email"
             placeholder="Enter email"
@@ -50,7 +50,7 @@
 
         <b-form-group
           ><b-form-input
-            id="input-password"
+            id="input-password-register"
             v-model="form.password"
             placeholder="Enter password"
             type="password"
@@ -66,7 +66,7 @@
 
         <b-form-group
           ><b-form-input
-            id="input-retype-password"
+            id="input-retype-password-register"
             v-model="form.retype_password"
             placeholder="Retype password"
             type="password"
@@ -78,19 +78,13 @@
             Password did not match.
           </b-form-invalid-feedback>
         </b-form-group>
-
         <br />
         <b-button style="margin: 10px" type="submit" variant="primary">Submit</b-button>
         <b-button style="margin: 10px" type="reset" variant="danger">Reset</b-button>
       </b-form>
       <br />
-      <p>Already registered? Please <b-link href="/login">Login here</b-link> </p>
-       <p>Go to <b-link href="/home">Home Page</b-link> </p>
-      
-
-      <!-- <b-card class="mt-3" header="Form Data : Temporary">
-        <pre class="m-0">{{ form }}</pre>
-      </b-card> -->
+      <p>Already registered? Please <b-link href="/login">Login here</b-link></p>
+      <p>Go to <b-link href="/home">Home Page</b-link></p>
     </div>
   </div>
 </template>
@@ -124,7 +118,7 @@ export default {
       event.preventDefault();
       alert('You are creating a new account. Click "Ok" to proceed?');
       this.$log.info("Submitting registration form");
-      
+
       fetch(common.AUTH_API_REGISTER, {
         method: "POST",
         headers: {
@@ -195,10 +189,3 @@ export default {
   },
 };
 </script>
-
-<style>
-/* .register-form {
-  width: 50%;
-  margin: 5%;
-} */
-</style>
