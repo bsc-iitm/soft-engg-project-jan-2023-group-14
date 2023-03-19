@@ -51,6 +51,8 @@ def index():
     return "This is student blueprint home page"
 
 class StudentAPI(Resource):
+    @token_required
+    @users_required(users=["student"])
     def get(self,user_id):
         """
         Usage
@@ -74,7 +76,7 @@ class StudentAPI(Resource):
             user = Auth.query.filter_by(user_id=user_id).first()
         except Exception as e:
             logger.error(
-                f"StudentAPI->get : Error occured while fetching ticket data : {e}"
+                f"StudentAPI->get : Error occured while fetching student data : {e}"
             )
             raise InternalServerError
         else:
@@ -96,8 +98,8 @@ class StudentAPI(Resource):
                 raise NotFoundError(status_msg="Student does not exists")
 
 # test case -> should not give details of support staff and admin
-    # @token_required
-    # @users_required(users=["student"])
+    @token_required
+    @users_required(users=["student"])
     def put(self,user_id):
         """
         Usage

@@ -45,6 +45,8 @@ admin_api = Api(admin_bp)
 admin_util=AdminUtils()
 
 class AdminAPI(Resource):
+    @token_required
+    @users_required(users=["admin"])
     def get(self,user_id):
         """
         Usage
@@ -89,8 +91,8 @@ class AdminAPI(Resource):
                 raise NotFoundError(status_msg="Admin does not exists")
 
 # test case -> should not give details of student and support staff
-    # @token_required
-    # @users_required(users=["admin"])
+    @token_required
+    @users_required(users=["admin"])
     def put(self,user_id):
         """
         Usage

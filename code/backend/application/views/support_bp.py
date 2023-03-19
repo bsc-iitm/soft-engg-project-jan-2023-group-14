@@ -44,6 +44,8 @@ support_api = Api(support_bp)
 support_util = SupportUtils()
 
 class SupportAPI(Resource):
+    @token_required
+    @users_required(users=["support"])
     def get(self,user_id):
         """
         Usage
@@ -67,7 +69,7 @@ class SupportAPI(Resource):
             user = Auth.query.filter_by(user_id=user_id).first()
         except Exception as e:
             logger.error(
-                f"SupportAPI->get : Error occured while fetching ticket data : {e}"
+                f"SupportAPI->get : Error occured while fetching support data : {e}"
             )
             raise InternalServerError
         else:
@@ -90,8 +92,8 @@ class SupportAPI(Resource):
                 raise NotFoundError(status_msg="Support staff does not exists")
 
 # test case -> should not give details of studenr and admin
-    # @token_required
-    # @users_required(users=["support"])
+    @token_required
+    @users_required(users=["support"])
     def put(self,user_id):
         """
         Usage
