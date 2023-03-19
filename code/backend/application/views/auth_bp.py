@@ -9,21 +9,72 @@ from flask import Blueprint, request
 from flask import current_app as app
 from flask_restful import Api, Resource
 from application.logger import logger
-from application.views.auth_utils import AuthUtils
 from application.responses import *
-from flask_login import login_user, login_required, logout_user
-import jwt
-from datetime import datetime, timedelta
 from application.models import Auth
 from application.globals import TOKEN_VALIDITY
 from application.database import db
 import time
+from application.common_utils import admin_required, token_required
+from application.views.user_utils import UserUtils
 
 # --------------------  Code  --------------------
 
+
+class AuthUtils(UserUtils):
+    def __init__(self, user_id=None):
+        self.user_id = user_id
+
+    def update_auth_table(self, details: dict):
+        """
+        Usage
+        -----
+        Update auth table while logging in and creating new account
+
+        Parameters
+        ----------
+        details : dict with user details
+
+        Returns
+        -------
+        updated user object
+
+        """
+        if details["operation"] == "login":
+            user = Auth.query.filter_by(email=details["email"]).first()
+            user.web_token = details["web_token"]
+            user.is_logged = True
+            user.token_created_on = time.time()
+            user.token_expiry_on = details["token_expiry_on"]
+            db.session.commit()
+
+        if details["operation"] == "register":
+            user = Auth(
+                user_id=details["user_id"],
+                email=details["email"],
+                password=details["password"],
+                role=details["role"],
+                first_name=details["first_name"],
+                last_name=details["last_name"],
+            )
+            db.session.add(user)
+            db.session.commit()
+
+        if details["operation"] == "verify_user":
+            user = Auth.query.filter_by(user_id=details["user_id"]).first()
+            user.is_verified = True
+            db.session.commit()
+
+        if details["operation"] == "delete_user":
+            user = Auth.query.filter_by(user_id=details["user_id"]).first()
+            db.session.delete(user)
+            db.session.commit()
+
+        return user
+
+
 auth_bp = Blueprint("auth_bp", __name__)
 auth_api = Api(auth_bp)
-auth_utils = AuthUtils()  # pass user_id for init
+auth_utils = AuthUtils()
 
 
 class Login(Resource):
@@ -51,15 +102,15 @@ class Login(Resource):
             form = request.get_json()
             email = form.get("email", "")
             password = form.get("password", "")
-
-            if auth_utils.is_blank(email) or auth_utils.is_blank(password):
-                raise BadRequest(status_msg=f"Email or Password is empty")
-
-            details = {"email": email, "password": password}
         except Exception as e:
             logger.error(f"Login->post : Error occured while getting form data : {e}")
             raise InternalServerError
         else:
+            if auth_utils.is_blank(email) or auth_utils.is_blank(password):
+                raise BadRequest(status_msg=f"Email or Password is empty")
+
+            details = {"email": email, "password": password, "operation": "login"}
+
             # verify form data
             if auth_utils.is_email_valid(email) and auth_utils.is_password_valid(
                 password
@@ -73,23 +124,16 @@ class Login(Resource):
 
                     if password == user.password:
                         # password is correct so log in user
-                        login_user(user, remember=True)
-
-                        # generate token
+                        # and generate token
                         token_expiry_on = time.time() + TOKEN_VALIDITY
                         web_token = auth_utils.generate_web_token(
                             email, token_expiry_on
                         )
+                        details["web_token"] = web_token
+                        details["token_expiry_on"] = token_expiry_on
 
                         # update auth table
-                        user = auth_utils.update_auth_table(
-                            user,
-                            details={
-                                "web_token": web_token,
-                                "operation": 'login',
-                                "token_expiry_on": token_expiry_on,
-                            },
-                        )
+                        user = auth_utils.update_auth_table(details=details)
 
                         logger.info("User logged in.")
                         return success_200_custom(
@@ -97,6 +141,11 @@ class Login(Resource):
                                 "user_id": user_id,
                                 "web_token": web_token,
                                 "token_expiry_on": token_expiry_on,
+                                "role": user.role,
+                                "first_name": user.first_name,
+                                "last_name": user.last_name,
+                                "email": user.email,
+                                "profile_photo_loc": user.profile_photo_loc,
                             }
                         )
 
@@ -126,13 +175,14 @@ class Register(Resource):
         form data sent with request
         data format {'first_name':'', 'last_name':'', 'email':'',
                     'password':'', 'retype_password':'', 'role':''}
+        'last_name' is optional
 
         Returns
         -------
         User web token
 
         """
-        form = {}
+
         details = {
             "first_name": "",
             "last_name": "",
@@ -145,18 +195,19 @@ class Register(Resource):
         # get form data
         try:
             form = request.get_json()
-            for key in details:
-                value = form.get(key, "")
-                details[key] = value
-                if auth_utils.is_blank(value):
-                    raise BadRequest(status_msg=f"{key} is empty or invalid")
-            details['operation'] = 'register'
         except Exception as e:
             logger.error(
                 f"Register->post : Error occured while getting form data : {e}"
             )
             raise InternalServerError
         else:
+            for key in details:
+                value = form.get(key, "")
+                details[key] = value
+                if auth_utils.is_blank(value) and key != 'last_name':
+                    raise BadRequest(status_msg=f"{key} is empty or invalid")
+            details["operation"] = "register"
+
             # verify registration form data
             if auth_utils.verify_register_form(details):
                 # check if user exists
@@ -166,17 +217,20 @@ class Register(Resource):
                     raise AlreadyExistError(status_msg="Email is already in use")
                 else:
                     # generate unique user_id
-                    user_id = "blablabla"+str(int(time.time()))  # function not yet implemented
+                    user_id = auth_utils.generate_user_id(email=details["email"])
 
                     # create new user in Auth table
-                    user = auth_utils.update_auth_table(user_id=user_id, details=details)
+                    details["user_id"] = user_id
+                    user = auth_utils.update_auth_table(details=details)
 
                     # Redirect to login page in frontend
                     # No need to create web_token as during login it will
                     # be created
 
                     logger.info("New account created")
-                    raise Success_200(status_msg="Account created successfully. Now please login.")      
+                    raise Success_200(
+                        status_msg="Account created successfully. Now please login."
+                    )
 
             else:
                 # email or password are not valid as per specification
@@ -186,27 +240,58 @@ class Register(Resource):
 
 
 class NewUsers(Resource):
+    # Admin access required
+    # get user_id and token from headers
+    # verify token and role of the user
+
+    @token_required
+    @admin_required
     def get(self):
         """
         Usage
         -----
+        Get all new users which are not verified.
+        Only admin can access this.
 
         Parameters
         ----------
 
         Returns
         -------
+        New users dict
 
         """
+        # print('\n\n', request.headers.get('web_token', None))
         # get new users data from auth table
-        # convert to dict
-        # return succes/error msg with dict
-        return
+        try:
+            all_users = (
+                Auth.query.filter(Auth.role.in_(["student", "support"]))
+                .filter_by(is_verified=False)
+                .all()
+            )
+        except Exception as e:
+            logger.error(f"NewUsers->get : Error occured while fetching db data : {e}")
+            raise InternalServerError
+        else:
+            # convert to list of dict
+            data = []
+            for user in all_users:
+                _d = {}
+                _d["user_id"] = user.user_id
+                _d["first_name"] = user.first_name
+                _d["last_name"] = user.last_name
+                _d["email"] = user.email
+                _d["role"] = user.role
+                data.append(_d)
+            return success_200_custom(data=data)
 
-    def put(self):
+    @token_required
+    @admin_required
+    def put(self, user_id):
         """
         Usage
         -----
+        When admin verifies user, update user.is_verified to True in auth table
 
         Parameters
         ----------
@@ -215,14 +300,35 @@ class NewUsers(Resource):
         -------
 
         """
-        # update auth table for passed verification
-        # return succes/error msg
-        return
+        # get form data
+        try:
+            form = request.get_json()
+            user_id = form.get("user_id", "")
+        except Exception as e:
+            logger.error(f"NewUsers->put : Error occured while getting form data : {e}")
+            raise InternalServerError
+        else:
+            if auth_utils.is_blank(user_id):
+                raise BadRequest(status_msg=f"User id is empty or invalid")
 
-    def delete(self):
+            details = {"user_id": user_id, "operation": "verify_user"}
+
+            # check if user exists
+            user = Auth.query.filter_by(user_id=user_id).first()
+            if user:
+                # user exists , proceed to update
+                user = auth_utils.update_auth_table(details=details)
+                raise Success_200(status_msg="User verified and updated in database.")
+            else:
+                raise NotFoundError(status_msg="User does not exists.")
+
+    @token_required
+    @admin_required
+    def delete(self, user_id):
         """
         Usage
         -----
+        When admin rejects user, update user.is_verified to False in auth table
 
         Parameters
         ----------
@@ -231,13 +337,34 @@ class NewUsers(Resource):
         -------
 
         """
-        # update auth table for failed verification
-        # return succes/error msg
-        return
+        # get form data
+        try:
+            form = request.get_json()
+            user_id = form.get("user_id", "")
+        except Exception as e:
+            logger.error(
+                f"NewUsers->delete : Error occured while getting form data : {e}"
+            )
+            raise InternalServerError
+        else:
+            if auth_utils.is_blank(user_id):
+                raise BadRequest(status_msg=f"User id is empty or invalid")
+            details = {"user_id": user_id, "operation": "delete_user"}
+
+            # check if user exists
+            user = Auth.query.filter_by(user_id=user_id).first()
+            if user:
+                # user exists , proceed to update
+                user = auth_utils.update_auth_table(details=details)
+                raise Success_200(
+                    status_msg="Verification failed so user deleted in database."
+                )
+            else:
+                raise NotFoundError(status_msg="User does not exists.")
 
 
 auth_api.add_resource(Login, "/login")  # path is /api/v1/auth
 auth_api.add_resource(Register, "/register")
-auth_api.add_resource(NewUsers, "/newUsers")
+auth_api.add_resource(NewUsers, "/newUsers", "/newUsers/<string:user_id>")
 
 # --------------------  END  --------------------
