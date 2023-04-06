@@ -37,6 +37,8 @@ def token_required(f):
                             print("\n\n Token is verified \n\n")
                             return f(*args, **kwargs)
                         else:
+                            print(f'frontend_token: {frontend_token}')
+                            print(f'backend_token: {backend_token}')
                             raise Unauthenticated(status_msg="Token is incorrect")
                     else:
                         # token is empty
@@ -109,15 +111,18 @@ def is_img_path_valid(img_path:str)->str:
         if img_path.endswith(tuple(ACCEPTED_IMAGE_EXTENSIONS)):
             return True
         else:
-            logger.info('File extension is not valid')
+            logger.info(f'File extension is not valid : {img_path}')
     else:
-        logger.info('File path is not valid')
+        logger.info(f'File path is not valid: {img_path}')
     return False
 
 def convert_img_to_base64(img_path:str)->str:
     try:
         with open(img_path, "rb") as img:
             img_base64 = base64.b64encode(img.read())
+        img_base64 = str(img_base64, 'UTF-8')
+        extension = img_path.split(".")[-1]
+        img_base64 = f"data:image/{extension};base64," + img_base64
         return img_base64
     except Exception as e:
         resp = f'Unknown error occured while converting image to base64: {e}'

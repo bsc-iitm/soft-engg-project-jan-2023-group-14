@@ -6,11 +6,13 @@
       <b-row class="text-start">
         <b-col cols="12" sm="6" md="5" style="border-right: dashed black">
           <h3 style="text-align: center">Create Ticket</h3>
-          <TicketForm></TicketForm>
+          <TicketForm :hideReset=false :editTicket=false></TicketForm>
         </b-col>
         <b-col cols="12" sm="6" md="7">
           <h3 style="text-align: center">Search Tickets</h3>
-          <SearchTicket></SearchTicket>
+          <SearchTicket :upvote_disabled="false"
+          :delete_disabled="true"
+          :edit_disabled="true"></SearchTicket>
         </b-col>
       </b-row>
     </b-container>

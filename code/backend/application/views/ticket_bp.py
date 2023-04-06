@@ -45,10 +45,14 @@ class TicketUtils(UserUtils):
 
     def get_ticket_attachments(self, ticket_id):
         ticket_attch = TicketAttachment.query.filter_by(ticket_id=ticket_id).all()
-        attachments = [
-            {"user_id": att.user_id, "attachment_loc": att.attachment_loc}
-            for att in ticket_attch
-        ]
+        attachments = []
+        for att in ticket_attch:
+            file_path = att.attachment_loc
+            img_base64 = ""
+            if is_img_path_valid(file_path):
+                img_base64 = convert_img_to_base64(file_path)
+            d_ = {"user_id": att.user_id, "attachment_loc": img_base64}
+            attachments.append(d_)
         return attachments
 
     def generate_ticket_id(self, title: str, user_id: str) -> str:
@@ -90,9 +94,7 @@ class TicketUtils(UserUtils):
             # attachment_loc will contain image path when data is retried from db by backend
             # attachment_loc will contain base64 image when creating new attachment
 
-            if (user_id == attach["user_id"]) and (
-                attach["attachment_loc"]
-            ):  # redundant check
+            if attach["attachment_loc"]: 
                 if is_base64(attach["attachment_loc"].split(",")[1]):
                     file_type, file_format, encoded_data = get_encoded_file_details(
                         attach["attachment_loc"]
@@ -210,7 +212,7 @@ class TicketUtils(UserUtils):
             if sortby not in ["created_on", "resolved_on", "votes"]:
                 sortby = "created_on"
         else:
-            return all_tickets
+            sortby = "created_on"
         if sortdir:
             # sortdir should be 'asc' or 'desc'
             sortdir = True if sortdir == "desc" else False
@@ -487,22 +489,26 @@ class TicketAPI(Resource):
             if role == "support" or (
                 role == "student" and user_id == ticket.created_by
             ):
-                # TODO : Handle attachment separatery, currently code is repeated
-                for attach in attachments:  # received, dict
-                    exists = False
-                    for ticket_attach in ticket_attachment:  # already existing, object
-                        if (
-                            attach["user_id"] == ticket_attach.user_id
-                            and attach["attachment_loc"] == ticket_attach.attachment_loc
-                        ):
-                            # can not add duplicate
-                            exists = True
-                            break
-                    if not exists:
-                        attach["ticket_id"] = ticket_id
-                        ticket_attach = TicketAttachment(**attach)
-                        db.session.add(ticket_attach)
-                db.session.commit()
+                # add attachments now
+                status, message = ticket_utils.save_ticket_attachments(
+                    attachments, ticket_id, user_id, operation="update_ticket"
+                )
+               
+                # for attach in attachments:  # received, dict
+                #     exists = False
+                #     for ticket_attach in ticket_attachment:  # already existing, object
+                #         if (
+                #             attach["user_id"] == ticket_attach.user_id
+                #             and attach["attachment_loc"] == ticket_attach.attachment_loc
+                #         ):
+                #             # can not add duplicate
+                #             exists = True
+                #             break
+                #     if not exists:
+                #         attach["ticket_id"] = ticket_id
+                #         ticket_attach = TicketAttachment(**attach)
+                #         db.session.add(ticket_attach)
+                # db.session.commit()
 
             if role == "student":
                 if user_id == ticket.created_by:
@@ -750,7 +756,7 @@ class AllTicketsUserAPI(Resource):
         all_tickets = ticket_utils.tickets_filter_sort(all_tickets, args)
 
         return success_200_custom(data=all_tickets)
-
+    
 
 ticket_api.add_resource(
     TicketAPI,

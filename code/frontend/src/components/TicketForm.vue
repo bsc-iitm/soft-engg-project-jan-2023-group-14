@@ -15,7 +15,7 @@
           required
         ></b-form-input>
         <b-form-invalid-feedback id="input-live-feedback-title">
-          Title should be atleast 20 characters long.
+          Title should be atleast 5 characters long.
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -30,7 +30,7 @@
         ></b-form-textarea
       ></b-form-group>
 
-      <Tagging @tags_changed="onTagsChanged"></Tagging>
+      <Tagging @tags_changed="onTagsChanged" ></Tagging>
 
       <b-form-group label="Select priority:" v-slot="{ ariaDescribedby }">
         <b-form-radio-group
@@ -71,7 +71,7 @@
 
       <br />
       <b-button style="margin: 10px" type="submit" variant="primary">Submit</b-button>
-      <b-button style="margin: 10px" type="reset" variant="danger">Reset</b-button>
+      <b-button v-show="hideReset ? false : true" style="margin: 10px" type="reset" variant="danger">Reset</b-button>
     </b-form>
     <br />
 
@@ -88,6 +88,7 @@ import Tagging from "./Tagging.vue";
 
 export default {
   name: "TicketForm",
+  props: ["ticket_id", "title", "description", "priority", "tags", "hideReset", "editTicket"],
   components: { Tagging, FileUpload },
   data() {
     return {
@@ -97,9 +98,9 @@ export default {
         { text: "High", value: "high" },
       ],
       form: {
-        title: "",
-        description: "",
-        priority: "low",
+        title: this.title ? this.title : "",
+        description: this.description ? this.description : "",
+        priority: this.priority ? this.priority : "low",
         tags: [],
         tag_1: "",
         tag_2: "",
@@ -108,6 +109,10 @@ export default {
       },
       show: true,
     };
+  },
+  created(){
+    console.log(`hide reset: ${this.hideReset}`);
+
   },
   methods: {
     onFileUpload(value){
@@ -119,10 +124,10 @@ export default {
     onSubmit(event) {
       if (event && event.preventDefault) { event.preventDefault(); }
 
-      if (this.form.tags.length == 0) {
-        alert("Choose atleast 1 tag");
+      if ((this.form.tags.length == 0)&&(this.check_title)) {
+        alert("Choose atleast 1 tag and title should be atleast 5 characters long.");
       } else {
-        alert('You are creating a new ticket. Click "Ok" to proceed?');
+        alert('Submitting form. Click "Ok" to proceed?');
         this.$log.info("Submitting ticket form");
 
        
@@ -136,9 +141,20 @@ export default {
 
         // console.log(this.$refs);
 
+        let fetch_url = "";
+        let method = "";
+        if (this.editTicket){
+          fetch_url = common.TICKET_API + `/${this.ticket_id}` +  `/${this.$store.getters.get_user_id}`;
+          method = "PUT";
+        } else {
+          fetch_url = common.TICKET_API + `/${this.$store.getters.get_user_id}`;
+          method= "POST";
 
-        fetch(common.TICKET_API + `/${this.$store.getters.get_user_id}`, {
-          method: "POST",
+        }
+
+
+        fetch(fetch_url, {
+          method: method,
           headers: {
             "Content-Type": "application/json",
             web_token: this.$store.getters.get_web_token,
@@ -153,7 +169,9 @@ export default {
               this.flashMessage.success({
                 message: data.message,
               });
-              this.onReset();
+              if (!this.editTicket) {
+                this.onReset();
+              }
             }
             if (data.category == "error") {
               this.flashMessage.error({
@@ -190,7 +208,7 @@ export default {
   },
   computed: {
     check_title() {
-      return this.form.title.length > 20 ? true : false;
+      return this.form.title.length > 5 ? true : false;
     },
   },
 };

@@ -5,7 +5,7 @@
 
 # --------------------  Imports  --------------------
 
-import os
+import os 
 
 # --------------------  Code  --------------------
 
@@ -13,6 +13,9 @@ BACKEND_ROOT_PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 HOST = '127.0.0.1'
 PORT = 5000
 DEBUG = True
+ENV_TYPE = "dev"
+# ENV_TYPE = "test"
+# ENV_TYPE = "test" if (input("Enter env type - [dev/test]? :").strip() == "test") else "dev"
 BASE = f'http://{HOST}:{PORT}'
 API_VERSION = 'v1'
 TOKEN_VALIDITY = 300 # seconds

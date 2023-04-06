@@ -53,7 +53,7 @@
                   type="password"
                   :state="check_password"
                   aria-describedby="input-live-feedback-password"
-                  required
+                  
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-live-feedback-password">
                   Password should contain letters A-Z a-z and numbers 0-9 only and should be atleast
@@ -69,7 +69,7 @@
                   type="password"
                   :state="check_retype_password"
                   aria-describedby="input-live-feedback-retype-password"
-                  required
+                  
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-live-feedback-retype-password">
                   Password did not match.
@@ -113,14 +113,16 @@ export default {
     return {
       imageProps: { width: 250, height: 250, center: true },
       user_role: this.$store.getters.get_user_role,
+      user_id: this.$store.getters.get_user_id,
       // profile_pic_base64: this.$store.getters.get_user_profile_pic,
+      user_url_to_fetch_data: "",
       form: {
         first_name: "",
         last_name: "",
         email: "",
         password: "",
         retype_password: "",
-        profile_photo_loc: this.$store.getters.get_user_profile_pic,
+        profile_photo_loc: "",
       },
       show: true,
     };
@@ -131,8 +133,17 @@ export default {
     this.form.first_name = user.first_name;
     this.form.last_name = user.last_name;
     this.form.email = user.email;
-    this.form.profile_photo_loc =
-      "https://blog.hubspot.com/hs-fs/hubfs/Google%20Drive%20Integration/Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg?width=650&name=Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg";
+    this.form.profile_photo_loc = this.$store.getters.get_user_profile_pic;
+    if (this.user_role === "student") {
+      this.user_url_to_fetch_data = common.STUDENT_API + `/${this.user_id}`;
+    }
+    if (this.user_role === "support") {
+      this.user_url_to_fetch_data = common.SUPPORT_API + `/${this.user_id}`;
+    }
+    if (this.user_role === "admin") {
+      this.user_url_to_fetch_data = common.ADMIN_API + `/${this.user_id}`;
+    }
+
   },
   methods: {
     onSubmit(event) {
@@ -140,10 +151,12 @@ export default {
       alert('You are updating your profile. Click "Ok" to proceed?');
       this.$log.info("Submitting update profile form");
 
-      fetch(common.STUDENT_API, {
+      fetch(this.user_url_to_fetch_data, {
         method: "Put",
         headers: {
           "Content-Type": "application/json",
+          web_token: this.$store.getters.get_web_token,
+            user_id: this.$store.getters.get_user_id,
         },
         body: JSON.stringify(this.form),
       })
@@ -154,6 +167,9 @@ export default {
             this.flashMessage.success({
               message: data.message,
             });
+            
+            // update store
+            this.$store.dispatch("set_state_after_profile_update", this.form);
             this.$forceUpdate();
           }
           if (data.category == "error") {
@@ -178,8 +194,8 @@ export default {
       this.form.password = "";
       this.form.retype_password = "";
       this.form.profile_photo_loc = this.$store.getters.get_user_profile_pic;
-      this.form.profile_photo_loc =
-        "https://blog.hubspot.com/hs-fs/hubfs/Google%20Drive%20Integration/Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg?width=650&name=Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg";
+      // this.form.profile_photo_loc =
+      //   "https://blog.hubspot.com/hs-fs/hubfs/Google%20Drive%20Integration/Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg?width=650&name=Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg";
       // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {

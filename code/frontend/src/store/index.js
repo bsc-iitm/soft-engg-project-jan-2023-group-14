@@ -74,7 +74,13 @@ export default new Vuex.Store({
       state.token_expiry_on = 0;
       state.user.profile_photo_loc = "";
       state.logged_status = false;
-    }
+    },
+    SET_STATE_AFTER_PROFILE_UPDATE(state, payload){
+      state.user.first_name = payload.first_name ;
+      state.user.last_name = payload.last_name ;
+      state.user.email = payload.email ;
+      state.user.profile_photo_loc = payload.profile_photo_loc;
+    },
   },
   actions: {
     set_state_after_login(context, payload) {
@@ -82,6 +88,9 @@ export default new Vuex.Store({
     },
     set_state_after_logout(context, payload) {
       context.commit('SET_STATE_AFTER_LOGOUT', payload);
+    },
+    set_state_after_profile_update(context, payload) {
+      context.commit('SET_STATE_AFTER_PROFILE_UPDATE', payload);
     }
   },
   modules: {

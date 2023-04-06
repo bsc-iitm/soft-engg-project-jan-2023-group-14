@@ -1,20 +1,16 @@
 <template>
   <div id="app">
-    <FlashMessage :position="'left bottom'" style="font-size: 15px" />
+    <FlashMessage :position="'left bottom'" style="font-size: 15px; position:relative; z-index:10000;" />
     <!-- <LoginView v-if="$route.name == 'login'"></LoginView> -->
-    <!-- <FileUpload></FileUpload> -->
-    <!-- <div style="width: 50%;"><TicketForm></TicketForm></div> -->
     <router-view />
   </div>
 </template>
 
 <script>
 import LoginView from "./views/LoginView.vue";
-import FileUpload from "./components/FileUpload.vue";
-import TicketForm from './components/TicketForm.vue';
 
 export default {
-  components: { TicketForm },
+  components: { },
   data() {
     return {};
   },

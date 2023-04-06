@@ -17,13 +17,15 @@ class Config():
     
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///databases/supportTicketDB_Prod.sqlite3?charset=utf8'
+    db_path = os.path.join(BACKEND_ROOT_PATH, "databases", "supportTicketDB_Prod.sqlite3")
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + db_path + '?charset=utf8'
     SECRET_KEY = 'secretKey'
     DEBUG = False
 
 
 class TestingConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///databases/supportTicketDB_Test.sqlite3?charset=utf8'
+    db_path = os.path.join(BACKEND_ROOT_PATH, "databases", "supportTicketDB_Test.sqlite3")
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + db_path + '?charset=utf8'
     SECRET_KEY = 'secretKey'
     DEBUG = True
 
