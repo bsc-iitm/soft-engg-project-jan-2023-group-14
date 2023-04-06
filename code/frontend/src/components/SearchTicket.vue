@@ -16,11 +16,10 @@
                 placeholder="Enter search query"
                 :state="check_query"
                 aria-describedby="input-live-feedback-query"
-                required
               ></b-form-input>
-              <b-form-invalid-feedback id="input-live-feedback-query">
+              <!-- <b-form-invalid-feedback id="input-live-feedback-query">
                 Query should be atleast 1 characters long.
-              </b-form-invalid-feedback>
+              </b-form-invalid-feedback> -->
             </b-form-group>
           </b-col>
           <b-col class="col" cols="12" md="3" sm="6">
@@ -84,6 +83,10 @@
           :title="ticket.title"
           :description="ticket.description"
           :votes="ticket.votes"
+          :created_by="ticket.created_by"
+          :upvote_disabled="upvote_disabled"
+          :delete_disabled="delete_disabled"
+          :edit_disabled="edit_disabled"
         ></TicketCard>
       </div>
     </div>
@@ -101,18 +104,24 @@ import Tagging from "./Tagging.vue";
 import TicketCard from "../components/TicketCard.vue";
 
 export default {
-  name: "TicketForm",
+  name: "SearchTicket",
   components: { Tagging, TicketCard },
-  props: [ ],
+  props: ["upvote_disabled",
+    "delete_disabled",
+    "edit_disabled",],
   data() {
     return {
+      // upvote_disabled_: this.upvote_disabled,
+      // delete_disabled_: this.delete_disabled,
+      // edit_disabled_: this.edit_disabled,
+
       filter_priority_options: [
         { item: "low", name: "Low" },
         { item: "medium", name: "Medium" },
         { item: "high", name: "High" },
       ],
       filter_status_options: [
-        { item: "pending", name: "Pending", disabled: false},
+        { item: "pending", name: "Pending", disabled: false },
         { item: "resolved", name: "Resolved", disabled: false },
       ],
 
@@ -141,51 +150,56 @@ export default {
       search_url: common.TICKET_API_ALLTICKETS,
     };
   },
-  created () {
+  created() {
     console.log(`user role: ${this.user_role}`);
     console.log(`current_page_path: ${this.current_page_path}`);
     console.log(`user id: ${this.user_id}`);
 
-    // here update filter sort options as per user and page 
+    // here update filter sort options as per user and page
 
-    if ((this.user_role === 'student')&&(this.current_page_path === '/student-create-ticket')){
+    if (this.user_role === "student" && this.current_page_path === "/student-create-ticket") {
       // all options will be available and all users tickets checked
       this.form.sortdir = "desc";
       this.form.sortby = "votes";
     }
-    if ((this.user_role === 'student')&&(this.current_page_path === '/student-my-tickets')){
+    if (this.user_role === "student" && this.current_page_path === "/student-my-tickets") {
       // all options will be available and only current student tickets checked
       // this.form.user_id = this.user_id;
       this.search_url = this.search_url + `/${this.user_id}`;
     }
-    if ((this.user_role === 'support')&&(this.current_page_path === '/support-home')){
+    if (this.user_role === "support" && this.current_page_path === "/support-home") {
       // show all unresolved tickets, status=pending, filter on priority and tags, sort by created date and votes.
       // this.form.user_id = this.user_id;
-      this.filter_status_options = this.filter_status_options.filter(value => value.item=='pending');
-      this.form.filter_status.push('pending');
-      console.log('this.filter_status_options : ', this.filter_status_options);
+      this.filter_status_options = this.filter_status_options.filter(
+        (value) => value.item == "pending"
+      );
+      this.form.filter_status.push("pending");
+      console.log("this.filter_status_options : ", this.filter_status_options);
       this.search_url = this.search_url + `/${this.user_id}`;
     }
-    if ((this.user_role === 'support')&&(this.current_page_path === '/support-my-tickets')){
+    if (this.user_role === "support" && this.current_page_path === "/support-my-tickets") {
       // show uesr's resolved tickets, status=resolved, filter on priority and tags, sort by created date, resolved date and votes.
       // this.form.user_id = this.user_id;
-      this.filter_status_options = this.filter_status_options.filter(value => value.item=='resolved');
-      this.form.filter_status.push('resolved');
-      console.log('this.filter_status_options : ', this.filter_status_options);
+      this.filter_status_options = this.filter_status_options.filter(
+        (value) => value.item == "resolved"
+      );
+      this.form.filter_status.push("resolved");
+      console.log("this.filter_status_options : ", this.filter_status_options);
       this.search_url = this.search_url + `/${this.user_id}`;
     }
-    if ((this.user_role === 'admin')&&(this.current_page_path === '/admin-create-faq')){
+    if (this.user_role === "admin" && this.current_page_path === "/admin-create-faq") {
       // show all resolved tickets, status=resolved, filter on priority and tags, sort by created date, resolved date and votes.
       // this.form.user_id = this.user_id;
-      this.filter_status_options = this.filter_status_options.filter(value => value.item=='resolved');
-      this.form.filter_status.push('resolved');
+      this.filter_status_options = this.filter_status_options.filter(
+        (value) => value.item == "resolved"
+      );
+      this.form.filter_status.push("resolved");
       this.form.sortdir = "desc";
-      this.sort_by_options = this.sort_by_options.filter(value => value.value=='votes');
+      this.sort_by_options = this.sort_by_options.filter((value) => value.value == "votes");
       this.search_url = this.search_url + `/${this.user_id}`;
       this.form.sortby = "votes";
-      
     }
-
+    this.onSubmit();
   },
   methods: {
     onSubmit(event) {
@@ -198,7 +212,7 @@ export default {
       console.log("params: ", params);
 
       // console.log(JSON.stringify(this.form));
-      fetch(this.search_url  + "?" + params, {
+      fetch(this.search_url + "?" + params, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -239,6 +253,7 @@ export default {
       this.form.filter_priority = [];
       this.ticket_card_details = [];
       this.show = false;
+      this.onSubmit();
       this.$nextTick(() => {
         this.show = true;
       });
@@ -249,7 +264,8 @@ export default {
   },
   computed: {
     check_query() {
-      return this.form.query.length > 0 ? true : false;
+      // not being used in dev stage
+      return this.form.query.length > 0 ? true : true;
     },
   },
 

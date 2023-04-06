@@ -1,11 +1,14 @@
 <template>
     <div>
+      
       <UserNavbar :id_="3"></UserNavbar>
       
       <b-container fluid="xl">
       <b-row class="text-start">
         <b-col cols="12" sm="12" md="12">
-          <SearchTicket></SearchTicket>
+          <SearchTicket :upvote_disabled="true"
+          :delete_disabled="false"
+          :edit_disabled="false"></SearchTicket>
         </b-col>
       </b-row>
     </b-container>

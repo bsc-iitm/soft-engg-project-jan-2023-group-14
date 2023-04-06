@@ -8,6 +8,7 @@
 from flask import Flask
 from application.config import DevelopmentConfig, TestingConfig
 from application.database import db
+from application.logger import logger
 
 # from flask_bcrypt import Bcrypt
 # import email_validator
@@ -34,8 +35,10 @@ def create_app(env_type="dev"):
     app = Flask(__name__, template_folder="templates")
     if env_type == "dev":
         app.config.from_object(DevelopmentConfig)
+        logger.info("Development environment configured.")
     if env_type == "test":
         app.config.from_object(TestingConfig)
+        logger.info("Testing environment configured.")
 
     db.init_app(app)
     CORS(app, resources={r"/*": {"origins": "*"}})

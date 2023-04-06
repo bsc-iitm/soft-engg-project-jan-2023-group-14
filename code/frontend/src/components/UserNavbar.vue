@@ -25,7 +25,7 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-button id="profile_pic" :to="{ path: user_profile_page_url }"  @click="change_button_state(0)"
-            ><b-img :src="profile_pic_base64" v-bind="mainProps" alt="Profile image" style="margin: -8px -9px;"></b-img>
+            ><b-img :src="profile_pic_base64" v-bind="mainProps" alt="Profile image" style="margin: -6px -10px -12px -12px;"></b-img>
             
           </b-button>
         </b-navbar-nav>
@@ -53,20 +53,21 @@ export default {
     };
   },
   created() {
+    // console.log("User Navbar profile pic: ", this.profile_pic_base64);
     
 
     if (this.user_role === "student") {
-      this.user_url_to_fetch_data = common.STUDENT_API;
+      // this.user_url_to_fetch_data = common.STUDENT_API;
       this.user_profile_page_url = "/user-profile";
       this.nav_buttons = common.STUDENT_NAV_BUTTONS;
     }
     if (this.user_role === "support") {
-      this.user_url_to_fetch_data = common.SUPPORT_API;
+      // this.user_url_to_fetch_data = common.SUPPORT_API;
       this.user_profile_page_url = "/user-profile";
       this.nav_buttons = common.SUPPORT_NAV_BUTTONS;
     }
     if (this.user_role === "admin") {
-      this.user_url_to_fetch_data = common.ADMIN_API;
+      // this.user_url_to_fetch_data = common.ADMIN_API;
       this.user_profile_page_url = "/user-profile";
       this.nav_buttons = common.ADMIN_NAV_BUTTONS;
     }
@@ -110,20 +111,24 @@ export default {
     //       message: "Internal Server Error",
     //     });
     //   });
-      this.profile_pic_base64 = "https://blog.hubspot.com/hs-fs/hubfs/Google%20Drive%20Integration/Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg?width=650&name=Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg";
+      // this.profile_pic_base64 = "https://blog.hubspot.com/hs-fs/hubfs/Google%20Drive%20Integration/Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg?width=650&name=Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg";
       
   },
   mounted() {},
   methods: {
     change_button_state(id_) {
+      let current_title = "";
       for (let b of this.nav_buttons) {
+        
         if (b.id == id_) {
           b.active = true;
+          current_title = b.title;
         } else {
           b.active = false;
         }
       }
-      if (this.nav_buttons[id_-1].title === 'Logout') {
+      console.log("nav button: ", current_title);
+      if (current_title === 'Logout') {
         // logout pressed
         // this is temporary. logout component will be added soon
         // On logout -> delete user data

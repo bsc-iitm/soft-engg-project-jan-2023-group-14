@@ -22,9 +22,9 @@ class Auth(db.Model):
     token_created_on = db.Column(
         db.Integer, nullable=True, default=0
     )  # time is stored as a timestamp
-    token_expiry_on = db.Column(db.Integer, nullable=True)
+    token_expiry_on = db.Column(db.Integer, nullable=True, default=0)
     first_name = db.Column(db.String, nullable=False)
-    last_name = db.Column(db.String, nullable=True)
+    last_name = db.Column(db.String, nullable=True, default="")
     profile_photo_loc = db.Column(db.String, default="", nullable=True)
 
     # def __init__(self, user_id, role, email, password, first_name):
@@ -43,21 +43,21 @@ class Ticket(db.Model):
     __tablename__ = "ticket"
     ticket_id = db.Column(db.String, primary_key=True)
     title = db.Column(db.String, nullable=False)
-    description = db.Column(db.String, nullable=True)
-    solution = db.Column(db.String, nullable=True)
+    description = db.Column(db.String, nullable=True, default="")
+    solution = db.Column(db.String, nullable=True, default="")
     priority = db.Column(
         db.String, nullable=False, default="low"
     )  # low (default), medium, high
     tag_1 = db.Column(db.String, nullable=False)
-    tag_2 = db.Column(db.String, nullable=True)
-    tag_3 = db.Column(db.String, nullable=True)
+    tag_2 = db.Column(db.String, nullable=True, default="")
+    tag_3 = db.Column(db.String, nullable=True, default="")
     status = db.Column(db.String, nullable=False, default="pending")  # pending/resolved
     votes = db.Column(
         db.Integer, nullable=False, default=0
     )  # creater can't vote, 1 vote/student
     created_by = db.Column(db.String, nullable=False)
     created_on = db.Column(db.Integer, nullable=False, default=0)  # time is stored as a timestamp
-    resolved_by = db.Column(db.String, nullable=True)
+    resolved_by = db.Column(db.String, nullable=True, default="")
     resolved_on = db.Column(db.Integer, nullable=True, default=0)  # time is stored as a timestamp
 
     def __repr__(self):
@@ -93,8 +93,8 @@ class FAQ(db.Model):
     question = db.Column(db.String, nullable=False)
     solution = db.Column(db.String, nullable=False)
     tag_1 = db.Column(db.String, nullable=False)
-    tag_2 = db.Column(db.String, nullable=True)
-    tag_3 = db.Column(db.String, nullable=True)
+    tag_2 = db.Column(db.String, nullable=True, default="")
+    tag_3 = db.Column(db.String, nullable=True, default="")
     created_by = db.Column(db.String, nullable=False)
 
     def __repr__(self):
@@ -104,7 +104,7 @@ class FAQ(db.Model):
 class FAQAttachment(db.Model):
     __tablename__ = "faqattachment"
     faq_id = db.Column(db.String, db.ForeignKey("faq.faq_id"), primary_key=True)
-    attachment_loc = db.Column(db.String, default="", nullable=True)
+    attachment_loc = db.Column(db.String, nullable=False, primary_key=True)
 
     def __repr__(self):
         return f"FAQAttachment object for: {self.faq_id}"

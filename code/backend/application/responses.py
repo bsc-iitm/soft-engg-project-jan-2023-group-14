@@ -30,6 +30,7 @@ def success_200_custom(data):  # custom success response with data
     status_code = 200
     category = "success"
     logger.info(f'200 - Custom success 200 response sent')
+    # print(f'\n\nSuccess data: {data} \n\n')
     return {
         "message": data,
         "category": category,
@@ -97,7 +98,7 @@ class BadRequest(HTTPException):  # 400
 class Unauthenticated(HTTPException):  # 401
     def __init__(
         self,
-        status_code=404,
+        status_code=401,
         status_msg="Token Missing or Invalid",
         category="error",
     ):
@@ -116,7 +117,7 @@ class Unauthenticated(HTTPException):  # 401
 class PermissionDenied(HTTPException):  # 403
     def __init__(
         self,
-        status_code=404,
+        status_code=403,
         status_msg="User Does Not Have Permission",
         category="error",
     ):
@@ -154,7 +155,7 @@ class NotFoundError(HTTPException):  # 404
 class MethodNotAllowed(HTTPException):  # 405
     def __init__(
         self,
-        status_code=404,
+        status_code=405,
         status_msg="This Method Is Not Allowed",
         category="error",
     ):

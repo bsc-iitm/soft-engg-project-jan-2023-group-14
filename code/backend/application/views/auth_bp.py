@@ -14,8 +14,17 @@ from application.models import Auth
 from application.globals import TOKEN_VALIDITY
 from application.database import db
 import time
-from application.common_utils import admin_required, token_required
 from application.views.user_utils import UserUtils
+from application.common_utils import (
+    token_required,
+    admin_required,
+    users_required,
+    convert_base64_to_img,
+    convert_img_to_base64,
+    is_img_path_valid,
+    is_base64,
+    get_encoded_file_details,
+)
 
 # --------------------  Code  --------------------
 
@@ -135,6 +144,12 @@ class Login(Resource):
                         # update auth table
                         user = auth_utils.update_auth_table(details=details)
 
+                        # get profile pic
+                        profile_pic = user.profile_photo_loc
+                        img_base64 = ""
+                        if is_img_path_valid(profile_pic):
+                            img_base64 = convert_img_to_base64(profile_pic)
+
                         logger.info("User logged in.")
                         return success_200_custom(
                             data={
@@ -145,7 +160,7 @@ class Login(Resource):
                                 "first_name": user.first_name,
                                 "last_name": user.last_name,
                                 "email": user.email,
-                                "profile_photo_loc": user.profile_photo_loc,
+                                "profile_photo_loc": img_base64,
                             }
                         )
 

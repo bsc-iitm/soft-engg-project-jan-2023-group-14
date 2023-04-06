@@ -184,7 +184,7 @@ export default {
       return true;
     },
     check_retype_password() {
-      return this.form.password === this.form.retype_password ? true : false;
+      return this.form.password === this.form.retype_password && this.check_password ? true : false;
     },
   },
 };

@@ -6,11 +6,11 @@
 # --------------------  Imports  --------------------
 
 from application import create_app
-from application.globals import HOST, PORT, DEBUG
+from application.globals import HOST, PORT, DEBUG, ENV_TYPE
 
 # --------------------  Initialization  --------------------
 
-app = create_app()
+app = create_app(env_type=ENV_TYPE)
 
 from application.controllers import *
 

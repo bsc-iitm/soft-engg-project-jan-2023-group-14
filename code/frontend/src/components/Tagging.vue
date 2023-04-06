@@ -58,6 +58,7 @@
 <script>
   export default {
     name: "Tagging",
+    props: [ ],
     data() {
       return {
         options: ['Help', 'Portal Down', 'Not Submitted', 'Subject', 'Assignment', 'Activity Question'],
