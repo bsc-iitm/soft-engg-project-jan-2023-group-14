@@ -1,5 +1,5 @@
 <template>
-  <div class="user-card-container">
+  <div class="user-card-container" v-if="this.show_component"> 
     <b-list-group>
     <b-list-group-item class="d-flex justify-content-between align-items-center">
       Name: {{first_name}} {{last_name}}
@@ -22,7 +22,6 @@
   <b-list-group-item class="d-flex justify-content-between align-items-center">
       Role: {{role}}
     </b-list-group-item>
-  </b-list-group>
   </div>
 </template>
 
@@ -30,12 +29,13 @@
 import * as common from "../assets/common.js";
 export default {
   name: "UserCard",
-  props: ["n_user_id", "first_name", "last_name", "email", "role"],
+  props: ["n_user_id", "first_name", "last_name", "email", "role", "show"],
   components: {},
   data() {
     return {
     user_id: this.$store.getters.get_user_id,
     new_user_id: this.n_user_id,
+    show_component: this.show
     };
   },
   created(){
@@ -48,6 +48,7 @@ export default {
         this.new_user_id = this.n_user_id
       },
   not_verify_user: async function (event){
+    this.show_component=false
     fetch(common.AUTH_API_NEWUSERS + `/${this.new_user_id}`, {
         method: "DELETE",
         headers: {

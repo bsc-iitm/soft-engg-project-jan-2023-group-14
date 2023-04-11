@@ -18,9 +18,10 @@
 </template>
 
 <script>
-import FAQCard from "../components/FAQCard.vue";
+
 import UserNavbar from "../components/UserNavbar.vue";
 import * as common from "../assets/common.js";
+import FAQCard from "../components/FAQCard.vue";
 
 export default {
   name: "CommonFAQs",
@@ -58,15 +59,16 @@ export default {
         user_id: this.user_id,
       },
     })
-    .then((response) => response.json())
+      .then((response) => response.json())
       .then((data) => {
         this.$log.debug(`Success : ${data}`);
+        // console.log(data)
         if (data.category == "success") {
-          
           this.flashMessage.success({
-            message: "User data retrieved.",
+            message: "FAQs retrieved.",
           });
-          this.faq_card_details=data.message
+          console.log(data)
+          this.faq_card_details = data.message;
         }
         if (data.category == "error") {
           this.flashMessage.error({

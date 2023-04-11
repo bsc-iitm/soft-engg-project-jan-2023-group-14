@@ -7,12 +7,12 @@
           <h3 style="text-align: center">Create FAQ</h3>
           <FAQForm :hideReset=false :editTicket=false></FAQForm>
         </b-col>
-        <!-- <b-col cols="12" sm="6" md="6">
-          <h3 style="text-align: center">Search Tickets</h3>
+        <b-col cols="12" sm="6" md="6">
+          <h3 style="text-align: center">Most Upvoted Tickets</h3>
           <SearchTicket :upvote_disabled="false"
           :delete_disabled="true"
           :edit_disabled="true"></SearchTicket>
-        </b-col> -->
+        </b-col>
       </b-row>
     </b-container>
        

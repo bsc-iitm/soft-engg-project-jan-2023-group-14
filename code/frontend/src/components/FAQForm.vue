@@ -22,7 +22,7 @@
       <b-form-group
         ><b-form-textarea
           id="input-solution"
-          v-model="form.answer"
+          v-model="form.solution"
           type="text"
           placeholder="Enter Solution"
           :state="check_solution"
@@ -65,7 +65,7 @@ export default {
     return {
       form: {
         question: this.question ? this.question : "",
-        answer: this.answer ? this.answer : "",
+        solution: this.solution ? this.solution : "",
         tags: [],
         tag_1: "",
         tag_2: "",
@@ -168,7 +168,7 @@ export default {
       return this.form.question.length > 5 ? true : false;
     },
     check_solution(){
-      return this.form.answer.length > 5 ? true : false;
+      return this.form.solution.length > 5 ? true : false;
     }
   },
 };

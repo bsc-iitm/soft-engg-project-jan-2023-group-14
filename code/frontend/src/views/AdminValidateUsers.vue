@@ -13,6 +13,7 @@
                 :last_name= "user.last_name"
                 :email= "user.email"
                 :role= "user.role"
+                :show="true"
               ></UserCard>
             </div>
           </div>
@@ -27,6 +28,7 @@
                 :last_name= "user.last_name"
                 :email= "user.email"
                 :role= "user.role"
+                :show="true"
               ></UserCard>
             </div>
           </div>

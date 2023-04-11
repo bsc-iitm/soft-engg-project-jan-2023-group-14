@@ -75,7 +75,7 @@
     <!-- show results here -->
 
     <h3 style="text-align: center">Results</h3>
-    <div style="height: 500px; overflow: auto; padding: 10px">
+    <div style="height: 500px; overflow: auto; padding: 10px" v-if="ticket_card_details.length">
       <div v-for="ticket in ticket_card_details" :key="ticket.ticket_id">
         <TicketCard
           :ticket_id="ticket.ticket_id"
@@ -89,12 +89,16 @@
           :edit_disabled="edit_disabled"
         ></TicketCard>
       </div>
+      </div>
+      <div v-else>
+        <h5 style="text-align: center">No Tickets</h5>
+      </div>
     </div>
 
     <!-- <b- card class="mt-3" header="Form Data : Temporary">
       <pre class="m-0">{{ form }}</pre>
     </b-> -->
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
