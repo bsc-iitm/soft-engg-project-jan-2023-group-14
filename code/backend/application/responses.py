@@ -29,8 +29,7 @@ __all__ = [
 def success_200_custom(data):  # custom success response with data
     status_code = 200
     category = "success"
-    logger.info(f'200 - Custom success 200 response sent')
-    # print(f'\n\nSuccess data: {data} \n\n')
+    logger.info(f"200 - Custom success 200 response sent")
     return {
         "message": data,
         "category": category,
@@ -45,7 +44,7 @@ class Success_200(HTTPException):  # 200
         status_msg="Successful Request",
         category="success",
     ):
-        logger.info(f'{status_code} - {status_msg}')
+        logger.info(f"{status_code} - {status_msg}")
         message = {
             "message": status_msg,
             "category": category,
@@ -64,7 +63,7 @@ class Success_201(HTTPException):  # 201
         status_msg="Successful Request",
         category="success",
     ):
-        logger.info(f'{status_code} - {status_msg}')
+        logger.info(f"{status_code} - {status_msg}")
         message = {
             "message": status_msg,
             "category": category,
@@ -83,7 +82,7 @@ class BadRequest(HTTPException):  # 400
         status_msg="Invalid Data Received",
         category="error",
     ):
-        logger.info(f'{status_code} - {status_msg}')
+        logger.info(f"{status_code} - {status_msg}")
         message = {
             "message": status_msg,
             "category": category,
@@ -102,7 +101,7 @@ class Unauthenticated(HTTPException):  # 401
         status_msg="Token Missing or Invalid",
         category="error",
     ):
-        logger.info(f'{status_code} - {status_msg}')
+        logger.info(f"{status_code} - {status_msg}")
         message = {
             "message": status_msg,
             "category": category,
@@ -121,7 +120,7 @@ class PermissionDenied(HTTPException):  # 403
         status_msg="User Does Not Have Permission",
         category="error",
     ):
-        logger.info(f'{status_code} - {status_msg}')
+        logger.info(f"{status_code} - {status_msg}")
         message = {
             "message": status_msg,
             "category": category,
@@ -140,7 +139,7 @@ class NotFoundError(HTTPException):  # 404
         status_msg="Data Not Found",
         category="error",
     ):
-        logger.info(f'{status_code} - {status_msg}')
+        logger.info(f"{status_code} - {status_msg}")
         message = {
             "message": status_msg,
             "category": category,
@@ -159,7 +158,7 @@ class MethodNotAllowed(HTTPException):  # 405
         status_msg="This Method Is Not Allowed",
         category="error",
     ):
-        logger.info(f'{status_code} - {status_msg}')
+        logger.info(f"{status_code} - {status_msg}")
         message = {
             "message": status_msg,
             "category": category,
@@ -178,7 +177,7 @@ class AlreadyExistError(HTTPException):  # 409
         status_msg="Data Already Exist",
         category="error",
     ):
-        logger.info(f'{status_code} - {status_msg}')
+        logger.info(f"{status_code} - {status_msg}")
         message = {
             "message": status_msg,
             "category": category,
@@ -197,7 +196,7 @@ class InternalServerError(HTTPException):  # 500
         status_msg="Internal Server Error",
         category="error",
     ):
-        logger.info(f'{status_code} - {status_msg}')
+        logger.info(f"{status_code} - {status_msg}")
         message = {
             "message": status_msg,
             "category": category,

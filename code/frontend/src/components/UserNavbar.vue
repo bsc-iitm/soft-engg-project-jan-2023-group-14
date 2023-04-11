@@ -24,9 +24,16 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-button id="profile_pic" :to="{ path: user_profile_page_url }"  @click="change_button_state(0)"
-            ><b-img :src="profile_pic_base64" v-bind="mainProps" alt="Profile image" style="margin: -6px -10px -12px -12px;"></b-img>
-            
+          <b-button
+            id="profile_pic"
+            :to="{ path: user_profile_page_url }"
+            @click="change_button_state(0)"
+            ><b-img
+              :src="profile_pic_base64"
+              v-bind="mainProps"
+              alt="Profile image"
+              style="margin: -6px -10px -12px -12px"
+            ></b-img>
           </b-button>
         </b-navbar-nav>
       </b-collapse>
@@ -53,21 +60,15 @@ export default {
     };
   },
   created() {
-    // console.log("User Navbar profile pic: ", this.profile_pic_base64);
-    
-
     if (this.user_role === "student") {
-      // this.user_url_to_fetch_data = common.STUDENT_API;
       this.user_profile_page_url = "/user-profile";
       this.nav_buttons = common.STUDENT_NAV_BUTTONS;
     }
     if (this.user_role === "support") {
-      // this.user_url_to_fetch_data = common.SUPPORT_API;
       this.user_profile_page_url = "/user-profile";
       this.nav_buttons = common.SUPPORT_NAV_BUTTONS;
     }
     if (this.user_role === "admin") {
-      // this.user_url_to_fetch_data = common.ADMIN_API;
       this.user_profile_page_url = "/user-profile";
       this.nav_buttons = common.ADMIN_NAV_BUTTONS;
     }
@@ -79,47 +80,12 @@ export default {
         b.active = false;
       }
     }
-    
-
-    // fetch(this.user_url_to_fetch_data, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     web_token: this.$store.getters.get_web_token,
-    //     user_id: this.user_id,
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     this.$log.debug(`Success : ${data}`);
-    //     if (data.category == "success") {
-    //       this.flashMessage.success({
-    //         message: "User data retrieved",
-    //       });
-    //       // data.message will contain user profile pic in base64 format
-    //       this.profile_pic_base64 = data.message["profile_photo_loc"];
-    //     }
-    //     if (data.category == "error") {
-    //       this.flashMessage.error({
-    //         message: data.message,
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     this.$log.debug(`Error : ${error}`);
-    //     this.flashMessage.error({
-    //       message: "Internal Server Error",
-    //     });
-    //   });
-      // this.profile_pic_base64 = "https://blog.hubspot.com/hs-fs/hubfs/Google%20Drive%20Integration/Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg?width=650&name=Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg";
-      
   },
   mounted() {},
   methods: {
     change_button_state(id_) {
       let current_title = "";
       for (let b of this.nav_buttons) {
-        
         if (b.id == id_) {
           b.active = true;
           current_title = b.title;
@@ -127,10 +93,8 @@ export default {
           b.active = false;
         }
       }
-      console.log("nav button: ", current_title);
-      if (current_title === 'Logout') {
+      if (current_title === "Logout") {
         // logout pressed
-        // this is temporary. logout component will be added soon
         // On logout -> delete user data
         this.$store.dispatch("set_state_after_logout", {});
         this.$router.push("/login");
@@ -169,7 +133,7 @@ nav a.router-link-exact-active {
 
 #profile_pic:hover {
   border: none;
-  color: white; 
+  color: white;
 }
 
 router-link {

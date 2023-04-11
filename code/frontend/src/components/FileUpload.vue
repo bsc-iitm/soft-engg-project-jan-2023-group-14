@@ -7,10 +7,6 @@
       </label>
       <br />
       <p style="font-size: 12px">Only <code>.jpg, .png, .gif</code> formats are allowed</p>
-      <!-- <div class="mt-2">
-        Selected files:
-        <span v-for="(file, index) in form.attachments" :key="index">{{ file ? file.name : "" }}</span>
-      </div> -->
     </div>
   </div>
 </template>
@@ -23,7 +19,7 @@ export default {
   data() {
     return {
       attachments: [],
-      attach_label:this.$route.path==='/user-profile'? "Upload photo" : "Upload files",
+      attach_label: this.$route.path === "/user-profile" ? "Upload photo" : "Upload files",
       user_id: this.$store.getters.get_user_id,
     };
   },
@@ -40,21 +36,15 @@ export default {
     checkFileExtension() {},
     handleFileUpload: async function (event) {
       const files = event.target.files;
-      console.log("files length: ", files.length);
       this.attachments = [];
       for (let i = 0; i < files.length; i++) {
         try {
           const result = await this.fileToBase64(files[i]);
-          console.log("pushing ", i, "element");
           let attach = {
-            user_id: this.user_id, 
-            attachment_loc: result
-            }
+            user_id: this.user_id,
+            attachment_loc: result,
+          };
           this.attachments.push(attach);
-          console.log("length ", this.attachments.length);
-          // console.log('inside file upload')
-          // console.log('form image: ', JSON.stringify(this.form), '---------');
-
           this.$emit("file_uploading", this.attachments);
         } catch (error) {
           console.error(error);

@@ -54,6 +54,7 @@ export default {
     onSubmit: async function (event) {
       event.preventDefault();
       this.$log.info("Submitting login form");
+      this.form.password = btoa(this.form.password);
 
       fetch(common.AUTH_API_LOGIN, {
         method: "POST",
@@ -64,18 +65,13 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          this.$log.debug(`Success : ${data}`);
           if (data.category == "success") {
             this.flashMessage.success({
               message: "Successfully logged in.",
             });
-            console.log(JSON.stringify(data));
 
             // update store
             this.$store.dispatch("set_state_after_login", data.message);
-
-            console.log("State after setting user: ", JSON.stringify(this.$store.state));
-
             this.$router.push(`/${data.message.role}-home`); //home page depends on role
           }
           if (data.category == "error") {
@@ -104,33 +100,4 @@ export default {
 };
 </script>
 
-<style>
-/* Extra styling is under process. Rest is functioning. */
-/* .login-div {
-   margin-top: 5%; 
-  margin-left: 10%; 
-  margin-right: 5%;  
-  text-align: "left";
-  height: 100vh;
-  background-color:  #D9AFD9;
-  background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
-
-} */
-/*
-.login-form {
-   box-shadow: 2px 4px 5px 5px #dbdada; 
-  width: 50%;
-  padding-top: 5%; 
-  margin-left: 10%; 
-  margin-right: 5%;
-  background-color: rgb(224, 223, 223);
-  margin: 12px 5px;
-}
-*/
-/*
-.login-form:hover {
-   box-shadow: 5px 8px 8px 10px #888888; 
-  background-color: rgb(255, 255, 255);
-}
-*/
-</style>
+<style></style>

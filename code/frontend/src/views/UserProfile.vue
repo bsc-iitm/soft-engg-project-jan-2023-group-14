@@ -53,7 +53,6 @@
                   type="password"
                   :state="check_password"
                   aria-describedby="input-live-feedback-password"
-                  
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-live-feedback-password">
                   Password should contain letters A-Z a-z and numbers 0-9 only and should be atleast
@@ -69,7 +68,6 @@
                   type="password"
                   :state="check_retype_password"
                   aria-describedby="input-live-feedback-retype-password"
-                  
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-live-feedback-retype-password">
                   Password did not match.
@@ -94,10 +92,6 @@
         </b-col>
       </b-row>
     </b-container>
-
-    <!-- <b-card class="mt-3" header="Form Data : Temporary">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card> -->
   </div>
 </template>
 
@@ -114,7 +108,6 @@ export default {
       imageProps: { width: 250, height: 250, center: true },
       user_role: this.$store.getters.get_user_role,
       user_id: this.$store.getters.get_user_id,
-      // profile_pic_base64: this.$store.getters.get_user_profile_pic,
       user_url_to_fetch_data: "",
       form: {
         first_name: "",
@@ -129,7 +122,6 @@ export default {
   },
   created() {
     const user = this.$store.getters.get_user;
-    console.log("user:", user);
     this.form.first_name = user.first_name;
     this.form.last_name = user.last_name;
     this.form.email = user.email;
@@ -143,7 +135,6 @@ export default {
     if (this.user_role === "admin") {
       this.user_url_to_fetch_data = common.ADMIN_API + `/${this.user_id}`;
     }
-
   },
   methods: {
     onSubmit(event) {
@@ -151,23 +142,25 @@ export default {
       alert('You are updating your profile. Click "Ok" to proceed?');
       this.$log.info("Submitting update profile form");
 
+      this.form.password = btoa(this.form.password);
+      this.form.retype_password = btoa(this.form.retype_password);
+
       fetch(this.user_url_to_fetch_data, {
         method: "Put",
         headers: {
           "Content-Type": "application/json",
           web_token: this.$store.getters.get_web_token,
-            user_id: this.$store.getters.get_user_id,
+          user_id: this.$store.getters.get_user_id,
         },
         body: JSON.stringify(this.form),
       })
         .then((response) => response.json())
         .then((data) => {
-          this.$log.debug(`Success : ${data}`);
           if (data.category == "success") {
             this.flashMessage.success({
               message: data.message,
             });
-            
+
             // update store
             this.$store.dispatch("set_state_after_profile_update", this.form);
             this.$forceUpdate();
@@ -194,9 +187,6 @@ export default {
       this.form.password = "";
       this.form.retype_password = "";
       this.form.profile_photo_loc = this.$store.getters.get_user_profile_pic;
-      // this.form.profile_photo_loc =
-      //   "https://blog.hubspot.com/hs-fs/hubfs/Google%20Drive%20Integration/Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg?width=650&name=Untitled%20document-Mar-24-2021-04-57-46-58-PM.jpeg";
-      // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
         this.show = true;
@@ -204,11 +194,7 @@ export default {
       this.$forceUpdate();
     },
     onFileUpload(value) {
-      // console.log(value, typeof value, value[0], typeof value[0]);
       this.form.profile_photo_loc = value[0].attachment_loc;
-      console.log(typeof this.form.profile_photo_loc);
-      // console.log(this.form.profile_photo_loc.slice(0, 50));
-      // this.profile_pic_base64 = this.form.profile_photo_loc;
     },
   },
   computed: {
@@ -216,7 +202,6 @@ export default {
       return this.form.first_name.length > 2 ? true : false;
     },
     check_password() {
-      console.log("inside check password");
       let password = this.form.password;
       if (password.length < 4 || password.length > 9) {
         return false;

@@ -5,25 +5,21 @@
 
 # --------------------  Imports  --------------------
 
+import os
 from flask import Blueprint, request
-from flask import current_app as app
 from flask_restful import Api, Resource
 from application.logger import logger
 from application.responses import *
 from application.models import Auth
-from application.globals import TOKEN_VALIDITY
+from application.globals import TOKEN_VALIDITY, BACKEND_ROOT_PATH
 from application.database import db
 import time
 from application.views.user_utils import UserUtils
 from application.common_utils import (
     token_required,
     admin_required,
-    users_required,
-    convert_base64_to_img,
     convert_img_to_base64,
     is_img_path_valid,
-    is_base64,
-    get_encoded_file_details,
 )
 
 # --------------------  Code  --------------------
@@ -146,6 +142,14 @@ class Login(Resource):
 
                         # get profile pic
                         profile_pic = user.profile_photo_loc
+                        if profile_pic == "":
+                            profile_pic = os.path.join(
+                                BACKEND_ROOT_PATH,
+                                "databases",
+                                "images",
+                                "profile_pics",
+                                "dummy_profile.png",
+                            )
                         img_base64 = ""
                         if is_img_path_valid(profile_pic):
                             img_base64 = convert_img_to_base64(profile_pic)
@@ -219,7 +223,7 @@ class Register(Resource):
             for key in details:
                 value = form.get(key, "")
                 details[key] = value
-                if auth_utils.is_blank(value) and key != 'last_name':
+                if auth_utils.is_blank(value) and key != "last_name":
                     raise BadRequest(status_msg=f"{key} is empty or invalid")
             details["operation"] = "register"
 

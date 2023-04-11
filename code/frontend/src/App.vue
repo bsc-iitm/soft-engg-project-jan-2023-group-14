@@ -1,23 +1,23 @@
 <template>
   <div id="app">
-    <FlashMessage :position="'left bottom'" style="font-size: 15px; position:relative; z-index:10000;" />
-    <!-- <LoginView v-if="$route.name == 'login'"></LoginView> -->
+    <FlashMessage
+      :position="'left bottom'"
+      style="font-size: 15px; position: relative; z-index: 10000"
+    />
     <router-view />
   </div>
 </template>
 
 <script>
-import LoginView from "./views/LoginView.vue";
-
 export default {
-  components: { },
+  components: {},
   data() {
     return {};
   },
   beforeCreate() {
-    console.log('Creating app.');
-		this.$store.commit('initialiseStore');
-	},
+    console.log("Creating app.");
+    this.$store.commit("initialiseStore");
+  },
   mounted() {},
   methods: {},
   computed: {},

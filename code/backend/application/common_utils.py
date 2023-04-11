@@ -1,7 +1,8 @@
 # Online Support Ticket Application
 # Tushar Supe : 21f1003637
 # Vaidehi Agarwal: 21f1003880
-# File Info: This is common utils file. All common and independent functions will be here.
+# File Info: This is common utils file. All common and
+# independent functions will be here.
 
 # --------------------  Imports  --------------------
 
@@ -34,11 +35,11 @@ def token_required(f):
                         backend_token = user.web_token
                         if frontend_token == backend_token:
                             # token is correct
-                            print("\n\n Token is verified \n\n")
+                            logger.info(
+                                f"Token is verified for the user: {user_id_rec}"
+                            )
                             return f(*args, **kwargs)
                         else:
-                            print(f'frontend_token: {frontend_token}')
-                            print(f'backend_token: {backend_token}')
                             raise Unauthenticated(status_msg="Token is incorrect")
                     else:
                         # token is empty
@@ -67,7 +68,7 @@ def admin_required(f):
             role = Auth.query.filter_by(user_id=user_id_rec).first().role
             if role == "admin":
                 # role verified
-                print("\n\n Admin role is verified \n\n")
+                logger.info(f"Admin role is verified for the user: {user_id_rec}")
                 return f(*args, **kwargs)
             else:
                 raise Unauthenticated(
@@ -94,7 +95,9 @@ def users_required(users):
                     role = user.role
                     if role in users:
                         # role verified
-                        print(f"\n\n {role} role is verified \n\n")
+                        logger.info(
+                            f"User role : {role} : is verified for the user: {user_id_rec}"
+                        )
                         return f(*args, **kwargs)
                     else:
                         raise Unauthenticated(status_msg="Access denied.")
@@ -106,68 +109,67 @@ def users_required(users):
     return decorator
 
 
-def is_img_path_valid(img_path:str)->str:
+def is_img_path_valid(img_path: str) -> str:
     if os.path.isfile(img_path):
         if img_path.endswith(tuple(ACCEPTED_IMAGE_EXTENSIONS)):
             return True
         else:
-            logger.info(f'File extension is not valid : {img_path}')
+            logger.info(f"File extension is not valid : {img_path}")
     else:
-        logger.info(f'File path is not valid: {img_path}')
+        logger.info(f"File path is not valid: {img_path}")
     return False
 
-def convert_img_to_base64(img_path:str)->str:
+
+def convert_img_to_base64(img_path: str) -> str:
     try:
         with open(img_path, "rb") as img:
             img_base64 = base64.b64encode(img.read())
-        img_base64 = str(img_base64, 'UTF-8')
+        img_base64 = str(img_base64, "UTF-8")
         extension = img_path.split(".")[-1]
         img_base64 = f"data:image/{extension};base64," + img_base64
         return img_base64
     except Exception as e:
-        resp = f'Unknown error occured while converting image to base64: {e}'
+        resp = f"Unknown error occured while converting image to base64: {e}"
         logger.error(resp)
-        print(resp)
         return ""
-    
-def convert_base64_to_img(img_path:str, img_base64:str)->bool:
+
+
+def convert_base64_to_img(img_path: str, img_base64: str) -> bool:
     try:
         with open(img_path, "wb") as img:
             img.write(base64.b64decode(img_base64))
         return True
     except Exception as e:
-        resp = f'Unknown error occured while converting base64 to image: {e}'
+        resp = f"Unknown error occured while converting base64 to image: {e}"
         logger.error(resp)
-        print(resp)
         return False
-    
-def is_base64(string:str)->bool:
+
+
+def is_base64(string: str) -> bool:
     # check if string is base 64 encoded
-    try: 
+    try:
         decoded_string = base64.b64decode(string)
         encoded_string = base64.b64encode(decoded_string)
         # encoded_string is in bytes format
-        encoded_string = str(encoded_string, 'UTF-8')
+        encoded_string = str(encoded_string, "UTF-8")
         if encoded_string == string:
             return True
-        else: 
-            print(string[:50], encoded_string[:50])
-            print('String is not base64 encoded')
+        else:
             return False
     except Exception as e:
-        logger.error('Error occured while checking string encode format: {e}')
+        logger.error("Error occured while checking string encode format: {e}")
         return False
-    
 
-def get_encoded_file_details(file_base64:str):
+
+def get_encoded_file_details(file_base64: str):
     # file type is whether its image or else
     # file format is like jpeg, jpg, png
     # encoded data is file encoding in base64
     # sample: "data:image/jpeg;base64,/9....."
 
-    encoding_metadata, encoded_data = file_base64.split(',')[0:2]
-    encoding_metadata = encoding_metadata.split(';')[0].split(':')[1]
-    file_type, file_format = encoding_metadata.split('/')[:2]
+    encoding_metadata, encoded_data = file_base64.split(",")[0:2]
+    encoding_metadata = encoding_metadata.split(";")[0].split(":")[1]
+    file_type, file_format = encoding_metadata.split("/")[:2]
     return file_type, file_format, encoded_data
 
 

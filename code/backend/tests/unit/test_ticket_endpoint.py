@@ -6,7 +6,6 @@
 # --------------------  Imports  --------------------
 
 from application.globals import API_VERSION
-import time
 from conftest import (
     student_user_id,
     student_web_token,
@@ -36,7 +35,6 @@ def test_all_tickets_with_fixture_get_200_success(test_client):
         headers=headers,
     )
     response = response.get_json()
-    print(student_web_token)
     assert response["status"] == 200
     assert type(response["message"]) == list
 
@@ -183,6 +181,7 @@ def test_ticket_api_with_fixture_post_200_success(test_client):
     response = response.get_json()
     assert response["status"] == 200
     assert "Ticket created" in response["message"]
+
 
 def test_ticket_api_with_fixture_get_200_success(test_client):
     """

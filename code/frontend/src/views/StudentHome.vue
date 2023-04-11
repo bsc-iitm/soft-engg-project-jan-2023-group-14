@@ -18,6 +18,7 @@
                 :upvote_disabled="true"
                 :delete_disabled="false"
                 :edit_disabled="false"
+                :is_resolved="false"
               ></TicketCard>
             </div>
           </div>
@@ -61,9 +62,8 @@ export default {
     };
     let params = "";
     params = new URLSearchParams(form).toString();
-    console.log("params: ", params);
 
-    fetch(common.STUDENT_API + `/${this.user_id}` , {
+    fetch(common.STUDENT_API + `/${this.user_id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +73,6 @@ export default {
     })
       .then((response) => response.json())
       .then((data) => {
-        this.$log.debug(`Success : ${data}`);
         if (data.category == "success") {
           this.flashMessage.success({
             message: "User data retrieved.",
@@ -82,7 +81,6 @@ export default {
           this.n_tickets_resolved = data.message.n_tickets_resolved;
           this.n_tickets_pending = data.message.n_tickets_pending;
           this.n_tickets_upvoted = data.message.n_tickets_upvoted;
-          this.ticket_card_details = data.message;
         }
         if (data.category == "error") {
           this.flashMessage.error({
@@ -97,7 +95,7 @@ export default {
         });
       });
 
-      fetch(common.TICKET_API_ALLTICKETS + `/${this.user_id}` + "?" + params, {
+    fetch(common.TICKET_API_ALLTICKETS + `/${this.user_id}` + "?" + params, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -107,14 +105,12 @@ export default {
     })
       .then((response) => response.json())
       .then((data) => {
-        this.$log.debug(`Success : ${data}`);
         if (data.category == "success") {
           this.flashMessage.success({
             message: "Tickets retrieved.",
           });
 
           this.ticket_card_details = data.message;
-          console.log('total unresolved tickets: ', this.ticket_card_details.length);
         }
         if (data.category == "error") {
           this.flashMessage.error({

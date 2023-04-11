@@ -1,80 +1,105 @@
 <template>
   <div>
     <template v-if="ticket_id">
-    <b-container class="ticket-card-container" v-show="!ticket_deleted" :style="[((user_id==created_by)&&($route.path=='/student-create-ticket')) ? {'background-color': 'rgb(225, 245, 250)'} : {'background-color': 'rgb(251, 252, 252)'} ]">
-      <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-      <b-row class="row" @click="getTicketDetails">
-        <b-col class="col" cols="12" lg="5" sm="12"><i>Id: </i>{{ ticket_id.slice(0, 15) }}</b-col>
-        <b-col class="col" cols="12" lg="5" sm="8"><i>Created On: </i>{{ created_on }}</b-col>
-        <b-col class="col" cols="12" lg="2" sm="4"><i>Votes: </i>{{ votes }}</b-col>
-      </b-row>
-      <b-row class="row">
-        <b-col class="col" cols="12" sm="10" lg="11" @click="getTicketDetails">
-          <b-row class="row">
-            <b-col class="col" cols="12"><b>Title: </b>{{ title.slice(0, 80) }}</b-col>
-          </b-row>
-          <b-row class="row">
-            <b-col class="col" cols="12"><b>Description: </b>{{ description.slice(0, 200) }}</b-col>
-          </b-row>
-        </b-col>
-        <b-col class="col" cols="12" sm="2" lg="1">
-          <b-row class="row">
-            <b-col class="col" cols="4" sm="12" lg="12">
-              <b-button
-                @click="upvoteTicket"
-                variant="outline-light"
-                size="sm"
-                class="ticket-card-buttons"
-                :disabled="upvote_disabled"
-                v-show="upvote_disabled ? !upvote_disabled : !(user_id==created_by)"
-                ><b-icon
-                  icon="heart-fill"
-                  aria-hidden="true"
-                  class="bg-light"
-                  variant="success"
-                ></b-icon>
-              </b-button>
-            </b-col>
+      <b-container
+        class="ticket-card-container"
+        v-show="!ticket_deleted"
+        :style="[
+          user_id == created_by && $route.path == '/student-create-ticket'
+            ? { 'background-color': 'rgb(225, 245, 250)' }
+            : { 'background-color': 'rgb(251, 252, 252)' },
+        ]"
+      >
+        <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+        <b-row class="row" @click="getTicketDetails">
+          <b-col class="col" cols="12" lg="5" sm="12"
+            ><i>Id: </i>{{ ticket_id.slice(0, 15) }}</b-col
+          >
+          <b-col class="col" cols="12" lg="5" sm="8"><i>Created On: </i>{{ created_on }}</b-col>
+          <b-col class="col" cols="12" lg="2" sm="4"><i>Votes: </i>{{ votes }}</b-col>
+        </b-row>
+        <b-row class="row">
+          <b-col class="col" cols="12" sm="10" lg="11" @click="getTicketDetails">
+            <b-row class="row">
+              <b-col class="col" cols="12"><b>Title: </b>{{ title.slice(0, 80) }}</b-col>
+            </b-row>
+            <b-row class="row">
+              <b-col class="col" cols="12"
+                ><b>Description: </b>{{ description.slice(0, 200) }}</b-col
+              >
+            </b-row>
+          </b-col>
+          <b-col class="col" cols="12" sm="2" lg="1">
+            <b-row class="row">
+              <b-col class="col" cols="4" sm="12" lg="12">
+                <b-button
+                  @click="upvoteTicket"
+                  variant="outline-light"
+                  size="sm"
+                  class="ticket-card-buttons"
+                  :disabled="upvote_disabled"
+                  v-show="
+                    upvote_disabled
+                      ? !upvote_disabled
+                      : user_id !== created_by && user_role == 'student' && !is_resolved
+                  "
+                  ><b-icon
+                    icon="heart-fill"
+                    aria-hidden="true"
+                    class="bg-light"
+                    variant="success"
+                  ></b-icon>
+                </b-button>
+              </b-col>
 
-            <b-col class="col" cols="4" sm="12" lg="12"
-              ><b-button
-                @click="showEditTicketModal"
-                variant="outline-light"
-                size="sm"
-                class="ticket-card-buttons"
-                :disabled="edit_disabled"
-                v-show="!edit_disabled"
-                ><b-icon
-                  icon="pencil-fill"
-                  aria-hidden="true"
-                  class="bg-light"
-                  variant="primary"
-                ></b-icon
-              ></b-button>
-            </b-col>
+              <b-col class="col" cols="4" sm="12" lg="12"
+                ><b-button
+                  @click="showEditTicketModal"
+                  variant="outline-light"
+                  size="sm"
+                  class="ticket-card-buttons"
+                  :disabled="edit_disabled"
+                  v-show="
+                    edit_disabled
+                      ? !edit_disabled
+                      : (user_id == created_by || user_role == 'support') && !is_resolved
+                  "
+                  ><b-icon
+                    icon="pencil-fill"
+                    aria-hidden="true"
+                    class="bg-light"
+                    variant="primary"
+                  ></b-icon
+                ></b-button>
+              </b-col>
 
-            <b-col class="col" cols="4" sm="12" lg="12"
-              ><b-button
-                @click="showDeleteTicketModal"
-                variant="outline-light"
-                size="sm"
-                class="ticket-card-buttons"
-                :disabled="delete_disabled"
-                v-show="!delete_disabled"
-                ><b-icon
-                  icon="trash-fill"
-                  aria-hidden="true"
-                  class="bg-light"
-                  variant="danger"
-                ></b-icon></b-button
-            ></b-col>
-          </b-row>
-        </b-col>
-      </b-row>
-    </b-container>
+              <b-col class="col" cols="4" sm="12" lg="12"
+                ><b-button
+                  @click="showDeleteTicketModal"
+                  variant="outline-light"
+                  size="sm"
+                  class="ticket-card-buttons"
+                  :disabled="delete_disabled"
+                  v-show="delete_disabled ? !delete_disabled : user_id == created_by"
+                  ><b-icon
+                    icon="trash-fill"
+                    aria-hidden="true"
+                    class="bg-light"
+                    variant="danger"
+                  ></b-icon></b-button
+              ></b-col>
+            </b-row>
+          </b-col>
+        </b-row>
+      </b-container>
     </template>
 
-    <b-modal :id="show_ticket_modal_id" @cancel="$bvModal.hide(show_ticket_modal_id)" size="xl" scrollable>
+    <b-modal
+      :id="show_ticket_modal_id"
+      @cancel="$bvModal.hide(show_ticket_modal_id)"
+      size="xl"
+      scrollable
+    >
       <template #modal-header="{ cancel }">
         <span style="font-size: 20px">Ticket ID: {{ ticket_id }}</span>
         <b-button size="sm" variant="outline-danger" @click="cancel()"> Close </b-button>
@@ -142,7 +167,13 @@
       </template>
     </b-modal>
 
-    <b-modal :id="delete_ticket_modal_id" @cancel="$bvModal.hide(delete_ticket_modal_id)" @ok="deleteTicket"  size="sm" scrollable>
+    <b-modal
+      :id="delete_ticket_modal_id"
+      @cancel="$bvModal.hide(delete_ticket_modal_id)"
+      @ok="deleteTicket"
+      size="sm"
+      scrollable
+    >
       <template #modal-header="{ cancel }">
         <span style="font-size: 20px">Delete Ticket ?</span>
         <b-button size="sm" variant="outline-danger" @click="cancel()"> Close </b-button>
@@ -154,7 +185,12 @@
       </template>
     </b-modal>
 
-    <b-modal :id="edit_ticket_modal_id" @cancel="$bvModal.hide(edit_ticket_modal_id)" size="xl" scrollable>
+    <b-modal
+      :id="edit_ticket_modal_id"
+      @cancel="$bvModal.hide(edit_ticket_modal_id)"
+      size="xl"
+      scrollable
+    >
       <template #modal-header="{ cancel }">
         <span style="font-size: 20px">Ticket ID: {{ ticket_id }}</span>
         <b-button size="sm" variant="outline-danger" @click="cancel()"> Close </b-button>
@@ -163,14 +199,22 @@
       <div class="d-block text-left">
         <h5 style="text-align: center">Edit Ticket Details</h5>
         <!-- display as a table -->
-        <TicketForm :ticket_id=ticket_id :title=title :description=description :priority=priority :tags=tags :hideReset=true :editTicket=true></TicketForm>
+        <TicketForm
+          :ticket_id="ticket_id"
+          :title="title"
+          :description="description"
+          :priority="priority"
+          :tags="tags"
+          :hideReset="true"
+          :editTicket="true"
+          @ticketResolved="ticketResolvedFn"
+        ></TicketForm>
       </div>
 
       <template #modal-footer="{ cancel }">
         <b-button size="sm" variant="secondary" @click="cancel()"> Cancel </b-button>
       </template>
     </b-modal>
-
   </div>
 </template>
 
@@ -190,12 +234,14 @@ export default {
     "upvote_disabled",
     "delete_disabled",
     "edit_disabled",
+    "is_resolved",
   ],
   components: { TicketForm },
   data() {
     return {
       button_1_active: false,
       user_id: this.$store.getters.get_user_id,
+      user_role: this.$store.getters.get_user_role,
       show_ticket_modal_id: "show_ticket_modal_" + this.ticket_id,
       edit_ticket_modal_id: "edit_ticket_modal_" + this.ticket_id,
       delete_ticket_modal_id: "delete_ticket_modal_" + this.ticket_id,
@@ -212,19 +258,12 @@ export default {
       ticket_deleted: false,
     };
   },
-  created() {
-    // if (!this.upvote_disabled && (this.$store.getters.get_user_id == this.created_by)) {
-    //   this.upvote_disabled = true;
-    // }
-    // console.log("ticket_id: ", this.ticket_id, typeof this.ticket_id);
-    // console.log("created_on: ", this.created_on, typeof this.created_on);
-    // console.log("created_on: ", this.created_by, typeof this.created_by);
-    // console.log("title: ", this.title, typeof this.title);
-    // console.log("description: ", this.description, typeof this.description);
-    // console.log("votes: ", this.votes, typeof this.votes);
-  },
+  created() {},
   mounted() {},
   methods: {
+    ticketResolvedFn() {
+      this.ticket_deleted = true; // its not deletd, its resolved , so its hidden
+    },
     getTicketDetails() {
       fetch(common.TICKET_API + `/${this.ticket_id}` + `/${this.created_by}`, {
         method: "GET",
@@ -236,7 +275,6 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          this.$log.debug(`Success : ${data}`);
           if (data.category == "success") {
             // load data
             this.title = data.message.title;
@@ -251,9 +289,15 @@ export default {
             this.tag_2 = data.message.tag_2 ? ", " + data.message.tag_2 : "";
             this.tag_3 = data.message.tag_3 ? ", " + data.message.tag_3 : "";
             this.tags = [];
-            if (this.tag_1) {this.tags.push(this.tag_1);}
-            if (this.tag_2) {this.tags.push(this.tag_2);}
-            if (this.tag_3) {this.tags.push(this.tag_3);}
+            if (this.tag_1) {
+              this.tags.push(this.tag_1);
+            }
+            if (this.tag_2) {
+              this.tags.push(this.tag_2);
+            }
+            if (this.tag_3) {
+              this.tags.push(this.tag_3);
+            }
             this.attachments = data.message.attachments;
           }
           if (data.category == "error") {
@@ -273,19 +317,15 @@ export default {
       this.showTicketModal();
     },
     showTicketModal() {
-      console.log("showTicketModal clicked");
       this.$bvModal.show(this.show_ticket_modal_id);
     },
-    showDeleteTicketModal(){
-      console.log("showDeleteTicketModal clicked");
+    showDeleteTicketModal() {
       this.$bvModal.show(this.delete_ticket_modal_id);
     },
-    showEditTicketModal(){
-      console.log("showEditTicketModal clicked");
+    showEditTicketModal() {
       this.$bvModal.show(this.edit_ticket_modal_id);
     },
     upvoteTicket() {
-      console.log("upvoteTicket clicked");
       if (this.user_id == this.created_by) {
         this.flashMessage.error({
           message: "Can't upvote own ticket.",
@@ -302,7 +342,6 @@ export default {
         })
           .then((response) => response.json())
           .then((data) => {
-            this.$log.debug(`Success : ${data}`);
             if (data.category == "success") {
               this.flashMessage.success({
                 message: data.message,
@@ -323,7 +362,6 @@ export default {
       }
     },
     deleteTicket() {
-      
       fetch(common.TICKET_API + `/${this.ticket_id}` + `/${this.user_id}`, {
         method: "DELETE",
         headers: {
@@ -334,7 +372,6 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          this.$log.debug(`Success : ${data}`);
           if (data.category == "success") {
             this.ticket_deleted = true;
             this.flashMessage.success({
@@ -353,10 +390,6 @@ export default {
             message: "Internal Server Error",
           });
         });
-      
-    },
-    editTicket() {
-      // edit ticket fetch request
     },
   },
   computed: {},
@@ -365,29 +398,20 @@ export default {
 
 <style scoped>
 .ticket-card-container {
-  /* border: 1px solid rgb(0, 0, 0); */
   box-shadow: 2px 4px 5px 5px #dbdada;
   background-color: rgb(251, 252, 252);
   margin: 12px 5px;
 }
 .ticket-card-container:hover {
-  /* border: 1px solid rgb(0, 0, 0); */
   box-shadow: 5px 8px 8px 10px #888888;
   background-color: rgb(255, 255, 255);
 }
 .row {
-  /* border: 1px solid rgb(0, 0, 255); */
-  /* margin: 3px auto; */
   padding-top: 5px;
   padding-bottom: 5px;
 }
-/* .col {
-  border: 1px solid red;
-} */
-
 .ticket-card-buttons {
   border-color: #ffffff;
-  /* box-shadow: 3px 3px 8px 10px #888888; */
 }
 .ticket-card-buttons:hover:not([disabled]) {
   border-color: #95ddfa;

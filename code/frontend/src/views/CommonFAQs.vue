@@ -8,7 +8,11 @@
           <h3 style="text-align: center">Frequently Asked Questions</h3>
           <div style="height: 550px; overflow: auto; padding: 10px">
             <div v-for="faq in faq_card_details" :key="faq.faq_id">
-              <FAQCard :faq_id="faq.faq_id" :question="faq.question" :answer="faq.answer"></FAQCard>
+              <FAQCard
+                :faq_id="faq.faq_id"
+                :question="faq.question"
+                :answer="faq.solution"
+              ></FAQCard>
             </div>
           </div>
         </b-col>
@@ -20,35 +24,16 @@
 <script>
 import FAQCard from "../components/FAQCard.vue";
 import UserNavbar from "../components/UserNavbar.vue";
+import * as common from "../assets/common.js";
 
 export default {
   name: "CommonFAQs",
   components: { UserNavbar, FAQCard },
   data() {
     return {
-      id_: "",
-      faq_card_details: [
-        {
-          faq_id: 1,
-          question:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the",
-          answer:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-        },
-        {
-          faq_id: 2,
-          question: "Lorem Ipsum is simply dummy text of the printeen the.",
-          answer:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software",
-        },
-        {
-          faq_id: 3,
-          question:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the",
-          answer:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop",
-        },
-      ],
+      id_: null,
+      user_id: this.$store.getters.get_user_id,
+      faq_card_details: [],
     };
   },
   created() {
@@ -57,11 +42,45 @@ export default {
       this.id_ = 4;
     }
     if (user_role == "support") {
-      this.id_ = 4; // need to be updated
+      this.id_ = 3;
     }
     if (user_role == "admin") {
-      this.id_ = 4; // need to be updated
+      this.id_ = 4;
     }
+    let form = {
+      filter_status: ["pending"],
+    };
+    let params = "";
+    params = new URLSearchParams(form).toString();
+
+    fetch(common.FAQ_API, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        web_token: this.$store.getters.get_web_token,
+        user_id: this.user_id,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.category == "success") {
+          this.flashMessage.success({
+            message: "FAQs retrieved.",
+          });
+          this.faq_card_details = data.message;
+        }
+        if (data.category == "error") {
+          this.flashMessage.error({
+            message: data.message,
+          });
+        }
+      })
+      .catch((error) => {
+        this.$log.debug(`Error : ${error}`);
+        this.flashMessage.error({
+          message: "Internal Server Error",
+        });
+      });
   },
   mounted() {},
   methods: {},

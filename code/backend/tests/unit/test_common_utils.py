@@ -6,12 +6,19 @@
 # --------------------  Imports  --------------------
 
 from application.globals import API_VERSION
-import time
-from conftest import student_user_id, student_web_token, support_user_id, support_web_token, admin_user_id, admin_web_token
+from conftest import (
+    admin_user_id,
+    admin_web_token,
+)
 
 # --------------------  Tests  --------------------
 
-headers = {'Content-type': 'application/json', 'web_token': admin_web_token, 'user_id': admin_user_id}
+headers = {
+    "Content-type": "application/json",
+    "web_token": admin_web_token,
+    "user_id": admin_user_id,
+}
+
 
 def test_common_utils_token_required_with_fixture_get_401(test_client):
     """
@@ -19,7 +26,11 @@ def test_common_utils_token_required_with_fixture_get_401(test_client):
     WHEN the '/api/v1/auth/newusers' page is requested (GET) with missing or invalid token
     THEN check that the response is 401
     """
-    headers = {'Content-type': 'application/json', 'web_token': "", 'user_id': admin_user_id}
+    headers = {
+        "Content-type": "application/json",
+        "web_token": "",
+        "user_id": admin_user_id,
+    }
 
     response = test_client.get(
         f"/api/{API_VERSION}/auth/newUsers",
@@ -27,7 +38,8 @@ def test_common_utils_token_required_with_fixture_get_401(test_client):
     )
     response = response.get_json()
     assert response["status"] == 401
-    assert "Token is empty or missing" in  response["message"]
+    assert "Token is empty or missing" in response["message"]
+
 
 def test_common_utils_token_required_with_fixture_get_200(test_client):
     """
@@ -42,4 +54,3 @@ def test_common_utils_token_required_with_fixture_get_200(test_client):
     )
     response = response.get_json()
     assert response["status"] == 200
-     

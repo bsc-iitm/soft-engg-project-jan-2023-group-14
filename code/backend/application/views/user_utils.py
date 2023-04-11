@@ -5,14 +5,11 @@
 
 # --------------------  Imports  --------------------
 
-import re
 import os
 from flask import current_app as app
 import jwt
 import hashlib
 from application.common_utils import (
-    token_required,
-    users_required,
     convert_base64_to_img,
     convert_img_to_base64,
     is_img_path_valid,
@@ -25,55 +22,36 @@ from application.models import *
 from application.globals import *
 
 
-
-
-
 # --------------------  Code  --------------------
 
 
 class UserUtils:
     def is_blank(self, string):
         # for "", "  ", None : True else False
-        if string == 'undefined': return True
+        if string == "undefined":
+            return True
         return not (bool(string and not string.isspace()))
 
     def is_email_valid(self, email):
         is_valid = False
+        # import re
         # regex = "^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$"
         # is_valid = re.search(regex, email)
-        if '@' in email:
+        # But to keep it simple for now
+        if "@" in email:
             is_valid = True
         return is_valid
 
     def is_password_valid(self, password):
-        valid = list("abcdefghijklmnopqrstuvwxyz0123456789")
-        if (len(password) >= 4) and (len(password) <= 10):
-            for i in password:
-                if i not in valid:
-                    return False
-            return True
-        else:
-            return False
-
-    def verify_user_details(self, details: dict):
-        """
-        Usage
-        -----
-        While logging in, verify email and password
-        Also verify if user exists
-        If exists check password
-
-        Parameters
-        ----------
-        details: email and password in dict
-
-        Returns
-        -------
-
-        """
-        # verify email
-        # verify password
-        # return status
+        # valid = list("abcdefghijklmnopqrstuvwxyz0123456789")
+        # if (len(password) >= 4) and (len(password) <= 10):
+        #     for i in password:
+        #         if i not in valid:
+        #             return False
+        #     return True
+        # else:
+        #     return False
+        # its base64 encoded by frontend
         return True
 
     def verify_register_form(self, details: dict):
@@ -91,7 +69,6 @@ class UserUtils:
         return boolean status
 
         """
-        print(details)
         # verify email
         if not self.is_email_valid(details["email"]):
             return False
@@ -172,12 +149,12 @@ class UserUtils:
         else:
             user_dict["profile_photo_loc"] = ""
         return user_dict
-    
+
     def update_user_profile_data(self, user_id, form):
         # check url data
         if self.is_blank(user_id):
             raise BadRequest(status_msg="User id is missing.")
-    
+
         details = {
             "first_name": "",
             "last_name": "",
@@ -186,7 +163,7 @@ class UserUtils:
             "retype_password": "",
             "profile_photo_loc": "",
         }
-        
+
         # checks form data
         try:
             for key in details:
@@ -196,16 +173,14 @@ class UserUtils:
                 details[key] = value
             user = Auth.query.filter_by(user_id=user_id).first()
         except Exception as e:
-            logger.error(
-                f"UserUtils : Error occured while getting form data : {e}"
-            )
+            logger.error(f"UserUtils : Error occured while getting form data : {e}")
             raise InternalServerError
 
         else:
             # User doesn't exist
             if not user:
                 raise NotFoundError(status_msg="User does not exists")
-            
+
             role = user.role
 
             # checks if first name is empty
@@ -214,13 +189,11 @@ class UserUtils:
             else:
                 user.first_name = details["first_name"]
 
-            user.last_name = details["last_name"] # last name can be empty
+            user.last_name = details["last_name"]  # last name can be empty
 
             # checks if email is valid
             if not (self.is_email_valid(details["email"])):
-                raise BadRequest(
-                    status_msg=f"Email is required annd should be valid."
-                )
+                raise BadRequest(status_msg=f"Email is required annd should be valid.")
             else:
                 user_ = Auth.query.filter_by(email=details["email"]).first()
                 if user_:
@@ -233,14 +206,18 @@ class UserUtils:
             # check password
             if not self.is_blank(details["password"]):
                 # verify password
-                if self.is_password_valid(details["password"]) and (details["password"] == details["retype_password"]):
+                if self.is_password_valid(details["password"]) and (
+                    details["password"] == details["retype_password"]
+                ):
                     user.password = details["password"]
                 else:
                     raise BadRequest(status_msg=f"Password is invalid.")
-                        
+
             # update profile photo
             if details["profile_photo_loc"] != "":
-                if details["profile_photo_loc"].startswith("data:image") and is_base64(details["profile_photo_loc"].split(",")[1]):
+                if details["profile_photo_loc"].startswith("data:image") and is_base64(
+                    details["profile_photo_loc"].split(",")[1]
+                ):
                     file_type, file_format, encoded_data = get_encoded_file_details(
                         details["profile_photo_loc"]
                     )
@@ -252,7 +229,7 @@ class UserUtils:
                     if convert_base64_to_img(file_path, encoded_data):
                         # successfully image saved and now add entry to database
                         user.profile_photo_loc = file_path
-                    
+
             try:
                 db.session.add(user)
                 db.session.commit()
@@ -266,8 +243,6 @@ class UserUtils:
             else:
                 logger.info("User details Updated successfully.")
                 raise Success_200(status_msg="User details Updated successfully.")
-
-
 
 
 # --------------------  END  --------------------

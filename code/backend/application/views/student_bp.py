@@ -67,7 +67,7 @@ class StudentAPI(Resource):
                         created_by=user_id
                     ).count()
                     n_tickets_resolved = Ticket.query.filter_by(
-                        status="resolved"
+                        created_by=user_id, status="resolved"
                     ).count()
                     n_tickets_pending = n_tickets_created - n_tickets_resolved
                     n_tickets_upvoted = TicketVote.query.filter_by(
@@ -79,7 +79,6 @@ class StudentAPI(Resource):
                     student_dict["n_tickets_pending"] = n_tickets_pending
                     student_dict["n_tickets_upvoted"] = n_tickets_upvoted
 
-                    logger.debug(f"\n\n student_dict : {student_dict}\n\n")
                     return success_200_custom(data=student_dict)
                 else:
                     raise BadRequest(status_msg="User must be a student.")
