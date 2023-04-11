@@ -27,14 +27,6 @@ class Auth(db.Model):
     last_name = db.Column(db.String, nullable=True, default="")
     profile_photo_loc = db.Column(db.String, default="", nullable=True)
 
-    # def __init__(self, user_id, role, email, password, first_name):
-    #     self.user_id = user_id
-    #     self.role = role
-    #     self.email = email
-    #     self.password = password  # hash password before entering
-    #     self.first_name = first_name
-        
-
     def __repr__(self):
         return f"Auth object for: {self.user_id} | {self.role} | {self.first_name} {self.last_name}"
 
@@ -56,9 +48,13 @@ class Ticket(db.Model):
         db.Integer, nullable=False, default=0
     )  # creater can't vote, 1 vote/student
     created_by = db.Column(db.String, nullable=False)
-    created_on = db.Column(db.Integer, nullable=False, default=0)  # time is stored as a timestamp
+    created_on = db.Column(
+        db.Integer, nullable=False, default=0
+    )  # time is stored as a timestamp
     resolved_by = db.Column(db.String, nullable=True, default="")
-    resolved_on = db.Column(db.Integer, nullable=True, default=0)  # time is stored as a timestamp
+    resolved_on = db.Column(
+        db.Integer, nullable=True, default=0
+    )  # time is stored as a timestamp
 
     def __repr__(self):
         return f"Ticket object for: {self.ticket_id} | {self.title}"

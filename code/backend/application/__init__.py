@@ -9,10 +9,6 @@ from flask import Flask
 from application.config import DevelopmentConfig, TestingConfig
 from application.database import db
 from application.logger import logger
-
-# from flask_bcrypt import Bcrypt
-# import email_validator
-# from flask_login import LoginManager
 from application.globals import API_VERSION
 from application.views.auth_bp import auth_bp
 from application.views.student_bp import student_bp
@@ -20,15 +16,10 @@ from application.views.support_bp import support_bp
 from application.views.admin_bp import admin_bp
 from application.views.faq_bp import faq_bp
 from application.views.ticket_bp import ticket_bp
-
-# from application.models import Auth
 from flask_cors import CORS
 
 
 # --------------------  Code  --------------------
-
-# bcrypt = Bcrypt()
-# login_manager = LoginManager()
 
 
 def create_app(env_type="dev"):
@@ -41,21 +32,8 @@ def create_app(env_type="dev"):
         logger.info("Testing environment configured.")
 
     db.init_app(app)
+
     CORS(app, resources={r"/*": {"origins": "*"}})
-
-    # login_manager.init_app(app) # user loader need to set
-    # login_manager.login_view = "home"
-
-    # @login_manager.user_loader
-    # def user_loader(user_id):
-    #     """
-    #     Given *user_id*, return the associated User object.
-    #     :param unicode user_id: user_id (email) user to retrieve
-    #     """
-    #     return Auth.query.get(user_id)
-
-    # api = Api(app)
-    # bcrypt.init_app(app)
 
     app.register_blueprint(auth_bp, url_prefix=f"/api/{API_VERSION}/auth")
     app.register_blueprint(student_bp, url_prefix=f"/api/{API_VERSION}/student")
@@ -67,6 +45,7 @@ def create_app(env_type="dev"):
     app.app_context().push()
     db.create_all()
     db.session.commit()
+
     return app
 
 

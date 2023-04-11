@@ -17,9 +17,6 @@
                 :state="check_query"
                 aria-describedby="input-live-feedback-query"
               ></b-form-input>
-              <!-- <b-form-invalid-feedback id="input-live-feedback-query">
-                Query should be atleast 1 characters long.
-              </b-form-invalid-feedback> -->
             </b-form-group>
           </b-col>
           <b-col class="col" cols="12" md="3" sm="6">
@@ -72,7 +69,6 @@
       <b-button style="margin: 10px" type="reset" variant="danger">Reset</b-button>
     </b-form>
     <br />
-    <!-- show results here -->
 
     <h3 style="text-align: center">Results</h3>
     <div style="height: 500px; overflow: auto; padding: 10px">
@@ -87,34 +83,24 @@
           :upvote_disabled="upvote_disabled"
           :delete_disabled="delete_disabled"
           :edit_disabled="edit_disabled"
+          :is_resolved="ticket.status == 'resolved'"
         ></TicketCard>
       </div>
     </div>
-
-    <!-- <b- card class="mt-3" header="Form Data : Temporary">
-      <pre class="m-0">{{ form }}</pre>
-    </b-> -->
   </div>
 </template>
 
 <script>
 import * as common from "../assets/common.js";
-// import FileUpload from "./FileUpload.vue";
 import Tagging from "./Tagging.vue";
 import TicketCard from "../components/TicketCard.vue";
 
 export default {
   name: "SearchTicket",
   components: { Tagging, TicketCard },
-  props: ["upvote_disabled",
-    "delete_disabled",
-    "edit_disabled",],
+  props: ["upvote_disabled", "delete_disabled", "edit_disabled"],
   data() {
     return {
-      // upvote_disabled_: this.upvote_disabled,
-      // delete_disabled_: this.delete_disabled,
-      // edit_disabled_: this.edit_disabled,
-
       filter_priority_options: [
         { item: "low", name: "Low" },
         { item: "medium", name: "Medium" },
@@ -151,10 +137,6 @@ export default {
     };
   },
   created() {
-    console.log(`user role: ${this.user_role}`);
-    console.log(`current_page_path: ${this.current_page_path}`);
-    console.log(`user id: ${this.user_id}`);
-
     // here update filter sort options as per user and page
 
     if (this.user_role === "student" && this.current_page_path === "/student-create-ticket") {
@@ -164,32 +146,30 @@ export default {
     }
     if (this.user_role === "student" && this.current_page_path === "/student-my-tickets") {
       // all options will be available and only current student tickets checked
-      // this.form.user_id = this.user_id;
+
       this.search_url = this.search_url + `/${this.user_id}`;
     }
     if (this.user_role === "support" && this.current_page_path === "/support-home") {
       // show all unresolved tickets, status=pending, filter on priority and tags, sort by created date and votes.
-      // this.form.user_id = this.user_id;
+
       this.filter_status_options = this.filter_status_options.filter(
         (value) => value.item == "pending"
       );
       this.form.filter_status.push("pending");
-      console.log("this.filter_status_options : ", this.filter_status_options);
       this.search_url = this.search_url + `/${this.user_id}`;
     }
     if (this.user_role === "support" && this.current_page_path === "/support-my-tickets") {
-      // show uesr's resolved tickets, status=resolved, filter on priority and tags, sort by created date, resolved date and votes.
-      // this.form.user_id = this.user_id;
+      // show user's resolved tickets, status=resolved, filter on priority and tags, sort by created date, resolved date and votes.
+
       this.filter_status_options = this.filter_status_options.filter(
         (value) => value.item == "resolved"
       );
       this.form.filter_status.push("resolved");
-      console.log("this.filter_status_options : ", this.filter_status_options);
       this.search_url = this.search_url + `/${this.user_id}`;
     }
     if (this.user_role === "admin" && this.current_page_path === "/admin-create-faq") {
       // show all resolved tickets, status=resolved, filter on priority and tags, sort by created date, resolved date and votes.
-      // this.form.user_id = this.user_id;
+
       this.filter_status_options = this.filter_status_options.filter(
         (value) => value.item == "resolved"
       );
@@ -209,9 +189,7 @@ export default {
       // convert form to query params
       let params = "";
       params = new URLSearchParams(this.form).toString();
-      console.log("params: ", params);
 
-      // console.log(JSON.stringify(this.form));
       fetch(this.search_url + "?" + params, {
         method: "GET",
         headers: {
@@ -222,7 +200,6 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          this.$log.debug(`Success : ${data}`);
           if (data.category == "success") {
             this.flashMessage.success({
               message: "Tickets retrieved.",
@@ -250,6 +227,20 @@ export default {
       this.form.sortby = "";
       this.form.sortdir = "";
       this.form.filter_status = [];
+
+      if (this.user_role === "support" && this.current_page_path === "/support-home") {
+        this.filter_status_options = this.filter_status_options.filter(
+          (value) => value.item == "pending"
+        );
+        this.form.filter_status.push("pending");
+      }
+      if (this.user_role === "support" && this.current_page_path === "/support-my-tickets") {
+        this.filter_status_options = this.filter_status_options.filter(
+          (value) => value.item == "resolved"
+        );
+        this.form.filter_status.push("resolved");
+      }
+
       this.form.filter_priority = [];
       this.ticket_card_details = [];
       this.show = false;

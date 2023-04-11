@@ -106,7 +106,7 @@ router.beforeEach((to, from, next) => {
   }
   const logged_status = store.getters.get_logged_status;
 
-  console.log('Routing', from.path, to.path, authRequired, logged_status);
+  // console.log('Routing', from.path, to.path, authRequired, logged_status);
 
   if (authRequired && !logged_status) {
     alert("Token expired. Please log in again.");
@@ -115,7 +115,6 @@ router.beforeEach((to, from, next) => {
   if (authRequired && logged_status) {
     const role = store.state.user.role;
 
-    // let accesing = "";
     if (((role === 'student') && (common.STUDENT_ROUTES.includes(to.path)))
       || ((role === 'support') && (common.SUPPORT_ROUTES.includes(to.path)))
       || ((role === 'admin') && (common.ADMIN_ROUTES.includes(to.path)))) {
@@ -124,35 +123,9 @@ router.beforeEach((to, from, next) => {
     else {
       alert("You don't have access to this page.");
       return next(`/${role}-home`);
-
     }
-    // if (common.SUPPORT_ROUTES.includes(to.path)) { accesing = "support" }
-    // if (common.ADMIN_ROUTES.includes(to.path)) { accesing = "admin" }
-    // console.log('Checking role: ', role, to.path, accesing);
-    // console.log('student routes: ', common.STUDENT_ROUTES, to.path);
-    // if (role != accesing) {
-    //   alert("You don't have access to this page.");
-    //   return next(`/${role}-home`);
-    // }
   }
   next();
 })
 
-
 export default router;
-
-// {
-//   path: '/student',
-//   name: 'StudentView',
-//   component: StudentView,
-// },
-// {
-//   path: '/support',
-//   name: 'SupportView',
-//   component: SupportView,
-// },
-// {
-//   path: '/admin',
-//   name: 'AdminView',
-//   component: AdminView,
-// },

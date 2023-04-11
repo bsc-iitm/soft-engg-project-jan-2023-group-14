@@ -36,7 +36,6 @@ export default {
   methods: {
     questionClicked() {
       this.show_answer = !this.show_answer;
-      console.log("button clicked: ", this.show_answer);
     },
   },
   computed: {},

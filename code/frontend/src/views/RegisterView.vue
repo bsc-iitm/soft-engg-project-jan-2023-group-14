@@ -119,6 +119,9 @@ export default {
       alert('You are creating a new account. Click "Ok" to proceed?');
       this.$log.info("Submitting registration form");
 
+      this.form.password = btoa(this.form.password);
+      this.form.retype_password = btoa(this.form.retype_password);
+
       fetch(common.AUTH_API_REGISTER, {
         method: "POST",
         headers: {
@@ -128,7 +131,6 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          this.$log.debug(`Success : ${data}`);
           if (data.category == "success") {
             this.flashMessage.success({
               message: data.message,
@@ -167,7 +169,6 @@ export default {
       return this.form.first_name.length > 2 ? true : false;
     },
     check_password() {
-      console.log("inside check password");
       let password = this.form.password;
       if (password.length < 4 || password.length > 9) {
         return false;

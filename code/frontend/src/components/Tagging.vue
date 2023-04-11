@@ -1,7 +1,14 @@
 <template>
   <div>
     <b-form-group label="Tags" label-for="tags-with-dropdown">
-      <b-form-tags id="tags-with-dropdown" v-model="value" no-outer-focus class="mb-2" :limit="limit" required>
+      <b-form-tags
+        id="tags-with-dropdown"
+        v-model="value"
+        no-outer-focus
+        class="mb-2"
+        :limit="limit"
+        required
+      >
         <template v-slot="{ tags, disabled, addTag, removeTag }">
           <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
             <li v-for="tag in tags" :key="tag" class="list-inline-item">
@@ -10,14 +17,13 @@
                 :title="tag"
                 :disabled="disabled"
                 variant="info"
-              >{{ tag }}</b-form-tag>
+                >{{ tag }}</b-form-tag
+              >
             </li>
           </ul>
 
           <b-dropdown size="sm" variant="outline-secondary" block menu-class="w-100">
-            <template #button-content>
-              <b-icon icon="tag-fill"></b-icon> Choose 3 tags
-            </template>
+            <template #button-content> <b-icon icon="tag-fill"></b-icon> Choose 3 tags </template>
             <b-dropdown-form @submit.stop.prevent="() => {}">
               <b-form-group
                 label="Search tags"
@@ -34,7 +40,7 @@
                   type="search"
                   size="sm"
                   autocomplete="off"
-                 ></b-form-input>
+                ></b-form-input>
               </b-form-group>
             </b-dropdown-form>
             <b-dropdown-divider></b-dropdown-divider>
@@ -56,54 +62,66 @@
 </template>
 
 <script>
-  export default {
-    name: "Tagging",
-    props: [ ],
-    data() {
-      return {
-        options: ['Help', 'Portal Down', 'Not Submitted', 'Subject', 'Assignment', 'Activity Question'],
-        search: '',
-        value: [],
-        limit: 3,
-      }
+export default {
+  name: "Tagging",
+  props: [],
+  data() {
+    return {
+      options: [
+        "Help",
+        "Portal Down",
+        "Not Submitted",
+        "Subject",
+        "Graded Assignment",
+        "Practice Assignment",
+        "Live Session",
+        "SE Course",
+        "ST Course",
+        "OPPE",
+        "Activity Question",
+      ],
+      search: "",
+      value: [],
+      limit: 3,
+    };
+  },
+  computed: {
+    criteria() {
+      // Compute the search criteria
+      return this.search.trim().toLowerCase();
     },
-    computed: {
-      criteria() {
-        // Compute the search criteria
-        return this.search.trim().toLowerCase()
-      },
-      availableOptions() {
-        const criteria = this.criteria
-        // Filter out already selected options
-        const options = this.options.filter(opt => this.value.indexOf(opt) === -1)
-        if (criteria) {
-          // Show only options that match criteria
-          return options.filter(opt => opt.toLowerCase().indexOf(criteria) > -1);
-        }
-        // Show all options available
-        return options
-      },
-      searchDesc() {
-        if (this.criteria && this.availableOptions.length === 0) {
-          return 'There are no tags matching your search criteria'
-        }
-        return ''
+    availableOptions() {
+      const criteria = this.criteria;
+      // Filter out already selected options
+      const options = this.options.filter((opt) => this.value.indexOf(opt) === -1);
+      if (criteria) {
+        // Show only options that match criteria
+        return options.filter((opt) => opt.toLowerCase().indexOf(criteria) > -1);
       }
+      // Show all options available
+      return options;
     },
-    methods: {
-      onOptionClick({ option, addTag }) {
-        addTag(option)
-        this.search = ''
+    searchDesc() {
+      if (this.criteria && this.availableOptions.length === 0) {
+        return "There are no tags matching your search criteria";
       }
+      return "";
     },
-    watch: {
+  },
+  methods: {
+    onOptionClick({ option, addTag }) {
+      addTag(option);
+      this.search = "";
+    },
+  },
+  watch: {
     value: {
       handler(newValue, oldValue) {
         // Note: this is a deep watcher
-        this.$emit('tags_changed', newValue);
+        this.$emit("tags_changed", newValue);
       },
-      deep: true
-    }
-  }
-  }
+      deep: true,
+    },
+  },
+};
 </script>

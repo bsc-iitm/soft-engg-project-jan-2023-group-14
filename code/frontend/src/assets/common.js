@@ -7,7 +7,7 @@ const AUTH_API_PREFIX = `/api/${VERSION}/auth`;
 const STUDENT_API_PREFIX = `/api/${VERSION}/student`;
 const SUPPORT_API_PREFIX = `/api/${VERSION}/support`;
 const ADMIN_API_PREFIX = `/api/${VERSION}/admin`;
-const FAQ_API_PREFIX = `/api/${VERSION}/faq`;
+const FAQ_API_PREFIX = `/api/${VERSION}/faq/`;
 const TICKET_API_PREFIX = `/api/${VERSION}/ticket`
 
 const AUTH_API_LOGIN = `${BASEURL}${AUTH_API_PREFIX}/login`

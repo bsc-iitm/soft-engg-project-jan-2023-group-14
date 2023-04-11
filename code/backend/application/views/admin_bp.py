@@ -6,7 +6,6 @@
 
 # --------------------  Imports  --------------------
 
-import time
 from datetime import datetime
 from flask import Blueprint, request
 from flask_restful import Api, Resource
@@ -189,14 +188,12 @@ class AdminAPI(Resource):
                     admin_dict["n_admin"] = n_admin
                     admin_dict["n_student_new"] = n_student_new
                     admin_dict["n_support_new"] = n_support_new
-                    logger.debug(f"\n\n admin_dict : {admin_dict}\n\n")
                     return success_200_custom(data=admin_dict)
                 else:
                     raise BadRequest(status_msg="User must be a Admin.")
             else:
                 raise NotFoundError(status_msg="Admin does not exists")
 
-    # test case -> should not give details of student and support staff
     @token_required
     @users_required(users=["admin"])
     def put(self, user_id):
