@@ -16,7 +16,15 @@
             <i>Solution:</i>
           </b>
         </b-col>
-        <b-col class="col" cols="11" lg="11" sm="11">{{ answer }}</b-col>
+        <b-col class="col" cols="11" lg="11" sm="11">
+          <p>{{ answer }}</p>
+          <div v-show="attachments.length > 0">
+            <p>Attachments:</p>
+            <div v-for="(attach, imageIndex) in attachments" :key="imageIndex">
+              <img :src="attach.attachment_loc" class="img-fluid" />
+            </div>
+          </div>
+        </b-col>
       </b-row>
     </b-container>
   </div>
@@ -25,7 +33,7 @@
 <script>
 export default {
   name: "FAQCard",
-  props: ["faq_id", "question", "answer"],
+  props: ["faq_id", "question", "answer", "attachments"],
   components: {},
   data() {
     return {

@@ -27,7 +27,7 @@ class AdminUtils(UserUtils):
     def __init__(self, user_id=None):
         self.user_id = user_id
 
-    def get_timestamps_for_ticket_counting():
+    def get_timestamps_for_ticket_counting(self):
         date_format = "%Y-%m-%d %H:%M:%S"
         per_day_seconds = 24 * 60 * 60
 

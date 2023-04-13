@@ -107,7 +107,7 @@ export default {
       .then((data) => {
         if (data.category == "success") {
           this.flashMessage.success({
-            message: "Tickets retrieved.",
+            message: `Total ${data.message.length} Tickets retrieved.`,
           });
 
           this.ticket_card_details = data.message;
