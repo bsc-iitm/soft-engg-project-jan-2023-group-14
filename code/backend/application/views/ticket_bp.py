@@ -248,7 +248,7 @@ ticket_utils = TicketUtils()
 
 class TicketAPI(Resource):
     @token_required
-    @users_required(users=["student", "support"])
+    @users_required(users=["student", "support", "admin"])
     def get(self, ticket_id="", user_id=""):
         """
         Usage

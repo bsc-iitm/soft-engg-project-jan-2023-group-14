@@ -104,6 +104,7 @@ class FAQUtils(UserUtils):
                             try:
                                 # while creating a faq a student can upload multiple attachments
                                 # verify whether each attachment is unique
+                                attach = {}
                                 attach["faq_id"] = faq_id
                                 attach["attachment_loc"] = file_path
                                 faq_attach = FAQAttachment(**attach)

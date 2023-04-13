@@ -72,6 +72,7 @@ export default {
 
             // update store
             this.$store.dispatch("set_state_after_login", data.message);
+            this.$store.dispatch("token_timeout_fn", {});
             this.$router.push(`/${data.message.role}-home`); //home page depends on role
           }
           if (data.category == "error") {

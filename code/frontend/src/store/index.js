@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import router from '../router';
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     web_token: "",
     token_expiry_on: 0,
     logged_status: false,
+    timeout_id: null,
   },
   getters: {
     get_user: function (state) {
@@ -53,10 +55,10 @@ export default new Vuex.Store({
       }
     },
 
-    SET_STATE_AFTER_LOGIN(state, payload){
-      state.user.first_name = payload.first_name ;
-      state.user.last_name = payload.last_name ;
-      state.user.email = payload.email ;
+    SET_STATE_AFTER_LOGIN(state, payload) {
+      state.user.first_name = payload.first_name;
+      state.user.last_name = payload.last_name;
+      state.user.email = payload.email;
       state.user.user_id = payload.user_id;
       state.user.role = payload.role;
       state.web_token = payload.web_token;
@@ -64,23 +66,27 @@ export default new Vuex.Store({
       state.user.profile_photo_loc = payload.profile_photo_loc;
       state.logged_status = true;
     },
-    SET_STATE_AFTER_LOGOUT(state, payload){
-      state.user.first_name = "" ;
-      state.user.last_name = "" ;
-      state.user.email = "" ;
+    SET_STATE_AFTER_LOGOUT(state, payload) {
+      state.user.first_name = "";
+      state.user.last_name = "";
+      state.user.email = "";
       state.user.user_id = "";
       state.user.role = "";
       state.web_token = "";
       state.token_expiry_on = 0;
       state.user.profile_photo_loc = "";
       state.logged_status = false;
+      clearTimeout(state.timeout_id);
     },
-    SET_STATE_AFTER_PROFILE_UPDATE(state, payload){
-      state.user.first_name = payload.first_name ;
-      state.user.last_name = payload.last_name ;
-      state.user.email = payload.email ;
+    SET_STATE_AFTER_PROFILE_UPDATE(state, payload) {
+      state.user.first_name = payload.first_name;
+      state.user.last_name = payload.last_name;
+      state.user.email = payload.email;
       state.user.profile_photo_loc = payload.profile_photo_loc;
     },
+    SET_TIMEOUT_ID(state, payload) {
+      state.timeout_id = payload;
+    }
   },
   actions: {
     set_state_after_login(context, payload) {
@@ -91,7 +97,17 @@ export default new Vuex.Store({
     },
     set_state_after_profile_update(context, payload) {
       context.commit('SET_STATE_AFTER_PROFILE_UPDATE', payload);
-    }
+    },
+    token_timeout_fn: async function (context, payload) {
+      // delete token after timeout
+      console.log("inside token_timeout_fn");
+      const timeout_id = setTimeout(function () {
+        alert("Token Expired. Please login again");
+        context.commit('SET_STATE_AFTER_LOGOUT', payload);
+        router.push("/login");
+      }, 1 * 60 * 1000);  // 1000 means 1 sec
+      context.commit('SET_TIMEOUT_ID', timeout_id);
+    },
   },
   modules: {
   },

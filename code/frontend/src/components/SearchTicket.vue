@@ -202,7 +202,7 @@ export default {
         .then((data) => {
           if (data.category == "success") {
             this.flashMessage.success({
-              message: "Tickets retrieved.",
+              message: `Total ${data.message.length} Tickets retrieved.`,
             });
             this.ticket_card_details = data.message;
           }
@@ -239,6 +239,15 @@ export default {
           (value) => value.item == "resolved"
         );
         this.form.filter_status.push("resolved");
+      }
+      if (this.user_role === "admin" && this.current_page_path === "/admin-create-faq") {
+        this.filter_status_options = this.filter_status_options.filter(
+          (value) => value.item == "resolved"
+        );
+        this.form.filter_status.push("resolved");
+        this.form.sortdir = "desc";
+        this.sort_by_options = this.sort_by_options.filter((value) => value.value == "votes");
+        this.form.sortby = "votes";
       }
 
       this.form.filter_priority = [];
