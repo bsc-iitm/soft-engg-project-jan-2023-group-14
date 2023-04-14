@@ -48,7 +48,7 @@ class AuthUtils(UserUtils):
             user = Auth.query.filter_by(email=details["email"]).first()
             user.web_token = details["web_token"]
             user.is_logged = True
-            user.token_created_on = time.time()
+            user.token_created_on = int(time.time())
             user.token_expiry_on = details["token_expiry_on"]
             db.session.commit()
 
@@ -128,46 +128,51 @@ class Login(Resource):
                     user_id = user.user_id
 
                     if password == user.password:
-                        # password is correct so log in user
-                        # and generate token
-                        token_expiry_on = time.time() + TOKEN_VALIDITY
-                        web_token = auth_utils.generate_web_token(
-                            email, token_expiry_on
-                        )
-                        details["web_token"] = web_token
-                        details["token_expiry_on"] = token_expiry_on
-
-                        # update auth table
-                        user = auth_utils.update_auth_table(details=details)
-
-                        # get profile pic
-                        profile_pic = user.profile_photo_loc
-                        if profile_pic == "":
-                            profile_pic = os.path.join(
-                                BACKEND_ROOT_PATH,
-                                "databases",
-                                "images",
-                                "profile_pics",
-                                "dummy_profile.png",
+                        # password is correct so log in user if user is verified
+                        if user.is_verified or user.role == "admin":
+                            #  generate token
+                            token_expiry_on = int(int(time.time()) + TOKEN_VALIDITY)
+                            web_token = auth_utils.generate_web_token(
+                                email, token_expiry_on
                             )
-                        img_base64 = ""
-                        if is_img_path_valid(profile_pic):
-                            img_base64 = convert_img_to_base64(profile_pic)
+                            details["web_token"] = web_token
+                            details["token_expiry_on"] = token_expiry_on
 
-                        logger.info("User logged in.")
-                        return success_200_custom(
-                            data={
-                                "user_id": user_id,
-                                "web_token": web_token,
-                                "token_expiry_on": token_expiry_on,
-                                "role": user.role,
-                                "first_name": user.first_name,
-                                "last_name": user.last_name,
-                                "email": user.email,
-                                "profile_photo_loc": img_base64,
-                            }
-                        )
+                            # update auth table
+                            user = auth_utils.update_auth_table(details=details)
 
+                            # get profile pic
+                            profile_pic = user.profile_photo_loc
+                            if profile_pic == "":
+                                profile_pic = os.path.join(
+                                    BACKEND_ROOT_PATH,
+                                    "databases",
+                                    "images",
+                                    "profile_pics",
+                                    "dummy_profile.png",
+                                )
+                            img_base64 = ""
+                            if is_img_path_valid(profile_pic):
+                                img_base64 = convert_img_to_base64(profile_pic)
+
+                            logger.info("User logged in.")
+                            return success_200_custom(
+                                data={
+                                    "user_id": user_id,
+                                    "web_token": web_token,
+                                    "token_expiry_on": token_expiry_on,
+                                    "role": user.role,
+                                    "first_name": user.first_name,
+                                    "last_name": user.last_name,
+                                    "email": user.email,
+                                    "profile_photo_loc": img_base64,
+                                }
+                            )
+                        else:
+                            # user details are correct but user is not verified by admin
+                            raise Unauthenticated(
+                                status_msg="User is not verified by Admin."
+                            )
                     else:
                         # password is wrong
                         raise Unauthenticated(status_msg="Password is incorrect")
@@ -280,7 +285,7 @@ class NewUsers(Resource):
         New users dict
 
         """
-        # print('\n\n', request.headers.get('web_token', None))
+
         # get new users data from auth table
         try:
             all_users = (

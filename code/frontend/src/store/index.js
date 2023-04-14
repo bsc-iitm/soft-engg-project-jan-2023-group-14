@@ -100,7 +100,6 @@ export default new Vuex.Store({
     },
     token_timeout_fn: async function (context, payload) {
       // delete token after timeout
-      console.log("inside token_timeout_fn");
       const timeout_id = setTimeout(function () {
         alert("Token Expired. Please login again");
         context.commit('SET_STATE_AFTER_LOGOUT', payload);

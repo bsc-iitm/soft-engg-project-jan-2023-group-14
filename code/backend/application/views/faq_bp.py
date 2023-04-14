@@ -37,7 +37,7 @@ class FAQUtils(UserUtils):
             del faq_dict["_sa_instance_state"]
         attachments = self.get_faq_attachments(faq_id=faq.faq_id)
         faq_dict["attachments"] = attachments
-        # print(f"\n\n{faq_dict}\n\n")
+
         return faq_dict
 
     def get_faq_attachments(self, faq_id):
@@ -152,7 +152,7 @@ class FAQAPI(Resource):
             for faq in faqs:
                 f = faq_util.convert_faq_to_dict(faq)
                 all_faqs.append(f)
-            logger.debug(f"All FAQs found : {len(all_faqs)}")
+            logger.info(f"All FAQs found : {len(all_faqs)}")
 
             return success_200_custom(data=all_faqs)
         except Exception as e:

@@ -93,7 +93,7 @@ export default {
         );
       } else {
         alert('Submitting form. Click "Ok" to proceed?');
-        this.$log.info("Submitting faq form");
+        this.$log.info("Submitting FAQ form");
 
         for (let i in this.form.tags) {
           if (this.form.tags[i]) {
@@ -127,7 +127,7 @@ export default {
             }
           })
           .catch((error) => {
-            this.$log.debug(`Error : ${error}`);
+            this.$log.error(`Error : ${error}`);
             this.flashMessage.error({
               message: "Internal Server Error",
             });

@@ -658,7 +658,7 @@ class AllTicketsAPI(Resource):
 
         all_tickets = ticket_utils.tickets_filter_sort(all_tickets, args)
 
-        logger.debug(f"All tickets found : {len(all_tickets)}")
+        logger.info(f"All tickets found : {len(all_tickets)}")
 
         return success_200_custom(data=all_tickets)
 
@@ -730,7 +730,7 @@ class AllTicketsUserAPI(Resource):
                 all_tickets.append(tick)
 
         all_tickets = ticket_utils.tickets_filter_sort(all_tickets, args)
-        logger.debug(f"All tickets found : {len(all_tickets)}")
+        logger.info(f"All tickets found : {len(all_tickets)}")
 
         return success_200_custom(data=all_tickets)
 
