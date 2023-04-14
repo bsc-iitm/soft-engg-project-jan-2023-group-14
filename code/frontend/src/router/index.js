@@ -106,8 +106,6 @@ router.beforeEach((to, from, next) => {
   }
   const logged_status = store.getters.get_logged_status;
 
-  // console.log('Routing', from.path, to.path, authRequired, logged_status);
-
   if (authRequired && !logged_status) {
     alert("Token expired. Please log in again.");
     return next('/login');

@@ -117,7 +117,7 @@ export default {
     onSubmit(event) {
       event.preventDefault();
       alert('You are creating a new account. Click "Ok" to proceed?');
-      this.$log.info("Submitting registration form");
+      this.$log.info("Submitting Registration form");
 
       this.form.password = btoa(this.form.password);
       this.form.retype_password = btoa(this.form.retype_password);
@@ -144,7 +144,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.$log.debug(`Error : ${error}`);
+          this.$log.error(`Error : ${error}`);
           this.flashMessage.error({
             message: "Internal Server Error",
           });

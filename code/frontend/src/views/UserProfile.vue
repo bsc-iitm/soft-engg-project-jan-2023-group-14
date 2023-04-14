@@ -140,7 +140,7 @@ export default {
     onSubmit(event) {
       event.preventDefault();
       alert('You are updating your profile. Click "Ok" to proceed?');
-      this.$log.info("Submitting update profile form");
+      this.$log.info("Submitting Update Profile form");
 
       this.form.password = btoa(this.form.password);
       this.form.retype_password = btoa(this.form.retype_password);
@@ -172,7 +172,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.$log.debug(`Error : ${error}`);
+          this.$log.error(`Error : ${error}`);
           this.flashMessage.error({
             message: "Internal Server Error",
           });

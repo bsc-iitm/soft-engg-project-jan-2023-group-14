@@ -105,7 +105,7 @@ export default {
         }
       })
       .catch((error) => {
-        this.$log.debug(`Error : ${error}`);
+        this.$log.error(`Error : ${error}`);
         this.flashMessage.error({
           message: "Internal Server Error",
         });

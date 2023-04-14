@@ -108,7 +108,11 @@
       <div class="d-block text-left">
         <h5 style="text-align: center">Ticket Details</h5>
         <!-- display as a table -->
-        <table>
+        <table style="width: 100%">
+          <tr>
+            <th style="width: 15%">Attribute</th>
+            <th>Details</th>
+          </tr>
           <tr>
             <td>Title:</td>
             <td>{{ title }}</td>
@@ -135,7 +139,7 @@
           </tr>
           <tr>
             <td>Created on:</td>
-            <td>{{ created_on }}</td>
+            <td>{{ Date(created_on).toLocaleString() }}</td>
           </tr>
           <tr>
             <td>Created by:</td>
@@ -147,7 +151,7 @@
           </tr>
           <tr>
             <td>Resolved on:</td>
-            <td>{{ resolved_on == 0 ? "" : resolved_on }}</td>
+            <td>{{ resolved_on == 0 ? "" : Date(resolved_on).toLocaleString() }}</td>
           </tr>
           <tr>
             <td>Solution:</td>
@@ -307,7 +311,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.$log.debug(`Error : ${error}`);
+          this.$log.error(`Error : ${error}`);
           this.flashMessage.error({
             message: "Internal Server Error",
           });
@@ -354,7 +358,7 @@ export default {
             }
           })
           .catch((error) => {
-            this.$log.debug(`Error : ${error}`);
+            this.$log.error(`Error : ${error}`);
             this.flashMessage.error({
               message: "Internal Server Error",
             });
@@ -385,7 +389,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.$log.debug(`Error : ${error}`);
+          this.$log.error(`Error : ${error}`);
           this.flashMessage.error({
             message: "Internal Server Error",
           });

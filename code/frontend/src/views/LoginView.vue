@@ -53,7 +53,7 @@ export default {
   methods: {
     onSubmit: async function (event) {
       event.preventDefault();
-      this.$log.info("Submitting login form");
+      this.$log.info("Submitting Login form");
       this.form.password = btoa(this.form.password);
 
       fetch(common.AUTH_API_LOGIN, {
@@ -82,7 +82,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.$log.debug(`Error : ${error}`);
+          this.$log.error(`Error : ${error}`);
           this.flashMessage.error({
             message: "Internal Server Error",
           });

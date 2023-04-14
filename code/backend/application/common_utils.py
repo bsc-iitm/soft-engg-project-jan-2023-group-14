@@ -13,6 +13,8 @@ from application.logger import logger
 from application.models import Auth
 from application.globals import *
 import base64
+from application.database import db
+import time
 
 # --------------------  Code  --------------------
 
@@ -30,6 +32,18 @@ def token_required(f):
             user = Auth.query.filter_by(user_id=user_id_rec).first()
             if user:
                 if user.is_logged:
+                    # if token is expired then update auth table and ask user to login again
+                    if int(time.time()) > user.token_expiry_on:
+                        user.is_logged = False
+                        user.web_token = ""
+                        user.token_created_on = 0
+                        user.token_expiry_on = 0
+                        db.session.add(user)
+                        db.session.commit()
+                        raise Unauthenticated(
+                            status_msg="Token is expired. Please login again."
+                        )
+
                     if frontend_token:
                         # check token
                         backend_token = user.web_token
@@ -95,10 +109,13 @@ def users_required(users):
                     role = user.role
                     if role in users:
                         # role verified
-                        logger.info(
-                            f"User role : {role} : is verified for the user: {user_id_rec}"
-                        )
-                        return f(*args, **kwargs)
+                        if user.is_verified or role == "admin":
+                            logger.info(
+                                f"User role : {role} : is verified for the user: {user_id_rec}"
+                            )
+                            return f(*args, **kwargs)
+                        else:
+                            raise Unauthenticated(status_msg="User is not verified.")
                     else:
                         raise Unauthenticated(status_msg="Access denied.")
                 else:
